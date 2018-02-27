@@ -20,6 +20,16 @@ class YF_KLineViewController: UIViewController {
         let chartView = YF_StockChartView(frame: SCREEN_BOUNDS)
         chartView.backgroundColor = CHARTVIEW_BACKGROUND_COLOR
         chartView.dataSource = self
+        chartView.itemModels = [
+            YF_StockChartViewItemModel.getItemModel(title: "指标", type: .other),
+            YF_StockChartViewItemModel.getItemModel(title: "分时", type: .timeLine),
+            YF_StockChartViewItemModel.getItemModel(title: "1分", type: .kLine),
+            YF_StockChartViewItemModel.getItemModel(title: "5分", type: .kLine),
+            YF_StockChartViewItemModel.getItemModel(title: "30分", type: .kLine),
+            YF_StockChartViewItemModel.getItemModel(title: "60分", type: .kLine),
+            YF_StockChartViewItemModel.getItemModel(title: "日线", type: .kLine),
+            YF_StockChartViewItemModel.getItemModel(title: "周线", type: .kLine),
+        ]
         return chartView
     }()
     
@@ -133,9 +143,9 @@ extension YF_KLineViewController {
         params["size"] = "300"
         YF_NetworkTool.request(url: "https://api.huobi.pro/market/history/kline", params: params, success: { (response) in
             guard let dict = response["data"] as? [Any],
-            let groupModel = YF_KLineGroupModel.getObject(array: dict), ///< 字典转模型
-            let type = self.currentType else {
-                return
+                let groupModel = YF_KLineGroupModel.getObject(array: dict), ///< 字典转模型
+                let type = self.currentType else {
+                    return
             }
             self.gModel = groupModel
             self.modelsDict[type] = groupModel ///< 将模型放到字典里面, 可能是做缓存用?
