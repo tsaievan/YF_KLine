@@ -14,3 +14,17 @@ class YF_KLineViewController: UIViewController {
         view.backgroundColor = UIColor.red
     }
 }
+
+extension YF_KLineViewController {
+    
+    ///< 加载数据
+    fileprivate func reloadData() {
+        var params = [String : Any]()
+        params["period"] = ""
+        params["symbol"] = "btcusdt"
+        params["size"] = "300"
+        YF_NetworkTool.request(url: "https://api.huobi.pro/market/history/kline", params: params, success: { (response) in
+            
+        }, failue: nil)
+    }
+}
