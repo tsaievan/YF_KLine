@@ -48,6 +48,9 @@ extension ViewController {
         }
         appDelegate.isLandScape = true
         let kLineVc = YF_KLineViewController()
+        YF_NetworkTool.request(url: "https://api.huobi.pro/market/history/kline", params: nil, success: { (response) in
+            print(response)
+        }, failue: nil)
         kLineVc.modalTransitionStyle = .crossDissolve
         present(kLineVc, animated: true, completion: nil)
     }
