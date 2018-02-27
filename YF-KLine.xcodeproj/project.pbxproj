@@ -15,6 +15,7 @@
 		57126926204530DD001F0FFB /* YF_KLineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57126925204530DD001F0FFB /* YF_KLineViewController.swift */; };
 		5712692820453985001F0FFB /* UIButton+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5712692720453985001F0FFB /* UIButton+YF_Extension.swift */; };
 		5712692A204543AB001F0FFB /* YF_NetworkTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57126929204543AB001F0FFB /* YF_NetworkTool.swift */; };
+		5712692C204552C1001F0FFB /* YF_StockChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5712692B204552C1001F0FFB /* YF_StockChartView.swift */; };
 		DE253BE0E4D60DA7465501E0 /* Pods_YF_KLine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FF16219D0097B4B7457E5BD /* Pods_YF_KLine.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		57126925204530DD001F0FFB /* YF_KLineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineViewController.swift; sourceTree = "<group>"; };
 		5712692720453985001F0FFB /* UIButton+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+YF_Extension.swift"; sourceTree = "<group>"; };
 		57126929204543AB001F0FFB /* YF_NetworkTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_NetworkTool.swift; sourceTree = "<group>"; };
+		5712692B204552C1001F0FFB /* YF_StockChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_StockChartView.swift; sourceTree = "<group>"; };
 		7B424C63BB5D9AB892E0A358 /* Pods-YF-KLine.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YF-KLine.release.xcconfig"; path = "Pods/Target Support Files/Pods-YF-KLine/Pods-YF-KLine.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,6 +81,7 @@
 				5712691520452EDA001F0FFB /* ViewController.swift */,
 				5712692720453985001F0FFB /* UIButton+YF_Extension.swift */,
 				57126925204530DD001F0FFB /* YF_KLineViewController.swift */,
+				5712692B204552C1001F0FFB /* YF_StockChartView.swift */,
 				57126929204543AB001F0FFB /* YF_NetworkTool.swift */,
 				5712691720452EDA001F0FFB /* Main.storyboard */,
 				5712691A20452EDA001F0FFB /* Assets.xcassets */,
@@ -229,6 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5712692A204543AB001F0FFB /* YF_NetworkTool.swift in Sources */,
+				5712692C204552C1001F0FFB /* YF_StockChartView.swift in Sources */,
 				5712691620452EDA001F0FFB /* ViewController.swift in Sources */,
 				5712691420452EDA001F0FFB /* AppDelegate.swift in Sources */,
 				5712692820453985001F0FFB /* UIButton+YF_Extension.swift in Sources */,
