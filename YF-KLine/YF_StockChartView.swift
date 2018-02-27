@@ -10,11 +10,13 @@ import UIKit
 
 ///< YF_StockChartView的数据源
 protocol YF_StockChartViewDataSource {
-    func getStockDatas(index: Int)
+    func getStockDatas(index: Int) -> Any?
 }
 
 class YF_StockChartView: UIView {
 
-
+    func reloadData() {
+        
+    }
 
 }
