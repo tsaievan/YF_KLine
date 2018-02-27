@@ -19,7 +19,7 @@ class YF_KLineViewController: UIViewController {
     lazy var stockChartView: YF_StockChartView = {
         let chartView = YF_StockChartView(frame: SCREEN_BOUNDS)
         chartView.backgroundColor = CHARTVIEW_BACKGROUND_COLOR
-//        view.addSubview(chartView)
+        chartView.dataSource = self
         return chartView
     }()
     
@@ -31,11 +31,51 @@ class YF_KLineViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.red
-        view.addSubview(stockChartView)
+        setupUI()
     }
 }
 
+// MARK: 横竖屏的设置
+extension YF_KLineViewController {
+    ///< 自动旋转 设置为false
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
+    ///< 支持的屏幕类型: 支持横屏
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .landscape
+    }
+}
+
+// MARK: 设置UI
+extension YF_KLineViewController {
+    fileprivate func setupUI() {
+        view.backgroundColor = UIColor.red
+        view.addSubview(stockChartView)
+        ///< 设置stockView的约束
+        makeConstraints()
+        addGestures()
+    }
+    
+    fileprivate func makeConstraints() {
+        stockChartView.snp.makeConstraints { (make) in
+            if IS_IPHONE_X {
+                make.edges.equalTo(view).inset(UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 0))
+            }else {
+                make.edges.equalTo(view)
+            }
+        }
+    }
+    
+    fileprivate func addGestures() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(YF_KLineViewController.dismissViewController))
+        tap.numberOfTapsRequired = 2
+        view.addGestureRecognizer(tap)
+    }
+}
+
+// MARK: YF_StockChartViewDataSource数据源方法
 extension YF_KLineViewController: YF_StockChartViewDataSource {
     func getStockDatas(index: Int) -> Any? {
         var type: String?
@@ -72,7 +112,18 @@ extension YF_KLineViewController: YF_StockChartViewDataSource {
     }
 }
 
+// MARK: 事件处理
 extension YF_KLineViewController {
+    
+    ///< 双击返回页面
+    @objc fileprivate func dismissViewController() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            dismiss(animated: true, completion: nil)
+            return
+        }
+        appDelegate.isLandScape = false
+        dismiss(animated: true, completion: nil)
+    }
     
     ///< 加载数据
     fileprivate func reloadData() {

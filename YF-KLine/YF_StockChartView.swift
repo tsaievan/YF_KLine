@@ -9,11 +9,13 @@
 import UIKit
 
 ///< YF_StockChartView的数据源
-protocol YF_StockChartViewDataSource {
+protocol YF_StockChartViewDataSource: NSObjectProtocol {
     func getStockDatas(index: Int) -> Any?
 }
 
 class YF_StockChartView: UIView {
+    
+    weak var dataSource: YF_StockChartViewDataSource?
 
     func reloadData() {
         
