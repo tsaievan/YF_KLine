@@ -30,4 +30,42 @@ class YF_StockChartVariable {
         
     }
     
+    ///< MainView的高度占比, 默认为0.5
+    class var kLineMainViewRatio: CGFloat {
+        return 0.5
+    }
+    
+    ///< 设置MainView的高度占比
+    class func setKLineMainViewRatio(ratio: CGFloat? = 0.5) {
+        
+    }
+    
+    ///< VolumeView的高度占比, 默认为0.2
+    class var kLineVolumeViewRatio: CGFloat {
+        return 0.2
+    }
+    
+    ///< 设置Volume的高度占比
+    class func setKLineVolumeViewRatio(ratio: CGFloat? = 0.2) {
+        
+    }
+    
+    ///< EMA线
+    class var isEMALine: YF_StockChartTargetLineStatus {
+        return .EMA
+    }
+    
+    ///< 设置EMA线
+    class func setIsEMALine(EMALine: YF_StockChartTargetLineStatus? = .EMA) {
+        
+    }
+    
+    ///< BOLL线
+    class var isBOLLLine: YF_StockChartTargetLineStatus {
+        return .BOLL
+    }
+    
+    class func setIsBOLLLine(BOLLLine: YF_StockChartTargetLineStatus? = .BOLL) {
+        
+    }
 }

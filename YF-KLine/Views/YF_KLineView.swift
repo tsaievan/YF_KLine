@@ -9,5 +9,15 @@
 import UIKit
 
 class YF_KLineView: UIView {
-
+    
+    var targetLineStatus: Int?
+    
+    var kLineModels: [Any]?
+    
+    var mainViewType: YF_StockChartViewType?
+    
+    ///< 重绘
+    func reDraw() {
+        
+    }
 }

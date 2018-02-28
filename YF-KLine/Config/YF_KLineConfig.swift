@@ -16,8 +16,8 @@ enum YF_StockChartViewType {
 }
 
 ///< Accessory指标种类
-enum YF_StockChartTargetLineStatus {
-    case MACD ///< MACD线
+enum YF_StockChartTargetLineStatus: Int {
+    case MACD = 100 ///< MACD线
     case KDJ ///< KDJ线
     case AccessoryClose ///< 关闭Accessory线
     case MA ///< MA线
