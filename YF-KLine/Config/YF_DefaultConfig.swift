@@ -20,6 +20,12 @@ let SCREEN_MAX_LENGTH = max(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 let IS_IPHONE_X = (IS_IPHONE && SCREEN_MAX_LENGTH == 812.0)
 
-let CHARTVIEW_BACKGROUND_COLOR = UIColor.color(RGBHex: 0x181c20)
 
-let ASSISTANT_BACKGROUND_COLOR = UIColor.color(RGBHex: 0x1d2227)
+// MARK: - 颜色
+let CHARTVIEW_BACKGROUND_COLOR = UIColor.color(RGBHex: 0x181c20) ///< chartView的北京颜色
+
+let ASSISTANT_BACKGROUND_COLOR = UIColor.color(RGBHex: 0x1d2227) ///< 辅助背景颜色
+
+let MAIN_TEXT_COLOR = UIColor.color(RGBHex: 0xe1e2e6) ///< 主文字颜色
+
+let MA_30_COLOR = UIColor.color(RGBHex: 0x49a5ff) ///< MA30颜色
