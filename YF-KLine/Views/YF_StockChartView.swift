@@ -8,12 +8,6 @@
 
 import UIKit
 
-enum YF_StockChartViewType {
-    case kLine ///< K线
-    case timeLine ///< 分时图
-    case other ///< 其他
-}
-
 ///< YF_StockChartView的数据源
 protocol YF_StockChartViewDataSource: NSObjectProtocol {
     func getStockDatas(index: Int) -> Any?
