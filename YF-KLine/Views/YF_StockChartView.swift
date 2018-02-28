@@ -41,7 +41,14 @@ class YF_StockChartView: UIView {
     ///< 当前索引
     var currentIndex: Int?
     
-    weak var dataSource: YF_StockChartViewDataSource?
+    ///< 数据源
+    weak var dataSource: YF_StockChartViewDataSource? {
+        didSet {
+            if itemModels != nil {
+                segmentView.selectedIndex = 4
+            }
+        }
+    }
     
     /**
      * 在模型数组的set方法中
@@ -100,15 +107,31 @@ extension YF_StockChartView {
     }
 }
 
-
-
 // MARK: - 事件处理
 extension YF_StockChartView {
     func reloadData() {
-        
+        ///< reload方法实际上是调用segmentView的selectedIndex的setter方法
+        segmentView.selectedIndex = segmentView.selectedIndex
     }
 }
 
+
+// MARK: - YF_StockChartSegmentViewDelegate代理方法实现
+extension YF_StockChartView: YF_StockChartSegmentViewDelegate {
+    func clickSegmentButton(index: Int?, chartSegmentView: YF_StockChartSegmentView?) {
+        currentIndex = index
+        guard let i = index else {
+            return
+        }
+        if i == 105 {
+            
+        }else if i >= 100 && i != 105 {
+            
+        }else {
+            
+        }
+    }
+}
 
 class YF_StockChartViewItemModel: NSObject {
     ///< 标题

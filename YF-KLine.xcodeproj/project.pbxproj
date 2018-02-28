@@ -87,23 +87,79 @@
 		5712691220452EDA001F0FFB /* YF-KLine */ = {
 			isa = PBXGroup;
 			children = (
-				5712692F204560C1001F0FFB /* YF_DefaultConfig.swift */,
+				57E702D1204647B90086DAD5 /* Others */,
+				57E702CE204647780086DAD5 /* Config */,
+				57E702CF204647780086DAD5 /* Controllers */,
+				57E702D0204647780086DAD5 /* Models */,
+				57E702CC204647770086DAD5 /* Tools */,
+				57E702CD204647780086DAD5 /* Views */,
+				57E702CB204647110086DAD5 /* Extensions */,
+			);
+			path = "YF-KLine";
+			sourceTree = "<group>";
+		};
+		57E702CB204647110086DAD5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
 				5712693120456162001F0FFB /* UIColor+YF_Extension.swift */,
-				5712691320452EDA001F0FFB /* AppDelegate.swift */,
-				5712691520452EDA001F0FFB /* ViewController.swift */,
 				5712692720453985001F0FFB /* UIButton+YF_Extension.swift */,
-				57126925204530DD001F0FFB /* YF_KLineViewController.swift */,
-				5712692D20455869001F0FFB /* YF_KLineGroupModel.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		57E702CC204647770086DAD5 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				57126929204543AB001F0FFB /* YF_NetworkTool.swift */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		57E702CD204647780086DAD5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
 				5712692B204552C1001F0FFB /* YF_StockChartView.swift */,
 				57E702C9204635550086DAD5 /* YF_StockChartSegmentView.swift */,
 				57E702C72046345F0086DAD5 /* YF_KLineView.swift */,
-				57126929204543AB001F0FFB /* YF_NetworkTool.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		57E702CE204647780086DAD5 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				5712692F204560C1001F0FFB /* YF_DefaultConfig.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		57E702CF204647780086DAD5 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				5712691520452EDA001F0FFB /* ViewController.swift */,
+				57126925204530DD001F0FFB /* YF_KLineViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		57E702D0204647780086DAD5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5712692D20455869001F0FFB /* YF_KLineGroupModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		57E702D1204647B90086DAD5 /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				5712691320452EDA001F0FFB /* AppDelegate.swift */,
 				5712691720452EDA001F0FFB /* Main.storyboard */,
 				5712691A20452EDA001F0FFB /* Assets.xcassets */,
 				5712691C20452EDA001F0FFB /* LaunchScreen.storyboard */,
 				5712691F20452EDA001F0FFB /* Info.plist */,
 			);
-			path = "YF-KLine";
+			path = Others;
 			sourceTree = "<group>";
 		};
 		A38A226A30AA3074F6C8E67F /* Pods */ = {

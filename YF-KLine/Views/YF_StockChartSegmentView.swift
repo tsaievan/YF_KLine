@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol YF_StockChartSegmentViewDelegate: NSObjectProtocol {
+    func clickSegmentButton(index: Int?, chartSegmentView: YF_StockChartSegmentView?)
+}
+
 class YF_StockChartSegmentView: UIView {
     var items: [Any]?
     
