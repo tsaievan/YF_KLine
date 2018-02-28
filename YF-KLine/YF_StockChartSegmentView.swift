@@ -9,5 +9,7 @@
 import UIKit
 
 class YF_StockChartSegmentView: UIView {
-
+    var items: [Any]?
+    
+    var selectedIndex: Int?
 }

@@ -43,22 +43,70 @@ class YF_StockChartView: UIView {
     
     weak var dataSource: YF_StockChartViewDataSource?
     
+    /**
+     * 在模型数组的set方法中
+     * 1. 遍历数组模型
+     * 2. 创建新的数组, 把遍历出来的模型对象的title作为元素加到新数组中
+     */
     var itemModels: [Any]? {
         didSet {
             guard let models = itemModels else {
                 return
             }
-            var array = [YF_StockChartViewItemModel]()
+            var array = [String]()
             for m in models {
-                array.append((m as? YF_StockChartViewItemModel) ?? YF_StockChartViewItemModel())
+                array.append(((m as? YF_StockChartViewItemModel)?.title) ?? "")
+            }
+            
+            ///< 把这个包含标题元素的数组又传给segmentView的items, 在segmentView的items的setter方法中做一些事情
+            segmentView.items = array
+            ///< 取出模型数组的第一个模型的type作为当前view的type(或K线, 或分时, 或其他)
+            guard let type = (itemModels?.first as? YF_StockChartViewItemModel)?.centerViewType else {
+                return
+            }
+            currentCenterViewType = type
+            if dataSource != nil {
+                segmentView.selectedIndex = 4
             }
         }
     }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
+// MARK: - 设置UI
+extension YF_StockChartView {
+    fileprivate func setupUI() {
+        makeConstraints()
+    }
+    
+    fileprivate func makeConstraints() {
+        kLine.snp.makeConstraints { (make) in
+            make.bottom.right.top.equalTo(self)
+            make.left.equalTo(segmentView.snp.right)
+        }
+        
+        segmentView.snp.makeConstraints { (make) in
+            make.bottom.left.top.equalTo(self)
+            make.width.equalTo(50)
+        }
+    }
+}
+
+
+
+// MARK: - 事件处理
+extension YF_StockChartView {
     func reloadData() {
         
     }
-
 }
 
 
