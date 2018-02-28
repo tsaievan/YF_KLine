@@ -20,12 +20,56 @@ class YF_StockChartSegmentView: UIView {
     weak var delegate: YF_StockChartSegmentViewDelegate?
     
     ///< segmentView的模型数组
-    var items: [Any]?
+    var items: [Any]? {
+        didSet {
+            if items?.count == 0 || items == nil {
+                return
+            }
+            let count = items!.count
+            var preBtn: UIButton?
+            for (index, title) in items!.enumerated() {
+                ///< 循环创建button
+                let button = creatButton(title: title as! String, tag: STOCK_CHART_SEGMENT_START_TAG + index)
+                addSubview(button)
+                ///< 循环创建分割线
+                let view = UIView()
+                view.backgroundColor = SEPERATOR_LINE_COLOR
+                addSubview(view)
+                
+                ///< 设置button的约束
+                button.snp.makeConstraints({ (make) in
+                    make.left.equalTo(self)
+                    make.height.equalTo(self).multipliedBy(1.0 / CGFloat(count))
+                    make.width.equalTo(self)
+                    if preBtn != nil {
+                        make.top.equalTo(preBtn!.snp.bottom)
+                    }else {
+                        make.top.equalTo(self)
+                    }
+                })
+                
+                ///< 设置分割线的约束
+                view.snp.makeConstraints({ (make) in
+                    make.left.right.equalTo(button)
+                    make.top.equalTo(button.snp.bottom)
+                    make.height.equalTo(0.5)
+                })
+                preBtn = button
+            }
+        }
+    }
     
     ///< 选择的index, 先赋值一个0吧, 后面可能会改
     var selectedIndex: Int = 0 {
         didSet {
             guard let btn = viewWithTag(STOCK_CHART_SEGMENT_START_TAG + selectedIndex) as? UIButton else {
+                return
+            }
+            ///< 这里需要先加一句判断, 如果selectedIndex为0的时候, 直接返回
+            ///< 免得再调button的点击事件, 然后调selected的setter方法
+            ///< 然后不能return掉, 直接跑到selectedIndex的setter方法中, 即这里
+            ///< 最后引起死循环
+            if selectedIndex == 0 {
                 return
             }
             ///< 在set方法中调用按钮的点击事件
@@ -46,7 +90,6 @@ class YF_StockChartSegmentView: UIView {
         var preButton: UIButton?
         for (i, title) in titleArray.enumerated() {
             ///< 循环创建button
-//            let btn = UIButton()
             let btn = UIButton(title: title, titleColor: MAIN_TEXT_COLOR, selectedColor: MA_30_COLOR, fontSize: 13, target: self, action: #selector(YF_StockChartSegmentView.segmentButtonClicked(sender:)))
             btn.tag = STOCK_CHART_SEGMENT_START_TAG + 100 + i
             indicatorView.addSubview(btn)
@@ -70,7 +113,7 @@ class YF_StockChartSegmentView: UIView {
             
             ///< 循环创建分割线
             let view = UIView()
-            view.backgroundColor = UIColor(red: 52.0 / 255.0, green: 56.0 / 255.0, blue: 67.0 / 255.0, alpha: 1.0)
+            view.backgroundColor = SEPERATOR_LINE_COLOR
             indicatorView.addSubview(view)
             
             view.snp.makeConstraints({ (make) in
@@ -88,11 +131,65 @@ class YF_StockChartSegmentView: UIView {
         firstButton2.isSelected = true
         secondLevelSelectedBtn2 = firstButton2
         addSubview(indicatorView)
+        ///< 一定要在这里设置约束, 这样返回的indicatorView就是一个整体
+        ///< 如果在viewDidLoad里面设置indicatorView的约束, 添加到view的顺序不同
+        ///< 会引起一些bug
+        indicatorView.snp.makeConstraints({ (make) in
+            make.height.bottom.width.equalTo(self)
+            make.right.equalTo(self.snp.left)
+        })
         return indicatorView
     }()
     
     ///< 选择的按钮
-    fileprivate var selectedBtn: UIButton?
+    var selectedBtn: UIButton? {
+        didSet {
+            /**
+             * selectedBtn取出来是赋值成功以后的值
+             * oldValue是赋值之前的值
+             */
+            if selectedBtn == oldValue {
+                if selectedBtn?.tag != STOCK_CHART_SEGMENT_START_TAG {
+                    return
+                }
+            }
+            let tag = selectedBtn?.tag ?? STOCK_CHART_SEGMENT_START_TAG
+            if tag >= 2100 && tag < 2103  {
+                secondLevelSelectedBtn1?.isSelected = false
+                selectedBtn?.isSelected = true
+                secondLevelSelectedBtn1 = selectedBtn
+            }else if tag >= 2103 {
+                secondLevelSelectedBtn2?.isSelected = false
+                selectedBtn?.isSelected = true
+                secondLevelSelectedBtn2 = selectedBtn
+            }else {
+                oldValue?.isSelected = false
+                selectedBtn?.isSelected = true
+            }
+            selectedIndex = tag - STOCK_CHART_SEGMENT_START_TAG
+            
+            ///< 点击第一个按钮时, 布局会发生变化, 另一个指示bar会从侧面出来
+            if selectedIndex == 0 && indicatorView.x < 0 { ///< 这个是让indicatorView出来
+                indicatorView.snp.remakeConstraints({ (make) in
+                    make.height.left.bottom.width.equalTo(self)
+                })
+                ///< 更改了约束, 设置动画
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.layoutIfNeeded()
+                })
+            }else { ///< 这个是让indicatorView缩进去
+                indicatorView.snp.remakeConstraints({ (make) in
+                    make.height.bottom.width.equalTo(self)
+                    make.right.equalTo(self.snp.left)
+                })
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.layoutIfNeeded()
+                })
+            }
+            ///< 更新布局
+            layoutIfNeeded()
+        }
+    }
     
     ///< 二级选择按钮1
     fileprivate var secondLevelSelectedBtn1: UIButton?
@@ -122,14 +219,12 @@ extension YF_StockChartSegmentView {
     fileprivate func setupUI() {
         clipsToBounds = true
         backgroundColor = ASSISTANT_BACKGROUND_COLOR
-        makeConstraints()
     }
     
-    fileprivate func makeConstraints() {
-        indicatorView.snp.makeConstraints({ (make) in
-            make.height.bottom.width.equalTo(self)
-            make.right.equalTo(self.snp.right)
-        })
+    fileprivate func creatButton(title: String, tag: Int) -> UIButton {
+        let button = UIButton(title: title, titleColor: MAIN_TEXT_COLOR, selectedColor: MA_30_COLOR, fontSize: 13, target: self, action: #selector(YF_StockChartSegmentView.segmentButtonClicked(sender:)))
+        button.tag = tag
+        return button
     }
 }
 

@@ -12,13 +12,14 @@ import UIKit
 // MARK: - UIView的分类, 先写了放在这里
 extension UIView {
     ///< View的x值
+    ///< 这里需要注意的是, 是用frame值的origin.x, 之前使用bounds, 返回一直是0, 坑了半天
     var x: CGFloat {
         set {
             let X = x
-            bounds.origin.x = X
+            frame.origin.x = X
         }
         get {
-           return bounds.origin.x
+           return frame.origin.x
         }
     }
     
@@ -26,17 +27,17 @@ extension UIView {
     var y: CGFloat {
         set {
             let Y = y
-            bounds.origin.y = Y
+            frame.origin.y = Y
         }
         get {
-            return bounds.origin.y
+            return frame.origin.y
         }
     }
     
     var width: CGFloat {
         set {
             let W = width
-            bounds.size.width = W
+            frame.size.width = W
         }
         get {
             return bounds.width
@@ -46,7 +47,7 @@ extension UIView {
     var height: CGFloat {
         set {
             let H = height
-            bounds.size.height = H
+            frame.size.height = H
         }
         get {
             return bounds.height
