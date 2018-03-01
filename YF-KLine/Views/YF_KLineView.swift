@@ -82,6 +82,7 @@ class YF_KLineView: UIView {
     ///< scrollView的懒加载属性
     fileprivate lazy var scrollView: UIScrollView = {
         let sv = UIScrollView()
+        sv.backgroundColor = .white
         sv.showsVerticalScrollIndicator = false
         sv.showsHorizontalScrollIndicator = false
         sv.bounces = false
@@ -94,7 +95,7 @@ class YF_KLineView: UIView {
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(YF_KLineView.didLongPressAction(sender:)))
         sv.addGestureRecognizer(longPress)
         
-        sv.addSubview(sv)
+        addSubview(sv)
         sv.snp.makeConstraints({ (make) in
             make.top.left.bottom.equalTo(self)
             make.right.equalTo(self).offset(-48)
@@ -106,15 +107,18 @@ class YF_KLineView: UIView {
     ///< 主K线图
     fileprivate lazy var kLineMainView: YF_KLineMainView = {
         let main = YF_KLineMainView()
+        main.backgroundColor = .yellow
         main.delegate = self
         scrollView.addSubview(main)
         main.snp.makeConstraints({ (make) in
             make.top.equalTo(scrollView).offset(5)
             make.left.equalTo(scrollView)
-            make.width.equalTo(0)
+            // TODO: - 这里先改成SCREEN_WIDTH - 100, 先出来视图
+            make.width.equalTo(SCREEN_WIDTH - 100)
             ///< 获取K线主视图高度约束, 保存在属性中
-            kLineMainViewHeightConstraint =
-             make.height.equalTo(scrollView).multipliedBy(mainViewRatio).constraint
+//            kLineMainViewHeightConstraint =
+//             make.height.equalTo(scrollView).multipliedBy(mainViewRatio).constraint
+            make.height.equalTo(scrollView).multipliedBy(mainViewRatio)
             // TODO: - 加载rightYYView
         })
         return main
@@ -124,13 +128,15 @@ class YF_KLineView: UIView {
     fileprivate lazy var kLineVolumeView: YF_KLineVolumeView = {
         let vv = YF_KLineVolumeView()
         vv.delegate = self
+        vv.backgroundColor = .blue
         scrollView.addSubview(vv)
         vv.snp.makeConstraints({ (make) in
             make.left.equalTo(kLineMainView)
             make.top.equalTo(kLineMainView.snp.bottom).offset(10);
             make.width.equalTo(kLineMainView)
             ///< 获取K线成交量视图高度约束, 保存在属性中
-            kLineVolumeViewHeightConstraint = make.height.equalTo(scrollView).multipliedBy(volumeViewRatio).constraint
+//            kLineVolumeViewHeightConstraint = make.height.equalTo(scrollView).multipliedBy(volumeViewRatio).constraint
+            make.height.equalTo(scrollView).multipliedBy(volumeViewRatio)
         })
         layoutIfNeeded()
         return vv
@@ -140,6 +146,7 @@ class YF_KLineView: UIView {
     fileprivate lazy var kLineAccessoryView: YF_KLineAccessoryView = {
         let av = YF_KLineAccessoryView()
         av.delegate = self
+        av.backgroundColor = .green
         scrollView.addSubview(av)
         av.snp.makeConstraints({ (make) in
             make.left.equalTo(kLineVolumeView)
@@ -154,6 +161,7 @@ class YF_KLineView: UIView {
     ///< 右侧价格图
     fileprivate lazy var priceView: YF_StockChartRightYView = {
         let yv = YF_StockChartRightYView()
+        yv.backgroundColor = .cyan
         ///< 因为y轴是不滚动的, 所以直接加载view上, 而不是加到scrollView上
         ///< 而且要加到scrollView上面
         insertSubview(yv, aboveSubview: scrollView)
@@ -169,6 +177,7 @@ class YF_KLineView: UIView {
     ///< 右侧成交量图
     fileprivate lazy var volumeView: YF_StockChartRightYView = {
         let yv = YF_StockChartRightYView()
+        yv.backgroundColor = .orange
         insertSubview(yv, aboveSubview: scrollView)
         yv.snp.makeConstraints({ (make) in
             make.top.equalTo(kLineVolumeView).offset(10)
@@ -181,6 +190,7 @@ class YF_KLineView: UIView {
     ///< 右侧Accessory图
     fileprivate lazy var accessoryView: YF_StockChartRightYView = {
         let yv = YF_StockChartRightYView()
+        yv.backgroundColor = .gray
         insertSubview(yv, aboveSubview: scrollView)
         yv.snp.makeConstraints({ (make) in
             make.top.equalTo(kLineAccessoryView).offset(10)
@@ -204,6 +214,7 @@ class YF_KLineView: UIView {
     
     fileprivate lazy var volumeMAView: YF_VolumeMAView = {
         let vmv = YF_VolumeMAView()
+        vmv.backgroundColor = .darkGray
         addSubview(vmv)
         vmv.snp.makeConstraints({ (make) in
             make.right.left.equalTo(self)
@@ -215,6 +226,7 @@ class YF_KLineView: UIView {
     
     fileprivate lazy var accessoryMAView: YF_AccessoryMAView = {
         let amv = YF_AccessoryMAView()
+        amv.backgroundColor = .red
         addSubview(amv)
         amv.snp.makeConstraints({ (make) in
             make.right.left.equalTo(self)
@@ -255,7 +267,12 @@ class YF_KLineView: UIView {
 extension YF_KLineView {
     ///< 重绘
     func reDraw() {
-        
+        ///< 将本类的K线类型传给k线主视图的属性
+        kLineMainView.mainViewType = mainViewType
+        if let status = targetLineStatus?.rawValue, status >= 103 {
+            kLineMainView.targetLineStatus = targetLineStatus
+        }
+        kLineMainView.drawMainView()
     }
     
     ///< 缩放执行方法
@@ -268,7 +285,9 @@ extension YF_KLineView {
     }
     
     fileprivate func drawKLineMainView() {
-        
+        ///< 将本类的K线模型对象数组传给K线主视图的属性K线模型对象数组
+        kLineMainView.kLineModels = kLineModels
+        kLineMainView.drawMainView()
     }
 }
 

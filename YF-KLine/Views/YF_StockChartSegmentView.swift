@@ -235,6 +235,6 @@ extension YF_StockChartSegmentView {
         if sender.tag == STOCK_CHART_SEGMENT_START_TAG {
             return
         }
-        delegate?.clickSegmentButton(index: sender.tag, chartSegmentView: self)
+        delegate?.clickSegmentButton(index: sender.tag - STOCK_CHART_SEGMENT_START_TAG, chartSegmentView: self)
     }
 }

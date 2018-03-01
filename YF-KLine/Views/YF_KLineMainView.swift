@@ -15,4 +15,17 @@ protocol YF_KLineMainViewDelegate: NSObjectProtocol {
 class YF_KLineMainView: UIView {
     weak var delegate: YF_KLineMainViewDelegate?
     
+    ///< K线类型
+    var mainViewType: YF_StockChartViewType?
+    
+    ///< Accessory指标种类
+    var targetLineStatus: YF_StockChartTargetLineStatus?
+    
+    ///< k线模型对象的数组
+    var kLineModels: [Any]?
+    
+    ///< 画K线主视图
+    func drawMainView() {
+        
+    }
 }

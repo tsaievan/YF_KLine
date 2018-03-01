@@ -20,13 +20,22 @@ class YF_StockChartView: UIView {
         let k = YF_KLineView()
         k.backgroundColor = .red
         addSubview(k)
+        k.snp.makeConstraints { (make) in
+            make.bottom.right.top.equalTo(self)
+            make.left.equalTo(segmentView.snp.right)
+        }
         return k
     }()
     
     ///< 底部选择View
     lazy var segmentView: YF_StockChartSegmentView = {
         let s = YF_StockChartSegmentView()
+        s.delegate = self
         addSubview(s)
+        s.snp.makeConstraints { (make) in
+            make.bottom.left.top.equalTo(self)
+            make.width.equalTo(50)
+        }
         return s
     }()
     
@@ -75,30 +84,10 @@ class YF_StockChartView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-}
-
-// MARK: - 设置UI
-extension YF_StockChartView {
-    fileprivate func setupUI() {
-        makeConstraints()
-    }
-    
-    fileprivate func makeConstraints() {
-        kLine.snp.makeConstraints { (make) in
-            make.bottom.right.top.equalTo(self)
-            make.left.equalTo(segmentView.snp.right)
-        }
-        
-        segmentView.snp.makeConstraints { (make) in
-            make.bottom.left.top.equalTo(self)
-            make.width.equalTo(50)
-        }
     }
 }
 
