@@ -12,9 +12,9 @@ import SnapKit
 class YF_KLineView: UIView {
     
     ///< 第一个view的高所占比例
-    var mainViewRatio: CGFloat?
+    var mainViewRatio: CGFloat = YF_StockChartVariable.kLineMainViewRatio
     ///< 第二个view(成交量)的高所占比例
-    var volumeViewRatio: CGFloat?
+    var volumeViewRatio: CGFloat = YF_StockChartVariable.kLineVolumeViewRatio
     ///< 数据
     var kLineModels: [Any]?
     ///< Accessory指标种类
@@ -23,7 +23,7 @@ class YF_KLineView: UIView {
     var mainViewType: YF_StockChartViewType?
     
     ///< scrollView的懒加载属性
-    fileprivate lazy var scrollView: UIScrollView? = {
+    fileprivate lazy var scrollView: UIScrollView = {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
         sv.showsHorizontalScrollIndicator = false
@@ -46,6 +46,38 @@ class YF_KLineView: UIView {
         return sv
     }()
     
+    ///< 主K线图
+    fileprivate lazy var kLineMainView: YF_KLineMainView = {
+        let main = YF_KLineMainView()
+        main.delegate = self
+        scrollView.addSubview(main)
+        main.snp.makeConstraints({ (make) in
+            make.top.equalTo(scrollView).offset(5)
+            make.left.equalTo(scrollView)
+            make.width.equalTo(0)
+            ///< 获取K线主视图高度约束, 保存在属性中
+            kLineMainViewHeightConstraint =
+             make.height.equalTo(scrollView).multipliedBy(mainViewRatio).constraint
+            // TODO: - 加载rightYYView
+        })
+        return main
+    }()
+    
+    fileprivate lazy var kLineVolumeView: YF_KLineVolumeView = {
+        let vv = YF_KLineVolumeView()
+        vv.delegate = self
+        scrollView.addSubview(vv)
+        vv.snp.makeConstraints({ (make) in
+            make.left.equalTo(kLineMainView)
+            make.top.equalTo(kLineMainView.snp.bottom).offset(10);
+            make.width.equalTo(kLineMainView)
+            ///< 获取K线成交量视图高度约束, 保存在属性中
+            kLineVolumeViewHeightConstraint = make.height.equalTo(scrollView).multipliedBy(volumeViewRatio).constraint
+        })
+        layoutIfNeeded()
+        return vv
+    }()
+    
     ///< kLine-MAView
     fileprivate lazy var kLineMAView: YF_KLineMAView? = {
         let mv = YF_KLineMAView()
@@ -58,6 +90,9 @@ class YF_KLineView: UIView {
         return mv
     }()
     
+    ///< 长按后显示的那条竖直的线
+    fileprivate var verticalView: UIView?
+    
     ///< 主K线图高度约束对象
     fileprivate var kLineMainViewHeightConstraint: Constraint?
     ///< k线成交量视图高度约束对象
@@ -69,8 +104,6 @@ class YF_KLineView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        mainViewRatio = YF_StockChartVariable.kLineMainViewRatio
-        volumeViewRatio = YF_StockChartVariable.kLineVolumeViewRatio
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -99,5 +132,15 @@ extension YF_KLineView {
 
 // MARK: - UIScrollViewDelegate代理
 extension YF_KLineView: UIScrollViewDelegate {
+    
+}
+
+// MARK: - YF_KLineMainViewDelegate代理
+extension YF_KLineView: YF_KLineMainViewDelegate {
+    
+}
+
+// MARK: - YF_KLineVolumeViewDelegate代理
+extension YF_KLineView: YF_KLineVolumeViewDelegate {
     
 }
