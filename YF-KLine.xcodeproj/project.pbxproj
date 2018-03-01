@@ -88,6 +88,86 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		57083C0E204809B70078AE04 /* KLine */ = {
+			isa = PBXGroup;
+			children = (
+				57083C1620480A420078AE04 /* Accessory_MAView */,
+				57083C1220480A420078AE04 /* AccessoryView */,
+				57083C1420480A420078AE04 /* KLine_MAView */,
+				57083C1320480A420078AE04 /* MainKLineView */,
+				57083C1520480A420078AE04 /* PriceView */,
+				57083C1120480A410078AE04 /* SegmentView */,
+				57083C0F20480A410078AE04 /* Volume_MAView */,
+				57083C1020480A410078AE04 /* VolumeView */,
+				57E702C72046345F0086DAD5 /* YF_KLineView.swift */,
+			);
+			path = KLine;
+			sourceTree = "<group>";
+		};
+		57083C0F20480A410078AE04 /* Volume_MAView */ = {
+			isa = PBXGroup;
+			children = (
+				57083C082047E5120078AE04 /* YF_VolumeMAView.swift */,
+			);
+			path = Volume_MAView;
+			sourceTree = "<group>";
+		};
+		57083C1020480A410078AE04 /* VolumeView */ = {
+			isa = PBXGroup;
+			children = (
+				57083C022047D07F0078AE04 /* YF_KLineVolumeView.swift */,
+			);
+			path = VolumeView;
+			sourceTree = "<group>";
+		};
+		57083C1120480A410078AE04 /* SegmentView */ = {
+			isa = PBXGroup;
+			children = (
+				57E702C9204635550086DAD5 /* YF_StockChartSegmentView.swift */,
+			);
+			path = SegmentView;
+			sourceTree = "<group>";
+		};
+		57083C1220480A420078AE04 /* AccessoryView */ = {
+			isa = PBXGroup;
+			children = (
+				57083C042047D4470078AE04 /* YF_KLineAccessoryView.swift */,
+			);
+			path = AccessoryView;
+			sourceTree = "<group>";
+		};
+		57083C1320480A420078AE04 /* MainKLineView */ = {
+			isa = PBXGroup;
+			children = (
+				57083C002047CAAE0078AE04 /* YF_KLineMainView.swift */,
+			);
+			path = MainKLineView;
+			sourceTree = "<group>";
+		};
+		57083C1420480A420078AE04 /* KLine_MAView */ = {
+			isa = PBXGroup;
+			children = (
+				57083BFE2047BA040078AE04 /* YF_KLineMAView.swift */,
+			);
+			path = KLine_MAView;
+			sourceTree = "<group>";
+		};
+		57083C1520480A420078AE04 /* PriceView */ = {
+			isa = PBXGroup;
+			children = (
+				57083C062047D8620078AE04 /* YF_StockChartRightYView.swift */,
+			);
+			path = PriceView;
+			sourceTree = "<group>";
+		};
+		57083C1620480A420078AE04 /* Accessory_MAView */ = {
+			isa = PBXGroup;
+			children = (
+				57083C0A2047E67E0078AE04 /* YF_AccessoryMAView.swift */,
+			);
+			path = Accessory_MAView;
+			sourceTree = "<group>";
+		};
 		5712690720452EDA001F0FFB = {
 			isa = PBXGroup;
 			children = (
@@ -141,16 +221,8 @@
 		57E702CD204647780086DAD5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				57083C0E204809B70078AE04 /* KLine */,
 				5712692B204552C1001F0FFB /* YF_StockChartView.swift */,
-				57E702C9204635550086DAD5 /* YF_StockChartSegmentView.swift */,
-				57E702C72046345F0086DAD5 /* YF_KLineView.swift */,
-				57083C0A2047E67E0078AE04 /* YF_AccessoryMAView.swift */,
-				57083C082047E5120078AE04 /* YF_VolumeMAView.swift */,
-				57083C062047D8620078AE04 /* YF_StockChartRightYView.swift */,
-				57083C042047D4470078AE04 /* YF_KLineAccessoryView.swift */,
-				57083C022047D07F0078AE04 /* YF_KLineVolumeView.swift */,
-				57083C002047CAAE0078AE04 /* YF_KLineMainView.swift */,
-				57083BFE2047BA040078AE04 /* YF_KLineMAView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
