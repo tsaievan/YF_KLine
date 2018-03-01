@@ -119,12 +119,12 @@ extension YF_StockChartView: YF_StockChartSegmentViewDelegate {
         }
         if i == 105 {
             YF_StockChartVariable.setIsBOLLLine(BOLLLine: .BOLL)
-            kLine.targetLineStatus = i
+            kLine.targetLineStatus = YF_StockChartTargetLineStatus(rawValue: i)
             kLine.reDraw()
             bringSubview(toFront: segmentView)
         }else if i >= 100 && i != 105 {
             YF_StockChartVariable.setIsEMALine(EMALine: YF_StockChartTargetLineStatus(rawValue: i))
-            kLine.targetLineStatus = i
+            kLine.targetLineStatus = YF_StockChartTargetLineStatus(rawValue: i)
             kLine.reDraw()
             bringSubview(toFront: segmentView)
         }else {
