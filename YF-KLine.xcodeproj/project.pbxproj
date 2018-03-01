@@ -10,6 +10,7 @@
 		57083BFF2047BA040078AE04 /* YF_KLineMAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57083BFE2047BA040078AE04 /* YF_KLineMAView.swift */; };
 		57083C012047CAAE0078AE04 /* YF_KLineMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57083C002047CAAE0078AE04 /* YF_KLineMainView.swift */; };
 		57083C032047D07F0078AE04 /* YF_KLineVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57083C022047D07F0078AE04 /* YF_KLineVolumeView.swift */; };
+		57083C052047D4470078AE04 /* YF_KLineAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57083C042047D4470078AE04 /* YF_KLineAccessoryView.swift */; };
 		5712691420452EDA001F0FFB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5712691320452EDA001F0FFB /* AppDelegate.swift */; };
 		5712691620452EDA001F0FFB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5712691520452EDA001F0FFB /* ViewController.swift */; };
 		5712691920452EDA001F0FFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5712691720452EDA001F0FFB /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 		57083BFE2047BA040078AE04 /* YF_KLineMAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineMAView.swift; sourceTree = "<group>"; };
 		57083C002047CAAE0078AE04 /* YF_KLineMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineMainView.swift; sourceTree = "<group>"; };
 		57083C022047D07F0078AE04 /* YF_KLineVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineVolumeView.swift; sourceTree = "<group>"; };
+		57083C042047D4470078AE04 /* YF_KLineAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineAccessoryView.swift; sourceTree = "<group>"; };
 		5712691020452EDA001F0FFB /* YF-KLine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "YF-KLine.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5712691320452EDA001F0FFB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5712691520452EDA001F0FFB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 				5712692B204552C1001F0FFB /* YF_StockChartView.swift */,
 				57E702C9204635550086DAD5 /* YF_StockChartSegmentView.swift */,
 				57E702C72046345F0086DAD5 /* YF_KLineView.swift */,
+				57083C042047D4470078AE04 /* YF_KLineAccessoryView.swift */,
 				57083C022047D07F0078AE04 /* YF_KLineVolumeView.swift */,
 				57083C002047CAAE0078AE04 /* YF_KLineMainView.swift */,
 				57083BFE2047BA040078AE04 /* YF_KLineMAView.swift */,
@@ -323,6 +326,7 @@
 				57E702D32046483C0086DAD5 /* YF_StockChartVariable.swift in Sources */,
 				5712692A204543AB001F0FFB /* YF_NetworkTool.swift in Sources */,
 				57083C012047CAAE0078AE04 /* YF_KLineMainView.swift in Sources */,
+				57083C052047D4470078AE04 /* YF_KLineAccessoryView.swift in Sources */,
 				57E702D5204650C90086DAD5 /* YF_KLineConfig.swift in Sources */,
 				5712692C204552C1001F0FFB /* YF_StockChartView.swift in Sources */,
 				57126930204560C1001F0FFB /* YF_DefaultConfig.swift in Sources */,

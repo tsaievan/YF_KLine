@@ -78,6 +78,20 @@ class YF_KLineView: UIView {
         return vv
     }()
     
+    fileprivate lazy var kLineAccessoryView: YF_KLineAccessoryView = {
+        let av = YF_KLineAccessoryView()
+        av.delegate = self
+        scrollView.addSubview(av)
+        av.snp.makeConstraints({ (make) in
+            make.left.equalTo(kLineVolumeView)
+            make.top.equalTo(kLineVolumeView.snp.bottom).offset(10)
+            make.width.equalTo(kLineVolumeView)
+            make.height.equalTo(scrollView).multipliedBy(0.2)
+        })
+        layoutIfNeeded()
+        return av
+    }()
+    
     ///< kLine-MAView
     fileprivate lazy var kLineMAView: YF_KLineMAView? = {
         let mv = YF_KLineMAView()
@@ -130,17 +144,22 @@ extension YF_KLineView {
 }
 
 
-// MARK: - UIScrollViewDelegate代理
+// MARK: - UIScrollViewDelegate代理方法
 extension YF_KLineView: UIScrollViewDelegate {
     
 }
 
-// MARK: - YF_KLineMainViewDelegate代理
+// MARK: - YF_KLineMainViewDelegate代理方法
 extension YF_KLineView: YF_KLineMainViewDelegate {
     
 }
 
-// MARK: - YF_KLineVolumeViewDelegate代理
+// MARK: - YF_KLineVolumeViewDelegate代理方法
 extension YF_KLineView: YF_KLineVolumeViewDelegate {
+    
+}
+
+// MARK: - YF_KLineAccessoryViewDelegate代理方法
+extension YF_KLineView: YF_KLineAccessoryViewDelegate {
     
 }
