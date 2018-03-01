@@ -16,9 +16,66 @@ class YF_KLineView: UIView {
     ///< 第二个view(成交量)的高所占比例
     var volumeViewRatio: CGFloat = YF_StockChartVariable.kLineVolumeViewRatio
     ///< 数据
-    var kLineModels: [Any]?
+    ///< 在didSet这里设置数据
+    var kLineModels: [Any]? {
+        didSet {
+            guard let models = kLineModels else {
+                return
+            }
+            drawKLineMainView()
+            ///< 设置contentOffset(偏移值)
+            ///< 算法: 模型数组的个数 * 宽度值 + (模型数组的个数 + 1) * 间隔值 + 10
+            let kLineViewWidth = CGFloat(models.count) * YF_StockChartVariable.kLineWidth + CGFloat(models.count + 1) * YF_StockChartVariable.kLineGap + 10.0
+            
+            ///< 偏移量减去scrollView的宽度
+            let offset = kLineViewWidth - scrollView.width
+            if offset > 0 { ///< 如果offset大于0, 则表明scrollView的contentSize在scrollView中显示不下, 自动滚到下一屏
+                scrollView.contentOffset = CGPoint(x: offset, y: 0)
+            }else { ///< 否则, 内容可以在scrollView显示, 不需要偏移
+                scrollView.contentOffset = CGPoint(x: 0, y: 0)
+            }
+            guard let model = kLineModels?.last as? YF_KLineModel else {
+                return
+            }
+            ///< 把模型再分发给下面的子view
+            kLineMAView.maProfile(withModel: model)
+            volumeMAView.maProfile(withModel: model)
+            accessoryMAView.maProfile(withModel: model)
+            ///< 将kLineView的targetLineStatus再传给accessoryMAView
+            accessoryMAView.targetLineStatus = targetLineStatus
+        }
+    }
     ///< Accessory指标种类
-    var targetLineStatus: YF_StockChartTargetLineStatus?
+    var targetLineStatus: YF_StockChartTargetLineStatus? {
+        didSet {
+            guard let status = targetLineStatus else {
+                return
+            }
+            if status.rawValue < 103 {
+                if status == .AccessoryClose {
+                    ///< 改变K线图主view的高度比例
+                    YF_StockChartVariable.setKLineMainViewRatio(ratio: 0.65)
+                    ///< 改变K线图交易量View的高度比例
+                    YF_StockChartVariable.setKLineVolumeViewRatio(ratio: 0.28)
+                }else {
+                    ///< 改变K线图主view的高度比例
+                    YF_StockChartVariable.setKLineMainViewRatio(ratio: 0.5)
+                    ///< 改变K线图交易量View的高度比例
+                    YF_StockChartVariable.setKLineVolumeViewRatio(ratio: 0.2)
+                }
+                ///< 因为高度比例变了, 所以取消之前高度的约束值, 重新更新约束
+                kLineMainViewHeightConstraint?.deactivate()
+                kLineMainView.snp.updateConstraints({ (update) in update.height.equalTo(scrollView).multipliedBy(YF_StockChartVariable.kLineMainViewRatio)
+                })
+                
+                kLineVolumeViewHeightConstraint?.deactivate()
+                kLineVolumeView.snp.updateConstraints({ (update) in update.height.equalTo(scrollView).multipliedBy(YF_StockChartVariable.kLineVolumeViewRatio)
+                })
+                ///< 更新约束之后重绘
+                reDraw()
+            }
+        }
+    }
     ///< K线类型
     var mainViewType: YF_StockChartViewType?
     
@@ -134,7 +191,7 @@ class YF_KLineView: UIView {
     }()
     
     ///< kLine-MAView
-    fileprivate lazy var kLineMAView: YF_KLineMAView? = {
+    fileprivate lazy var kLineMAView: YF_KLineMAView = {
         let mv = YF_KLineMAView()
         addSubview(mv)
         mv.snp.makeConstraints({ (make) in
@@ -144,6 +201,32 @@ class YF_KLineView: UIView {
         })
         return mv
     }()
+    
+    fileprivate lazy var volumeMAView: YF_VolumeMAView = {
+        let vmv = YF_VolumeMAView()
+        addSubview(vmv)
+        vmv.snp.makeConstraints({ (make) in
+            make.right.left.equalTo(self)
+            make.top.equalTo(kLineVolumeView)
+            make.height.equalTo(10)
+        })
+        return vmv
+    }()
+    
+    fileprivate lazy var accessoryMAView: YF_AccessoryMAView = {
+        let amv = YF_AccessoryMAView()
+        addSubview(amv)
+        amv.snp.makeConstraints({ (make) in
+            make.right.left.equalTo(self)
+            make.top.equalTo(kLineAccessoryView)
+            make.height.equalTo(10)
+        })
+        return amv
+    }()
+    
+    
+    ///< 旧的scrollView准确位移
+    fileprivate var oldExactOffset: CGFloat?
     
     ///< 长按后显示的那条竖直的线
     fileprivate var verticalView: UIView?
@@ -175,11 +258,16 @@ extension YF_KLineView {
         
     }
     
+    ///< 缩放执行方法
     @objc fileprivate func didPinchAction(sender: UIPinchGestureRecognizer) {
-        
+        print("缩放")
     }
     
     @objc fileprivate func didLongPressAction(sender: UILongPressGestureRecognizer) {
+        print("长按")
+    }
+    
+    fileprivate func drawKLineMainView() {
         
     }
 }

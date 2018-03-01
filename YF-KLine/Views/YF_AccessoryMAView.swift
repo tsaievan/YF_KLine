@@ -1,5 +1,5 @@
 //
-//  YF_KLineMAView.swift
+//  YF_AccessoryMAView.swift
 //  YF-KLine
 //
 //  Created by tsaievan on 1/3/18.
@@ -8,10 +8,13 @@
 
 import UIKit
 
-class YF_KLineMAView: UIView {
+class YF_AccessoryMAView: UIView {
+    
+    ///< Accessory指标种类
+    var targetLineStatus: YF_StockChartTargetLineStatus?
+    
     func maProfile(withModel model: YF_KLineModel) {
         
     }
+
 }
-
-

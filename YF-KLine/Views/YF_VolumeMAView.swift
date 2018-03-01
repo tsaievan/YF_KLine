@@ -1,5 +1,5 @@
 //
-//  YF_KLineMAView.swift
+//  YF_VolumeMAView.swift
 //  YF-KLine
 //
 //  Created by tsaievan on 1/3/18.
@@ -8,10 +8,9 @@
 
 import UIKit
 
-class YF_KLineMAView: UIView {
+class YF_VolumeMAView: UIView {
     func maProfile(withModel model: YF_KLineModel) {
         
     }
+    
 }
-
-
