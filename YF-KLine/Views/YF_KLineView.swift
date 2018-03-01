@@ -63,6 +63,7 @@ class YF_KLineView: UIView {
         return main
     }()
     
+    ///< 成交量图
     fileprivate lazy var kLineVolumeView: YF_KLineVolumeView = {
         let vv = YF_KLineVolumeView()
         vv.delegate = self
@@ -78,6 +79,7 @@ class YF_KLineView: UIView {
         return vv
     }()
     
+    ///< 副图
     fileprivate lazy var kLineAccessoryView: YF_KLineAccessoryView = {
         let av = YF_KLineAccessoryView()
         av.delegate = self
@@ -90,6 +92,45 @@ class YF_KLineView: UIView {
         })
         layoutIfNeeded()
         return av
+    }()
+    
+    ///< 右侧价格图
+    fileprivate lazy var priceView: YF_StockChartRightYView = {
+        let yv = YF_StockChartRightYView()
+        ///< 因为y轴是不滚动的, 所以直接加载view上, 而不是加到scrollView上
+        ///< 而且要加到scrollView上面
+        insertSubview(yv, aboveSubview: scrollView)
+        yv.snp.makeConstraints({ (make) in
+            make.top.equalTo(self).offset(15)
+            make.right.equalTo(self)
+            make.width.equalTo(STOCK_CHART_K_LINE_PRICE_VIEW_WIDTH)
+            make.bottom.equalTo(kLineMainView).offset(-15)
+        })
+        return yv
+    }()
+    
+    ///< 右侧成交量图
+    fileprivate lazy var volumeView: YF_StockChartRightYView = {
+        let yv = YF_StockChartRightYView()
+        insertSubview(yv, aboveSubview: scrollView)
+        yv.snp.makeConstraints({ (make) in
+            make.top.equalTo(kLineVolumeView).offset(10)
+            make.right.width.equalTo(priceView)
+            make.bottom.equalTo(kLineVolumeView)
+        })
+        return yv
+    }()
+    
+    ///< 右侧Accessory图
+    fileprivate lazy var accessoryView: YF_StockChartRightYView = {
+        let yv = YF_StockChartRightYView()
+        insertSubview(yv, aboveSubview: scrollView)
+        yv.snp.makeConstraints({ (make) in
+            make.top.equalTo(kLineAccessoryView).offset(10)
+            make.right.width.equalTo(volumeView)
+            make.height.equalTo(kLineAccessoryView)
+        })
+        return yv
     }()
     
     ///< kLine-MAView

@@ -25,3 +25,6 @@ enum YF_StockChartTargetLineStatus: Int {
     case BOLL ///< BOLL线
     case CloseMA ///< MA关闭线
 }
+
+///< K线图YView的宽度
+let STOCK_CHART_K_LINE_PRICE_VIEW_WIDTH: CGFloat = 47
