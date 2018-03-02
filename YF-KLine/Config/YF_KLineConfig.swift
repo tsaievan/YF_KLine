@@ -26,6 +26,13 @@ enum YF_StockChartTargetLineStatus: Int {
     case CloseMA ///< MA关闭线
 }
 
+///< 币种
+enum YF_CoinType {
+    case BTC ///< 比特币
+    case ETF ///< 以太坊
+    case None ///< 未定义货币
+}
+
 ///< K线图YView的宽度
 let STOCK_CHART_K_LINE_PRICE_VIEW_WIDTH: CGFloat = 47
 
