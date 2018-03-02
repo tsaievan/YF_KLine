@@ -28,3 +28,9 @@ enum YF_StockChartTargetLineStatus: Int {
 
 ///< K线图YView的宽度
 let STOCK_CHART_K_LINE_PRICE_VIEW_WIDTH: CGFloat = 47
+
+///< K线图的缩放界线
+let STOCK_CHART_SCALE_BOUND: CGFloat = 0.03
+
+///< K线缩放因子
+let STOCK_CHART_SCALE_SCALE: CGFloat = 0.03

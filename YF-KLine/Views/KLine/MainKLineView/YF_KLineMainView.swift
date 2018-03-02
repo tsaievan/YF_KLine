@@ -24,8 +24,19 @@ class YF_KLineMainView: UIView {
     ///< k线模型对象的数组
     var kLineModels: [Any]?
     
+    ///< 需要绘制Index开始值
+    var needDrawStartIndex: Int?
+    
+    ///< 捏合点
+    var pinchStartIndex: Int?
+    
     ///< 画K线主视图
     func drawMainView() {
+        
+    }
+    
+    ///< 更新宽度
+    func updateMainViewWidth() {
         
     }
 }

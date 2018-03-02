@@ -119,7 +119,7 @@ extension YF_StockChartView: YF_StockChartSegmentViewDelegate {
             bringSubview(toFront: segmentView)
         }else {
             ///< 通过index获取数据源, 根据index获取items数组中的item元素
-            guard let data = dataSource?.getStockDatas(index: i),
+            guard let data = dataSource?.getStockDatas(index: i) as? YF_KLineGroupModel,
                 let items = itemModels,
                 let item = items[i] as? YF_StockChartViewItemModel else {
                     return
@@ -138,7 +138,7 @@ extension YF_StockChartView: YF_StockChartSegmentViewDelegate {
             ///< 当index对应的模型的type不为其他时
             if type != .other {
                 ///< 把代理方法获取到的data数据传给K线的view
-                kLine.kLineModels = data as? [Any]
+                kLine.kLineModels = data.models 
                 ///< 设置K线View的类型
                 kLine.mainViewType = type
                 ///< 重绘K线

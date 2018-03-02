@@ -14,4 +14,8 @@ protocol YF_KLineAccessoryViewDelegate: NSObjectProtocol {
 
 class YF_KLineAccessoryView: UIView {
     weak var delegate: YF_KLineAccessoryViewDelegate?
+    
+    func draw() {
+        
+    }
 }

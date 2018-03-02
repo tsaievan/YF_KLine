@@ -148,7 +148,7 @@ extension YF_KLineViewController {
                     return
             }
             self.gModel = groupModel
-            self.modelsDict[type] = groupModel ///< 将模型放到字典里面, 可能是做缓存用?
+            self.modelsDict[type] = groupModel ///< 将模型放到字典里面, 用做缓存, 不用每次加载网络请求
             self.stockChartView.reloadData() ///< stockChartView刷新数据
         }, failue: nil)
     }

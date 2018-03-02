@@ -277,7 +277,36 @@ extension YF_KLineView {
     
     ///< 缩放执行方法
     @objc fileprivate func didPinchAction(sender: UIPinchGestureRecognizer) {
-        print("缩放")
+        var oldScale: CGFloat = 1.0
+        let difValue = sender.scale - oldScale
+        ///< sender.scale是一个绝对值, difValue算出的是增长值
+        if !abs(difValue).isLessThanOrEqualTo(STOCK_CHART_SCALE_BOUND) { ///< 不小于等于, 即大于
+            ///< 获取原来的K线宽度(这个是不变了, 始终都是2)
+            let oldKLineWidth = YF_StockChartVariable.kLineWidth
+            let oldNeedDrawStartIndex = kLineMainView.needDrawStartIndex
+            ///< 线宽也需要做相应的改变
+            ///< 在默认为2的线宽宽度上, 放大倍数
+            let factor = difValue > 0 ? 1 + STOCK_CHART_SCALE_SCALE : 1 - STOCK_CHART_SCALE_SCALE
+            YF_StockChartVariable.setKLineWidth(width: oldKLineWidth * factor)
+            ///< 将当前的scale传递给oldScale变量
+            oldScale = sender.scale
+            ///< 更新mainView的宽度
+            kLineMainView.updateMainViewWidth()
+            ///< 如果是两个指头缩放
+            if sender.numberOfTouches == 2 {
+                ///< 获取两个指头位于屏幕的点
+                let p1 = sender.location(ofTouch: 0, in: scrollView)
+                let p2 = sender.location(ofTouch: 1, in: scrollView)
+                ///< 计算这两个点之间的中心点
+                let centerPoint = CGPoint(x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2)
+                //FIXME: - 这个地方的逻辑先放在这里
+                let oldLeftArrCount = Int(abs((centerPoint.x - scrollView.contentOffset.x) - YF_StockChartVariable.kLineGap) / (YF_StockChartVariable.kLineGap + oldKLineWidth))
+                let newLeftArrCount = Int(abs((centerPoint.x - scrollView.contentOffset.x) - YF_StockChartVariable.kLineGap) / (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth))
+                //FIXME: 这里先强制解包
+                kLineMainView.pinchStartIndex = oldNeedDrawStartIndex! + oldLeftArrCount - newLeftArrCount
+            }
+            kLineMainView.drawMainView()
+        }
     }
     
     @objc fileprivate func didLongPressAction(sender: UILongPressGestureRecognizer) {
@@ -288,6 +317,21 @@ extension YF_KLineView {
         ///< 将本类的K线模型对象数组传给K线主视图的属性K线模型对象数组
         kLineMainView.kLineModels = kLineModels
         kLineMainView.drawMainView()
+    }
+    
+    fileprivate func drawKLineVolumeView() {
+        kLineVolumeView.layoutIfNeeded()
+        kLineVolumeView.draw()
+    }
+    
+    fileprivate func drawKLineAccessoryView() {
+        accessoryMAView.targetLineStatus = targetLineStatus
+        guard let model = kLineModels?.last as? YF_KLineModel  else {
+            return
+        }
+        accessoryMAView.maProfile(withModel: model)
+        kLineAccessoryView.layoutIfNeeded()
+        kLineAccessoryView.draw()
     }
 }
 

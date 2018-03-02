@@ -31,3 +31,5 @@ let MAIN_TEXT_COLOR = UIColor.color(RGBHex: 0xe1e2e6) ///< 主文字颜色
 let MA_30_COLOR = UIColor.color(RGBHex: 0x49a5ff) ///< MA30颜色
 
 let SEPERATOR_LINE_COLOR = UIColor(red: 52.0 / 255.0, green: 56.0 / 255.0, blue: 67.0 / 255.0, alpha: 1.0)
+
+

@@ -14,4 +14,8 @@ protocol YF_KLineVolumeViewDelegate: NSObjectProtocol {
 
 class YF_KLineVolumeView: UIView {
     weak var delegate: YF_KLineVolumeViewDelegate?
+    
+    func draw() {
+        
+    }
 }
