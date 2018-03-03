@@ -53,7 +53,27 @@ class YF_KLineModel: NSObject {
     ///< MA（N）=（C1+C2+……CN）/N
     
     ///< MA（7）=（C1+C2+……C7）/7
-    var MA7: Double?
+    lazy var MA7: Double? = {
+        var ma7: Double?
+        if YF_StockChartVariable.isEMALine == .MA {
+            guard let array = parentGroupModel?.models as NSArray? else {
+                return ma7
+            }
+            let index = array.index(of: self)
+            if index >= 6 {
+                guard let sum = SumOfLastClose,
+                    let oriArr = array as? [YF_KLineModel] else {
+                    return ma7
+                }
+                ma7 = (sum - (oriArr[index - 7].SumOfLastClose ?? 0)) / 7
+                return ma7
+            }else {
+                ma7 = EMA7
+                return ma7
+            }
+        }
+        return ma7
+    }()
     ///< MA（30）=（C1+C2+……C30）/30
     var MA30: Double?
     
@@ -61,11 +81,66 @@ class YF_KLineModel: NSObject {
     
     var MA26: Double?
     
-    var Volume_MA7: Double?
+    lazy var Volume_MA7: Double? = {
+        var vma7: Double?
+        if YF_StockChartVariable.isEMALine == .MA {
+            guard let array = parentGroupModel?.models as NSArray? else {
+                return vma7
+            }
+            let index = array.index(of: self)
+            if index >= 6 {
+                guard let sum = SumOfLastVolume,
+                    let oriArr = array as? [YF_KLineModel] else {
+                        return vma7
+                }
+                vma7 = (sum - (oriArr[index - 7].SumOfLastVolume ?? 0)) / 7
+                return vma7
+            }else {
+                guard let sum = SumOfLastVolume else {
+                    return vma7
+                }
+                vma7 = sum / 7
+                return vma7
+            }
+        }
+        return vma7
+    }()
     
-    var Volume_MA30: Double?
+    lazy var Volume_MA30: Double? = {
+        var vma30: Double?
+        if YF_StockChartVariable.isEMALine == .MA {
+            guard let array = parentGroupModel?.models as NSArray? else {
+                return vma30
+            }
+            let index = array.index(of: self)
+            if index >= 29 {
+                guard let sum = SumOfLastVolume,
+                    let oriArr = array as? [YF_KLineModel] else {
+                        return vma30
+                }
+                if index > 29 {
+                    vma30 = (sum - (oriArr[index - 30].SumOfLastVolume ?? 0)) / 30
+                }else {
+                    vma30 = sum / 30
+                }
+                return vma30
+            }else {
+                vma30 = Volume_EMA30
+                return vma30
+            }
+        }
+        return vma30
+    }()
     
-    var Volume_EMA7: Double?
+    lazy var Volume_EMA7: Double? = {
+        var vema7: Double?
+        guard let v = Volume,
+            let pv = previousKLineModel?.Volume_EMA7 else {
+                return vema7
+        }
+        vema7 = (v + 3 * pv) / 4
+        return vema7
+    }()
     
     var Volume_EMA30: Double?
     
@@ -92,23 +167,68 @@ class YF_KLineModel: NSObject {
     
     var EMA26: Double?
     
-    var DIF: Double?
-    
-    var DEA: Double?
-    
-    var MACD: Double?
-    
-    ///< 9Clock内最低价
-    var NineClocksMinPrice: Double?
-    
-    ///< 9Clock内最高价
-    lazy var NineClocksMaxPrice: Double? = {
-        var max: Double?
-        
-        return max
+    lazy var DIF: Double? = {
+        var dif: Double?
+        guard let ema12 = EMA12,
+            let ema26 = EMA26 else {
+                return dif
+        }
+        dif = ema12 - ema26
+        return dif
     }()
     
+    lazy var DEA: Double? = {
+        var dea: Double?
+        guard let d = previousKLineModel?.DEA,
+            let dif = DIF else {
+                return dea
+        }
+        dea = d * 0.8 + 0.2 * dif
+        return dea
+    }()
+    
+    lazy var MACD: Double? = {
+        var macd: Double?
+        guard let dif = DIF,
+        let dea = DEA else {
+            return macd
+        }
+        macd = 2 * (dif - dea)
+        return macd
+    }()
+    
+    ///< 9Clock内最低价
+    var NineClocksMinPrice: Double? = 0
+    
+    func getNineClocksMinPrice() {
+        guard let models = parentGroupModel?.models as? [YF_KLineModel] else {
+            return
+        }
+        if models.count >= 8 {
+            rangeLastNinePrice(byArray: models, condition: .orderedDescending)
+        }else {
+            return
+        }
+    }
+    
+    ///< 9Clock内最高价
+    var NineClocksMaxPrice: Double? = 0
+    
+    func getNineClocksMaxPrice() {
+        guard let models = parentGroupModel?.models as? [YF_KLineModel] else {
+            return
+        }
+        if models.count >= 8 {
+            rangeLastNinePrice(byArray: models, condition: .orderedAscending)
+        }else {
+            return
+        }
+    }
+    
     lazy var RSV_9: Double? = {
+        //FIXME: -不知道这么写对不对, 先把这俩函数调一遍吧
+        getNineClocksMinPrice()
+        getNineClocksMaxPrice()
         var rsv_9 = 100.0
         guard let min = NineClocksMinPrice,
             let max = NineClocksMaxPrice,
@@ -161,10 +281,6 @@ class YF_KLineModel: NSObject {
         return kdj_j
     }()
     
-    
-    
-    
-    
     ///< 初始化一些基本数据
     func initWith(dictionary dict: [String : Any]) {
         if let d = dict["id"] {
@@ -190,6 +306,9 @@ class YF_KLineModel: NSObject {
     }
     
     func initFirstModel() {
+        //FIXME: -不知道这么写对不对, 先把这俩函数调一遍吧
+        getNineClocksMaxPrice()
+        getNineClocksMinPrice()
         KDJ_K = 55.27
         KDJ_D = 55.27
         KDJ_J = 55.27
@@ -210,6 +329,7 @@ class YF_KLineModel: NSObject {
 
 extension YF_KLineModel {
     fileprivate func rangeLastNinePrice(byArray array: [YF_KLineModel], condition: ComparisonResult) {
+        let count = array.count
         switch condition {
         case .orderedAscending:
             for j in (1...7).reversed() {
@@ -227,11 +347,55 @@ extension YF_KLineModel {
                 print("emMaxValue = \(emMaxValue)")
                 array[j].NineClocksMaxPrice = emMaxValue
             }
-            for i in ()) {
-                
+            for i in (0..<(count - 8)) {
+                var j = 8
+                var emMaxValue = 0.0
+                var em = j
+                while em >= i {
+                    guard let high = array[em].High else {
+                        break
+                    }
+                    if emMaxValue < high {
+                        emMaxValue = high
+                    }
+                    em = em - 1
+                }
+                array[j].NineClocksMaxPrice = emMaxValue
+                j = j + 1
+            }
+        case .orderedDescending:
+            for j in (1...7).reversed() {
+                var emMinValue = 10000000000.0
+                var em = j
+                while em >= 0 {
+                    guard let low = array[em].Low else {
+                        break
+                    }
+                    if emMinValue > low {
+                        emMinValue = low
+                    }
+                    em = em - 1
+                }
+                array[j].NineClocksMinPrice = emMinValue
+            }
+            for i in (0..<(count - 8)) {
+                var j = 8
+                var emMinValue = 10000000000.0
+                var em = j
+                while em >= i {
+                    guard let low = array[em].Low else {
+                        break
+                    }
+                    if emMinValue > low {
+                        emMinValue = low
+                    }
+                    em = em - 1
+                }
+                array[j].NineClocksMinPrice = emMinValue
+                j = j + 1
             }
         default:
-            <#code#>
+            break
         }
     }
 }
