@@ -142,12 +142,49 @@ class YF_KLineModel: NSObject {
         return vema7
     }()
     
-    var Volume_EMA30: Double?
+    lazy var Volume_EMA30: Double? = {
+        var vema30: Double?
+        guard let v = Volume,
+            let pv = previousKLineModel?.Volume_EMA30 else {
+                return vema30
+        }
+        vema30 = (2 * v + 29 * pv) / 31
+        return vema30
+    }()
     
     // MARK: - BOLL线
-    var MA20: Double?
+    lazy var MA20: Double? = {
+        var ma20: Double?
+        guard let array = parentGroupModel?.models as NSArray?,
+        let sum = SumOfLastClose else {
+            return ma20
+        }
+        let index = array.index(of: self)
+        if index >= 19 {
+            guard let oriArr = array as? [YF_KLineModel] else {
+                return ma20
+            }
+            ma20 = (sum - (oriArr[index - 20].SumOfLastClose ?? 0)) / 20
+            return ma20
+        }
+        return ma20
+    }()
     
-    var BOLL_MD: Double?
+    lazy var BOLL_MD: Double? = {
+        var bmd: Double?
+        guard let array = parentGroupModel?.models as NSArray?,
+         let sum = previousKLineModel?.BOLL_SUBMD_SUM else {
+            return bmd
+        }
+        let index = array.index(of: self)
+        if index >= 20 {
+            guard let oriArr = parentGroupModel?.models as? [YF_KLineModel] else {
+                return bmd
+            }
+            sqrt((sum - (oriArr[index - 20].BOLL_SUBMD_SUM ?? 0))
+        }
+        return bmd
+    }()
     
     var BOLL_MB: Double?
     
