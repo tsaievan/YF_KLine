@@ -63,7 +63,7 @@ class YF_KLineModel: NSObject {
             if index >= 6 {
                 guard let sum = SumOfLastClose,
                     let oriArr = array as? [YF_KLineModel] else {
-                    return ma7
+                        return ma7
                 }
                 ma7 = (sum - (oriArr[index - 7].SumOfLastClose ?? 0)) / 7
                 return ma7
@@ -75,11 +75,74 @@ class YF_KLineModel: NSObject {
         return ma7
     }()
     ///< MA（30）=（C1+C2+……C30）/30
-    var MA30: Double?
+    lazy var MA30: Double? = {
+        var ma30: Double?
+        if YF_StockChartVariable.isEMALine == .MA {
+            guard let array = parentGroupModel?.models as NSArray? else {
+                return ma30
+            }
+            let index = array.index(of: self)
+            if index >= 29 {
+                guard let sum = SumOfLastClose,
+                    let oriArr = array as? [YF_KLineModel] else {
+                        return ma30
+                }
+                ma30 = (sum - (oriArr[index - 30].SumOfLastClose ?? 0)) / 30
+                return ma30
+            }else {
+                guard let sum = SumOfLastClose else {
+                    return ma30
+                }
+                ma30 = sum / 30
+                return ma30
+            }
+        }
+        return ma30
+    }()
     
-    var MA12: Double?
+    lazy var MA12: Double? = {
+        var ma12: Double?
+        guard let array = parentGroupModel?.models as NSArray? else {
+            return ma12
+        }
+        let index = array.index(of: self)
+        if index >= 11 {
+            guard let sum = SumOfLastClose,
+                let oriArr = parentGroupModel?.models as? [YF_KLineModel] else {
+                    return ma12
+            }
+            if index > 11 {
+                ma12 = (sum - (oriArr[index - 12].SumOfLastClose ?? 0)) / 12
+                return ma12
+            }else {
+                ma12 = sum / 12
+                return ma12
+            }
+        }
+        return ma12
+    }()
     
-    var MA26: Double?
+    lazy var MA26: Double? = {
+        var ma26: Double?
+        guard let array = parentGroupModel?.models as NSArray? else {
+            return ma26
+        }
+        let index = array.index(of: self)
+        if index >= 25 {
+            guard let sum = SumOfLastClose,
+                let oriArr = parentGroupModel?.models as? [YF_KLineModel] else {
+                    return ma26
+            }
+            if index > 25 {
+                ma26 = (sum - (oriArr[index - 26].SumOfLastClose ?? 0)) / 26
+                return ma26
+            }else {
+                ma26 = sum / 26
+                return ma26
+            }
+        }
+        return ma26
+    }()
     
     lazy var Volume_MA7: Double? = {
         var vma7: Double?
@@ -156,16 +219,24 @@ class YF_KLineModel: NSObject {
     lazy var MA20: Double? = {
         var ma20: Double?
         guard let array = parentGroupModel?.models as NSArray?,
-        let sum = SumOfLastClose else {
-            return ma20
+            let sum = SumOfLastClose else {
+                return ma20
         }
         let index = array.index(of: self)
         if index >= 19 {
             guard let oriArr = array as? [YF_KLineModel] else {
                 return ma20
             }
-            ma20 = (sum - (oriArr[index - 20].SumOfLastClose ?? 0)) / 20
-            return ma20
+            if index > 19 {
+                ma20 = (sum - (oriArr[index - 20].SumOfLastClose ?? 0)) / 20
+                return ma20
+            }else {
+                guard let sum = SumOfLastClose else {
+                    return ma20
+                }
+                ma20 = sum / 20
+                return ma20
+            }
         }
         return ma20
     }()
@@ -173,36 +244,140 @@ class YF_KLineModel: NSObject {
     lazy var BOLL_MD: Double? = {
         var bmd: Double?
         guard let array = parentGroupModel?.models as NSArray?,
-         let sum = previousKLineModel?.BOLL_SUBMD_SUM else {
-            return bmd
+            let sum = previousKLineModel?.BOLL_SUBMD_SUM else {
+                return bmd
         }
         let index = array.index(of: self)
         if index >= 20 {
             guard let oriArr = parentGroupModel?.models as? [YF_KLineModel] else {
                 return bmd
             }
-            sqrt((sum - (oriArr[index - 20].BOLL_SUBMD_SUM ?? 0))
+            bmd = sqrt((sum - (oriArr[index - 20].BOLL_SUBMD_SUM ?? 0)) / 20)
+            return bmd
         }
         return bmd
     }()
     
-    var BOLL_MB: Double?
+    lazy var BOLL_MB: Double? = {
+        var bmb: Double?
+        guard let array = parentGroupModel?.models as NSArray?,
+            let sum = SumOfLastClose else {
+                return bmb
+        }
+        let index = array.index(of: self)
+        if index >= 19 {
+            guard let oriArr = parentGroupModel?.models as? [YF_KLineModel] else {
+                return bmb
+            }
+            if index > 19 {
+                bmb = (sum - (oriArr[index - 19].SumOfLastClose ?? 0)) / 20
+                return bmb
+            }else {
+                bmb = sum / Double(index)
+                return bmb
+            }
+        }
+        return bmb
+    }()
     
-    var BOLL_UP: Double?
+    lazy var BOLL_UP: Double? = {
+        var bup: Double?
+        guard let array = parentGroupModel?.models as NSArray? else {
+            return bup
+        }
+        let index = array.index(of: self)
+        guard let bmb = BOLL_MB,
+            let bmd = BOLL_MD else {
+                return bup
+        }
+        bup = bmb + 2 * bmd
+        return bup
+    }()
     
-    var BOLL_DN: Double?
+    lazy var BOLL_DN: Double? = {
+        var bdn: Double?
+        guard let array = parentGroupModel?.models as NSArray? else {
+            return bdn
+        }
+        let index = array.index(of: self)
+        guard let bmb = BOLL_MB,
+            let bmd = BOLL_MD else {
+                return bdn
+        }
+        bdn = bmb - 2 * bmd
+        return bdn
+    }()
     
-    var BOLL_SUBMD_SUM: Double?
+    lazy var BOLL_SUBMD_SUM: Double? = {
+        var bss: Double?
+        guard let array = parentGroupModel?.models as NSArray? else {
+            return bss
+        }
+        let index = array.index(of: self)
+        guard let sum = previousKLineModel?.BOLL_SUBMD_SUM,
+            let bs = BOLL_SUBMD else {
+                return bss
+        }
+        bss = sum + bs
+        return bss
+    }()
     
-    var BOLL_SUBMD: Double?
+    lazy var BOLL_SUBMD: Double? = {
+        var bs: Double?
+        guard let array = parentGroupModel?.models as NSArray? else {
+            return bs
+        }
+        let index = array.index(of: self)
+        guard let close = Close,
+            let ma20 = MA20 else {
+                return bs
+        }
+        if index >= 20 {
+            bs = (close - ma20) * (close - ma20)
+            return bs
+        }
+        return bs
+    }()
     
-    var EMA7: Double?
+    lazy var EMA7: Double? = {
+        var ema7: Double?
+        guard let close = Close,
+            let pema7 = previousKLineModel?.EMA7 else {
+                return ema7
+        }
+        ema7 = (close + 3 * pema7) / 4
+        return ema7
+    }()
     
-    var EMA30: Double?
+    lazy var EMA30: Double? = {
+        var ema30: Double?
+        guard let close = Close,
+            let pema30 = previousKLineModel?.EMA30 else {
+                return ema30
+        }
+        ema30 = (2 * close + 29 * pema30) / 31
+        return ema30
+    }()
     
-    var EMA12: Double?
+    lazy var EMA12: Double? = {
+        var ema12: Double?
+        guard let close = Close,
+            let pema12 = previousKLineModel?.EMA12 else {
+                return ema12
+        }
+        ema12 = (2 * close + 11 * pema12) / 13
+        return ema12
+    }()
     
-    var EMA26: Double?
+    lazy var EMA26: Double? = {
+        var ema26: Double?
+        guard let close = Close,
+            let pema26 = previousKLineModel?.EMA26 else {
+                return ema26
+        }
+        ema26 = (2 * close + 25 * pema26) / 27
+        return ema26
+    }()
     
     lazy var DIF: Double? = {
         var dif: Double?
@@ -227,8 +402,8 @@ class YF_KLineModel: NSObject {
     lazy var MACD: Double? = {
         var macd: Double?
         guard let dif = DIF,
-        let dea = DEA else {
-            return macd
+            let dea = DEA else {
+                return macd
         }
         macd = 2 * (dif - dea)
         return macd
@@ -355,12 +530,55 @@ class YF_KLineModel: NSObject {
         EMA30 = Close
         NineClocksMinPrice = Low
         NineClocksMaxPrice = High
-        
+        DIF = DIF ?? 0
+        DEA = DEA ?? 0
+        MACD = MACD ?? 0
+        guard let models = parentGroupModel?.models as? [YF_KLineModel] else{
+            return
+        }
+        rangeLastNinePrice(byArray: models, condition: .orderedAscending)
+        rangeLastNinePrice(byArray: models, condition: .orderedDescending)
+        RSV_9 = RSV_9 ?? 0
+        KDJ_K = KDJ_K ?? 0
+        KDJ_D = KDJ_D ?? 0
+        KDJ_J = KDJ_J ?? 0
+        MA20 = MA20 ?? 0
+        BOLL_MD = BOLL_MD ?? 0
+        BOLL_MB = BOLL_MB ?? 0
+        BOLL_UP = BOLL_UP ?? 0
+        BOLL_DN = BOLL_DN ?? 0
+        BOLL_SUBMD = BOLL_SUBMD ?? 0
+        BOLL_SUBMD_SUM = BOLL_SUBMD_SUM ?? 0
     }
     
     func initData() {
+        //FIXME: -不知道这么写对不对, 先把这俩函数调一遍吧
+        getNineClocksMaxPrice()
+        getNineClocksMinPrice()
+        MA7 = MA7 ?? 0
+        MA12 = MA12 ?? 0
+        MA26 = MA26 ?? 0
+        MA30 = MA30 ?? 0
+        EMA7 = EMA7 ?? 0
+        EMA12 = EMA12 ?? 0
+        EMA26 = EMA26 ?? 0
+        EMA30 = EMA30 ?? 0
+        DIF = DIF ?? 0
+        DEA = DEA ?? 0
+        MACD = MACD ?? 0
+        NineClocksMaxPrice = NineClocksMaxPrice ?? 0
+        NineClocksMinPrice = NineClocksMinPrice ?? 0
         RSV_9 = RSV_9 ?? 0
         KDJ_K = KDJ_K ?? 0
+        KDJ_D = KDJ_D ?? 0
+        KDJ_J = KDJ_J ?? 0
+        MA20 = MA20 ?? 0
+        BOLL_MD = BOLL_MD ?? 0
+        BOLL_MB = BOLL_MB ?? 0
+        BOLL_UP = BOLL_UP ?? 0
+        BOLL_DN = BOLL_DN ?? 0
+        BOLL_SUBMD = BOLL_SUBMD ?? 0
+        BOLL_SUBMD_SUM = BOLL_SUBMD_SUM ?? 0
     }
 }
 
