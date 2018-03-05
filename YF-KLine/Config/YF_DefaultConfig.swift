@@ -26,7 +26,11 @@ let CHARTVIEW_BACKGROUND_COLOR = UIColor.color(RGBHex: 0x181c20) ///< chartView�
 
 let ASSISTANT_BACKGROUND_COLOR = UIColor.color(RGBHex: 0x1d2227) ///< 辅助背景颜色
 
+let ASSISTANT_TEXT_COLOR = UIColor.color(RGBHex: 0x565a64) ///< 辅助文字颜色
+
 let MAIN_TEXT_COLOR = UIColor.color(RGBHex: 0xe1e2e6) ///< 主文字颜色
+
+let MA_7_COLOR = UIColor.color(RGBHex: 0xff783c) ///< MA7的颜色
 
 let MA_30_COLOR = UIColor.color(RGBHex: 0x49a5ff) ///< MA30颜色
 

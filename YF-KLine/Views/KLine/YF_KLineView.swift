@@ -226,7 +226,7 @@ class YF_KLineView: UIView {
     
     fileprivate lazy var accessoryMAView: YF_AccessoryMAView = {
         let amv = YF_AccessoryMAView()
-        amv.backgroundColor = .red
+        amv.backgroundColor = .cyan
         addSubview(amv)
         amv.snp.makeConstraints({ (make) in
             make.right.left.equalTo(self)
