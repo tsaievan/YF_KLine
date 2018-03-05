@@ -16,32 +16,32 @@ class YF_KLineModel: NSObject {
     ///< 前一个model
     lazy var previousKLineModel: YF_KLineModel? = {
         let pm = YF_KLineModel()
-        pm.DIF = 0
-        pm.DEA = 0
-        pm.MACD = 0
-        pm.MA7 = 0
-        pm.MA12 = 0
-        pm.MA26 = 0
-        pm.MA30 = 0
-        pm.EMA7 = 0
-        pm.EMA12 = 0
-        pm.EMA26 = 0
-        pm.EMA30 = 0
-        pm.Volume_MA7 = 0
-        pm.Volume_MA30 = 0
-        pm.Volume_EMA7 = 0
-        pm.Volume_EMA30 = 0
-        pm.SumOfLastClose = 0
-        pm.SumOfLastVolume = 0
-        pm.KDJ_K = 50
-        pm.KDJ_D = 50
-        pm.MA20 = 0
-        pm.BOLL_MD = 0
-        pm.BOLL_MB = 0
-        pm.BOLL_DN = 0
-        pm.BOLL_UP = 0
-        pm.BOLL_SUBMD_SUM = 0
-        pm.BOLL_SUBMD = 0
+        pm.DIF = 0.0
+        pm.DEA = 0.0
+        pm.MACD = 0.0
+        pm.MA7 = 0.0
+        pm.MA12 = 0.0
+        pm.MA26 = 0.0
+        pm.MA30 = 0.0
+        pm.EMA7 = 0.0
+        pm.EMA12 = 0.0
+        pm.EMA26 = 0.0
+        pm.EMA30 = 0.0
+        pm.Volume_MA7 = 0.0
+        pm.Volume_MA30 = 0.0
+        pm.Volume_EMA7 = 0.0
+        pm.Volume_EMA30 = 0.0
+        pm.SumOfLastClose = 0.0
+        pm.SumOfLastVolume = 0.0
+        pm.KDJ_K = 50.0
+        pm.KDJ_D = 50.0
+        pm.MA20 = 0.0
+        pm.BOLL_MD = 0.0
+        pm.BOLL_MB = 0.0
+        pm.BOLL_DN = 0.0
+        pm.BOLL_UP = 0.0
+        pm.BOLL_SUBMD_SUM = 0.0
+        pm.BOLL_SUBMD = 0.0
         return pm
     }()
     
@@ -56,7 +56,6 @@ class YF_KLineModel: NSObject {
     
     ///< 日期
     var date: Double?
-    
     
     ///< 开盘价
     var Open: Double?
@@ -192,15 +191,17 @@ class YF_KLineModel: NSObject {
                     let oriArr = array as? [YF_KLineModel] else {
                         return vma7
                 }
-                vma7 = (sum - (oriArr[index - 7].SumOfLastVolume ?? 0)) / 7
-                return vma7
-            }else {
-                guard let sum = SumOfLastVolume else {
+                if index > 6 {
+                    vma7 = (sum - (oriArr[index - 7].SumOfLastVolume ?? 0)) / 7
+                    return vma7
+                }else {
+                    vma7 = sum / 7
                     return vma7
                 }
-                vma7 = sum / 7
-                return vma7
             }
+        }else {
+            vma7 = Volume_EMA7
+            return vma7
         }
         return vma7
     }()
@@ -219,20 +220,21 @@ class YF_KLineModel: NSObject {
                 }
                 if index > 29 {
                     vma30 = (sum - (oriArr[index - 30].SumOfLastVolume ?? 0)) / 30
+                    
                 }else {
                     vma30 = sum / 30
                 }
                 return vma30
-            }else {
-                vma30 = Volume_EMA30
-                return vma30
             }
+        }else {
+            vma30 = Volume_EMA30
+            return vma30
         }
         return vma30
     }()
     
     lazy var Volume_EMA7: Double? = {
-        var vema7: Double?
+        var vema7: Double = 0.0
         guard let v = Volume,
             let pv = previousKLineModel?.Volume_EMA7 else {
                 return vema7
@@ -242,7 +244,7 @@ class YF_KLineModel: NSObject {
     }()
     
     lazy var Volume_EMA30: Double? = {
-        var vema30: Double?
+        var vema30: Double = 0.0
         guard let v = Volume,
             let pv = previousKLineModel?.Volume_EMA30 else {
                 return vema30
