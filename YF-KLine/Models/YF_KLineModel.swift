@@ -55,7 +55,7 @@ class YF_KLineModel: NSObject {
     var SumOfLastVolume: Double?
     
     ///< 日期
-    var date: String?
+    var date: Double?
     
     
     ///< 开盘价
@@ -525,7 +525,7 @@ class YF_KLineModel: NSObject {
     ///< 初始化一些基本数据
     func initWith(dictionary dict: [String : Any]) {
         if let d = dict["id"] {
-            date = d as? String
+            date = d as? Double
         }
         if let open = dict["open"] {
             Open = open as? Double

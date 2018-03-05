@@ -203,6 +203,7 @@ class YF_KLineView: UIView {
     ///< kLine-MAView
     fileprivate lazy var kLineMAView: YF_KLineMAView = {
         let mv = YF_KLineMAView()
+        mv.backgroundColor = .darkGray
         addSubview(mv)
         mv.snp.makeConstraints({ (make) in
             make.right.left.equalTo(self)
