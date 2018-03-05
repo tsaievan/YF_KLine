@@ -13,6 +13,11 @@ protocol YF_KLineMainViewDelegate: NSObjectProtocol {
 }
 
 class YF_KLineMainView: UIView {
+    ///< 父ScrollView
+    var parentScrollView: UIScrollView?
+    
+    var needDrawKLineModels = [YF_KLineModel]()
+    
     weak var delegate: YF_KLineMainViewDelegate?
     
     ///< K线类型
@@ -32,11 +37,55 @@ class YF_KLineMainView: UIView {
     
     ///< 画K线主视图
     func drawMainView() {
-        
+        extractNeedDrawModels()
+        convertToKLinePositionModel()
+        setNeedsDisplay()
     }
     
     ///< 更新宽度
     func updateMainViewWidth() {
         
     }
+    
+}
+
+extension YF_KLineMainView {
+    fileprivate func extractNeedDrawModels() {
+        let lineGap = YF_StockChartVariable.kLineGap
+        let lineWidth = YF_StockChartVariable.kLineWidth
+        
+        ///< 数组个数
+        guard let scrollViewWidth = parentScrollView?.width else {
+            return
+        }
+        let needDrawKLineCount = Int((scrollViewWidth - lineGap) / (lineGap + lineWidth))
+        var needDrawKLineStartIndex: Int
+        guard let startIndex = pinchStartIndex else {
+            return
+        }
+        if startIndex > 0 {
+            needDrawKLineStartIndex = startIndex
+            needDrawStartIndex = startIndex
+        }else {
+            guard let startIndex = needDrawStartIndex else {
+                return
+            }
+            needDrawKLineStartIndex = startIndex
+        }
+        needDrawKLineModels.removeAll()
+        guard let models = kLineModels else {
+            return
+        }
+        if needDrawKLineStartIndex < models.count {
+            if needDrawKLineStartIndex + needDrawKLineCount < models.count {
+                let endIndex = models.count - needDrawKLineStartIndex
+                needDrawKLineModels = needDrawKLineModels + models[needDrawKLineStartIndex...endIndex]
+            }
+        }
+    }
+    
+    fileprivate func convertToKLinePositionModel() {
+        
+    }
+    
 }

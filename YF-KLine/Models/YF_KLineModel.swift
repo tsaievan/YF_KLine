@@ -637,7 +637,6 @@ extension YF_KLineModel {
                     }
                     em = em - 1
                 }
-                print("emMaxValue = \(emMaxValue)")
                 array[j].NineClocksMaxPrice = emMaxValue
             }
             for i in (0..<(count - 8)) {
