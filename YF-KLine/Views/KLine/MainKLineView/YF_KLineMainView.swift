@@ -94,8 +94,78 @@ extension YF_KLineMainView {
     }
     
     ///< 将model转化为Position模型
-    fileprivate func convertToKLinePositionModel() {
+    fileprivate func convertToKLinePositionModel() -> [YF_KLineModel]? {
+        guard let firstModel = needDrawKLineModels.first else {
+            return nil
+        }
+        var minAssert = firstModel.Low ?? 0
+        var maxAssert = firstModel.High ?? 0
         
+        guard let models = kLineModels as? [YF_KLineModel] else {
+            return nil
+        }
+        for model in models {
+            guard let high = model.High,
+            let low = model.Low else {
+                return nil
+            }
+            if high > maxAssert {
+                maxAssert = high
+            }
+            if low < minAssert {
+                minAssert = low
+            }
+            if targetLineStatus == .BOLL {
+                if let mb = model.BOLL_MB {
+                    if minAssert > mb {
+                        minAssert = mb
+                    }
+                    if maxAssert < mb {
+                        maxAssert = mb
+                    }
+                }
+                if let up = model.BOLL_UP {
+                    if minAssert > up {
+                        minAssert = up
+                    }
+                    if maxAssert < up {
+                        maxAssert = up
+                    }
+                }
+                if let dn = model.BOLL_DN {
+                    if minAssert > dn {
+                        minAssert = dn
+                    }
+                    if maxAssert < dn {
+                        maxAssert = dn
+                    }
+                }
+            }else {
+                if let ma7 = model.MA7 {
+                    if minAssert > ma7 {
+                        minAssert = ma7
+                    }
+                    if maxAssert < ma7 {
+                        maxAssert = ma7
+                    }
+                }
+                if let ma30 = model.MA30 {
+                    if minAssert > ma30 {
+                        minAssert = ma30
+                    }
+                    if maxAssert < ma30 {
+                        maxAssert = ma30
+                    }
+                }
+
+            }
+            
+        }
+        maxAssert *= 1.0001
+        minAssert *= 0.9991
+        let minY = STOCK_CHART_K_LINE_MAIN_VIEW_MIN_Y
+        
+        return nil
     }
     
 }
