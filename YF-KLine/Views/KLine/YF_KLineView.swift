@@ -339,7 +339,9 @@ extension YF_KLineView: UIScrollViewDelegate {
 
 // MARK: - YF_KLineMainViewDelegate代理方法
 extension YF_KLineView: YF_KLineMainViewDelegate {
-    
+    func kLineMainViewCurrent(needDrawKLineModels kLineModels: [YF_KLineModel]) {
+        
+    }
 }
 
 // MARK: - YF_KLineVolumeViewDelegate代理方法

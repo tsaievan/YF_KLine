@@ -9,7 +9,7 @@
 import UIKit
 
 protocol YF_KLineMainViewDelegate: NSObjectProtocol {
-    
+    func kLineMainViewCurrent(needDrawKLineModels kLineModels: [YF_KLineModel])
 }
 
 class YF_KLineMainView: UIView {
@@ -78,12 +78,22 @@ extension YF_KLineMainView {
         }
         if needDrawKLineStartIndex < models.count {
             if needDrawKLineStartIndex + needDrawKLineCount < models.count {
+                let subArry = models[needDrawKLineStartIndex...needDrawKLineCount]
+                //FIXME:- 数组的切片还不怎么会用
+                let combineArray: [YF_KLineModel] = (needDrawKLineModels as [Any] + subArry) as! [YF_KLineModel]
+                needDrawKLineModels = combineArray
+            }else {
                 let endIndex = models.count - needDrawKLineStartIndex
-                needDrawKLineModels = needDrawKLineModels + models[needDrawKLineStartIndex...endIndex]
+                let subArry = models[needDrawKLineStartIndex...endIndex]
+                let combineArray: [YF_KLineModel] = (needDrawKLineModels as [Any] + subArry) as! [YF_KLineModel]
+                needDrawKLineModels = combineArray
             }
         }
+        ///< 响应代理
+        delegate?.kLineMainViewCurrent(needDrawKLineModels: needDrawKLineModels)
     }
     
+    ///< 将model转化为Position模型
     fileprivate func convertToKLinePositionModel() {
         
     }
