@@ -28,6 +28,8 @@
 		57126930204560C1001F0FFB /* YF_DefaultConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5712692F204560C1001F0FFB /* YF_DefaultConfig.swift */; };
 		5712693220456162001F0FFB /* UIColor+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5712693120456162001F0FFB /* UIColor+YF_Extension.swift */; };
 		5718364A204CD26D00800725 /* UILabel+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57183649204CD26D00800725 /* UILabel+YF_Extension.swift */; };
+		5789BA16204D262700174DFC /* YF_KLineVolumePositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789BA15204D262700174DFC /* YF_KLineVolumePositionModel.swift */; };
+		5789BA19204D2C1600174DFC /* YF_KLineVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789BA18204D2C1600174DFC /* YF_KLineVolume.swift */; };
 		57CC3B492046A03F00685264 /* UIView+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC3B482046A03F00685264 /* UIView+YF_Extension.swift */; };
 		57E702C82046345F0086DAD5 /* YF_KLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E702C72046345F0086DAD5 /* YF_KLineView.swift */; };
 		57E702CA204635550086DAD5 /* YF_StockChartSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E702C9204635550086DAD5 /* YF_StockChartSegmentView.swift */; };
@@ -62,6 +64,8 @@
 		5712692F204560C1001F0FFB /* YF_DefaultConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_DefaultConfig.swift; sourceTree = "<group>"; };
 		5712693120456162001F0FFB /* UIColor+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+YF_Extension.swift"; sourceTree = "<group>"; };
 		57183649204CD26D00800725 /* UILabel+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+YF_Extension.swift"; sourceTree = "<group>"; };
+		5789BA15204D262700174DFC /* YF_KLineVolumePositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineVolumePositionModel.swift; sourceTree = "<group>"; };
+		5789BA18204D2C1600174DFC /* YF_KLineVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineVolume.swift; sourceTree = "<group>"; };
 		57CC3B482046A03F00685264 /* UIView+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+YF_Extension.swift"; sourceTree = "<group>"; };
 		57E702C72046345F0086DAD5 /* YF_KLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineView.swift; sourceTree = "<group>"; };
 		57E702C9204635550086DAD5 /* YF_StockChartSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_StockChartSegmentView.swift; sourceTree = "<group>"; };
@@ -117,6 +121,7 @@
 		57083C1020480A410078AE04 /* VolumeView */ = {
 			isa = PBXGroup;
 			children = (
+				5789BA17204D2BFC00174DFC /* Line */,
 				57083C022047D07F0078AE04 /* YF_KLineVolumeView.swift */,
 			);
 			path = VolumeView;
@@ -202,6 +207,14 @@
 			path = "YF-KLine";
 			sourceTree = "<group>";
 		};
+		5789BA17204D2BFC00174DFC /* Line */ = {
+			isa = PBXGroup;
+			children = (
+				5789BA18204D2C1600174DFC /* YF_KLineVolume.swift */,
+			);
+			path = Line;
+			sourceTree = "<group>";
+		};
 		57E702CB204647110086DAD5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,6 +267,7 @@
 			children = (
 				5712692D20455869001F0FFB /* YF_KLineGroupModel.swift */,
 				57083C0C2047EAD60078AE04 /* YF_KLineModel.swift */,
+				5789BA15204D262700174DFC /* YF_KLineVolumePositionModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -419,6 +433,7 @@
 				57E702D5204650C90086DAD5 /* YF_KLineConfig.swift in Sources */,
 				5712692C204552C1001F0FFB /* YF_StockChartView.swift in Sources */,
 				57126930204560C1001F0FFB /* YF_DefaultConfig.swift in Sources */,
+				5789BA16204D262700174DFC /* YF_KLineVolumePositionModel.swift in Sources */,
 				57E702CA204635550086DAD5 /* YF_StockChartSegmentView.swift in Sources */,
 				57E702C82046345F0086DAD5 /* YF_KLineView.swift in Sources */,
 				57083C0D2047EAD60078AE04 /* YF_KLineModel.swift in Sources */,
@@ -430,6 +445,7 @@
 				5712693220456162001F0FFB /* UIColor+YF_Extension.swift in Sources */,
 				57083C092047E5120078AE04 /* YF_VolumeMAView.swift in Sources */,
 				5712692820453985001F0FFB /* UIButton+YF_Extension.swift in Sources */,
+				5789BA19204D2C1600174DFC /* YF_KLineVolume.swift in Sources */,
 				57126926204530DD001F0FFB /* YF_KLineViewController.swift in Sources */,
 				57CC3B492046A03F00685264 /* UIView+YF_Extension.swift in Sources */,
 				57083BFF2047BA040078AE04 /* YF_KLineMAView.swift in Sources */,

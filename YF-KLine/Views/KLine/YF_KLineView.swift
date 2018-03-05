@@ -64,6 +64,7 @@ class YF_KLineView: UIView {
                     YF_StockChartVariable.setKLineVolumeViewRatio(ratio: 0.2)
                 }
                 ///< 因为高度比例变了, 所以取消之前高度的约束值, 重新更新约束
+                //FIXME:- 这里会崩, 原因还没有找到, 先不管
                 kLineMainViewHeightConstraint?.deactivate()
                 kLineMainView.snp.updateConstraints({ (update) in update.height.equalTo(scrollView).multipliedBy(YF_StockChartVariable.kLineMainViewRatio)
                 })
@@ -87,14 +88,12 @@ class YF_KLineView: UIView {
         sv.showsHorizontalScrollIndicator = false
         sv.bounces = false
         sv.delegate = self
-        
         ///< 添加缩放手势
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(YF_KLineView.didPinchAction(sender:)))
         sv.addGestureRecognizer(pinch)
         ///< 添加长按手势
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(YF_KLineView.didLongPressAction(sender:)))
         sv.addGestureRecognizer(longPress)
-        
         addSubview(sv)
         sv.snp.makeConstraints({ (make) in
             make.top.left.bottom.equalTo(self)
@@ -113,13 +112,11 @@ class YF_KLineView: UIView {
         main.snp.makeConstraints({ (make) in
             make.top.equalTo(scrollView).offset(5)
             make.left.equalTo(scrollView)
-            // TODO: - 这里先改成SCREEN_WIDTH - 100, 先出来视图
+            // FIXME: - 这里先改成SCREEN_WIDTH - 100, 先出来视图
             make.width.equalTo(SCREEN_WIDTH - 100)
             ///< 获取K线主视图高度约束, 保存在属性中
-//            kLineMainViewHeightConstraint =
-//             make.height.equalTo(scrollView).multipliedBy(mainViewRatio).constraint
-            make.height.equalTo(scrollView).multipliedBy(mainViewRatio)
-            // TODO: - 加载rightYYView
+            kLineMainViewHeightConstraint =
+                make.height.equalTo(scrollView).multipliedBy(mainViewRatio).constraint
         })
         return main
     }()
@@ -128,15 +125,14 @@ class YF_KLineView: UIView {
     fileprivate lazy var kLineVolumeView: YF_KLineVolumeView = {
         let vv = YF_KLineVolumeView()
         vv.delegate = self
-        vv.backgroundColor = .blue
+        vv.backgroundColor = .black
         scrollView.addSubview(vv)
         vv.snp.makeConstraints({ (make) in
             make.left.equalTo(kLineMainView)
             make.top.equalTo(kLineMainView.snp.bottom).offset(10);
             make.width.equalTo(kLineMainView)
-            ///< 获取K线成交量视图高度约束, 保存在属性中
-//            kLineVolumeViewHeightConstraint = make.height.equalTo(scrollView).multipliedBy(volumeViewRatio).constraint
-            make.height.equalTo(scrollView).multipliedBy(volumeViewRatio)
+            kLineVolumeViewHeightConstraint
+                = make.height.equalTo(scrollView).multipliedBy(volumeViewRatio).constraint
         })
         layoutIfNeeded()
         return vv
@@ -146,7 +142,7 @@ class YF_KLineView: UIView {
     fileprivate lazy var kLineAccessoryView: YF_KLineAccessoryView = {
         let av = YF_KLineAccessoryView()
         av.delegate = self
-        av.backgroundColor = .green
+        av.backgroundColor = .clear
         scrollView.addSubview(av)
         av.snp.makeConstraints({ (make) in
             make.left.equalTo(kLineVolumeView)
@@ -161,7 +157,7 @@ class YF_KLineView: UIView {
     ///< 右侧价格图
     fileprivate lazy var priceView: YF_StockChartRightYView = {
         let yv = YF_StockChartRightYView()
-        yv.backgroundColor = .cyan
+        yv.backgroundColor = .clear
         ///< 因为y轴是不滚动的, 所以直接加载view上, 而不是加到scrollView上
         ///< 而且要加到scrollView上面
         insertSubview(yv, aboveSubview: scrollView)
@@ -260,7 +256,6 @@ class YF_KLineView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 
@@ -349,7 +344,9 @@ extension YF_KLineView: YF_KLineMainViewDelegate {
 
 // MARK: - YF_KLineVolumeViewDelegate代理方法
 extension YF_KLineView: YF_KLineVolumeViewDelegate {
-    
+    func kLineVolumeView(currentMaxVolume maxVolume: CGFloat, minVolume: CGFloat) {
+        
+    }
 }
 
 // MARK: - YF_KLineAccessoryViewDelegate代理方法

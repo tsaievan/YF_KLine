@@ -36,6 +36,9 @@ enum YF_CoinType {
 ///< K线图YView的宽度
 let STOCK_CHART_K_LINE_PRICE_VIEW_WIDTH: CGFloat = 47
 
+///< K线图上成交量最小的Y
+let STOCK_CHART_K_LINE_VOLUME_VIEW_MIN_Y: CGFloat = 20
+
 ///< K线图的缩放界线
 let STOCK_CHART_SCALE_BOUND: CGFloat = 0.03
 
