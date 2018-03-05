@@ -97,11 +97,16 @@ class YF_KLineModel: NSObject {
                 ma7 = (sum - (oriArr[index - 7].SumOfLastClose ?? 0)) / 7
                 return ma7
             }else {
-                ma7 = EMA7
+                guard let sum = SumOfLastClose else {
+                    return ma7
+                }
+                ma7 = sum / 7
                 return ma7
             }
+        }else {
+            ma7 = EMA7
+            return ma7
         }
-        return ma7
     }()
     ///< MA（30）=（C1+C2+……C30）/30
     lazy var MA30: Double? = {
@@ -125,8 +130,10 @@ class YF_KLineModel: NSObject {
                 ma30 = sum / 30
                 return ma30
             }
+        }else {
+            ma30 = EMA30
+            return ma30
         }
-        return ma30
     }()
     
     lazy var MA12: Double? = {
