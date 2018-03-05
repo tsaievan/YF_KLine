@@ -12,10 +12,7 @@ import Alamofire
 ///< 这里先简单封装一下
 class YF_NetworkTool {
     class func request(url: String, params: [String : Any]?, success: (([String : Any]) -> ())?, failue: (() -> ())?) {
-        guard let request = try? URLRequest(url: url, method: HTTPMethod.get) else {
-            return
-        }
-        Alamofire.request(request).responseJSON { (result) in
+        Alamofire.request(url, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (result) in
             if result.error != nil {
                 failue?()
             }else {

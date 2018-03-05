@@ -14,7 +14,36 @@ class YF_KLineModel: NSObject {
     var CoinType: YF_CoinType?
     
     ///< 前一个model
-    var previousKLineModel: YF_KLineModel?
+    lazy var previousKLineModel: YF_KLineModel? = {
+        let pm = YF_KLineModel()
+        pm.DIF = 0
+        pm.DEA = 0
+        pm.MACD = 0
+        pm.MA7 = 0
+        pm.MA12 = 0
+        pm.MA26 = 0
+        pm.MA30 = 0
+        pm.EMA7 = 0
+        pm.EMA12 = 0
+        pm.EMA26 = 0
+        pm.EMA30 = 0
+        pm.Volume_MA7 = 0
+        pm.Volume_MA30 = 0
+        pm.Volume_EMA7 = 0
+        pm.Volume_EMA30 = 0
+        pm.SumOfLastClose = 0
+        pm.SumOfLastVolume = 0
+        pm.KDJ_K = 50
+        pm.KDJ_D = 50
+        pm.MA20 = 0
+        pm.BOLL_MD = 0
+        pm.BOLL_MB = 0
+        pm.BOLL_DN = 0
+        pm.BOLL_UP = 0
+        pm.BOLL_SUBMD_SUM = 0
+        pm.BOLL_SUBMD = 0
+        return pm
+    }()
     
     ///< 父modelArray: 用来给当前Model索引到parent数组
     var parentGroupModel: YF_KLineGroupModel?
