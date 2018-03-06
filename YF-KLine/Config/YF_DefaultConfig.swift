@@ -34,6 +34,12 @@ let MA_7_COLOR = UIColor.color(RGBHex: 0xff783c) ///< MA7的颜色
 
 let MA_30_COLOR = UIColor.color(RGBHex: 0x49a5ff) ///< MA30颜色
 
-let SEPERATOR_LINE_COLOR = UIColor(red: 52.0 / 255.0, green: 56.0 / 255.0, blue: 67.0 / 255.0, alpha: 1.0)
+let SEPERATOR_LINE_COLOR = UIColor(red: 52.0 / 255.0, green: 56.0 / 255.0, blue: 67.0 / 255.0, alpha: 1.0) ///< 分割线颜色
+
+///< 上涨K线颜色
+let K_LINE_INCREASE_COLOR = UIColor.red
+
+///< 下跌K线颜色
+let K_LINE_DECREASE_COLOR = UIColor.cyan
 
 

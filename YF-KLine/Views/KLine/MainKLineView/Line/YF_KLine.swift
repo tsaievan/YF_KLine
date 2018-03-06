@@ -41,8 +41,17 @@ extension YF_KLine {
             return nil
         }
         ///< 设置画笔颜色
-//        let strokeColor = positionModel.
-        return nil
+        let openPoint = positionModel.OpenPoint?.y ?? 0
+        let closePoint = positionModel.ClosePoint?.y ?? 0
+        var strokeColor: UIColor?
+        if openPoint > closePoint {
+            strokeColor = K_LINE_DECREASE_COLOR
+        }else {
+            strokeColor = K_LINE_INCREASE_COLOR
+        }
+        ///< 这里先强行解包
+        context.setStrokeColor(strokeColor!.cgColor)
+        
     }
     
 }
