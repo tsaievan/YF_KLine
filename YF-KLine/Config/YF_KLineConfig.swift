@@ -47,3 +47,6 @@ let STOCK_CHART_SCALE_BOUND: CGFloat = 0.03
 
 ///< K线缩放因子
 let STOCK_CHART_SCALE_SCALE: CGFloat = 0.03
+
+///< K线图最小的宽度
+let STOCK_CHART_K_LINE_MIN_WIDTH: CGFloat = 2

@@ -9,12 +9,21 @@
 import UIKit
 
 protocol YF_KLineMainViewDelegate: NSObjectProtocol {
+    ///< 需要绘制的K线模型数组
     func kLineMainViewCurrent(needDrawKLineModels kLineModels: [YF_KLineModel])
+    
+    ///< 需要绘制的K线位置模型数组
+    func kLineMainViewPositionCurrent(needDrawKLinePositionModels kLinePositionModels: [YF_KLineVolumePositionModel])
+    
+    ///< 当前MainView的最大值和最小值
+    func kLineMainViewCurrentPrice(maxPrice: Double, minPrice: Double)
 }
 
 class YF_KLineMainView: UIView {
     ///< 父ScrollView
     var parentScrollView: UIScrollView?
+    
+    var needDrawKLinePositionModels = [YF_KLineVolumePositionModel]()
     
     var needDrawKLineModels = [YF_KLineModel]()
     
@@ -27,10 +36,31 @@ class YF_KLineMainView: UIView {
     var targetLineStatus: YF_StockChartTargetLineStatus?
     
     ///< k线模型对象的数组
-    var kLineModels: [Any]?
+    var kLineModels: [Any]? {
+        didSet {
+            
+        }
+    }
     
     ///< 需要绘制Index开始值
-    var needDrawStartIndex: Int?
+    lazy var needDrawStartIndex: Int = {
+        guard let scrollViewOffsetX = parentScrollView?.contentOffset.x else {
+            return 0
+        }
+        let offsetX = (scrollViewOffsetX < 0 ? 0 : scrollViewOffsetX)
+        let leftArrCount = abs(offsetX - YF_StockChartVariable.kLineGap) / (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth)
+        return Int(leftArrCount)
+    }()
+    
+    ///< Index开始的X的值
+    lazy var startXPosition: Int = {
+        let totalKlineGap = CGFloat(needDrawStartIndex + 1) * YF_StockChartVariable.kLineGap
+        let totalKlineWidth = CGFloat(needDrawStartIndex) * YF_StockChartVariable.kLineWidth
+        let exceedWidth = (YF_StockChartVariable.kLineWidth) * 0.5
+        let startXPosition = totalKlineGap + totalKlineWidth + exceedWidth
+        return Int(startXPosition)
+        
+    }()
     
     ///< 捏合点
     var pinchStartIndex: Int?
@@ -67,10 +97,7 @@ extension YF_KLineMainView {
             needDrawKLineStartIndex = startIndex
             needDrawStartIndex = startIndex
         }else {
-            guard let startIndex = needDrawStartIndex else {
-                return
-            }
-            needDrawKLineStartIndex = startIndex
+            needDrawKLineStartIndex = needDrawStartIndex
         }
         needDrawKLineModels.removeAll()
         guard let models = kLineModels else {
@@ -94,7 +121,7 @@ extension YF_KLineMainView {
     }
     
     ///< 将model转化为Position模型
-    fileprivate func convertToKLinePositionModel() -> [YF_KLineModel]? {
+    fileprivate func convertToKLinePositionModel() -> [YF_KLineVolumePositionModel]? {
         guard let firstModel = needDrawKLineModels.first else {
             return nil
         }
@@ -157,13 +184,64 @@ extension YF_KLineMainView {
                         maxAssert = ma30
                     }
                 }
-
             }
-            
         }
         maxAssert *= 1.0001
         minAssert *= 0.9991
         let minY = STOCK_CHART_K_LINE_MAIN_VIEW_MIN_Y
+        guard let height = parentScrollView?.height else {
+            return nil
+        }
+        let maxY =  height * YF_StockChartVariable.kLineMainViewRatio - 15
+        let unitValue = CGFloat(maxAssert - minAssert) / (maxY - minY)
+        needDrawKLinePositionModels.removeAll()
+        //FIXME:- 其他的线先不画, 先画K线
+        for (idx, model) in models.enumerated() {
+            let xPosition = CGFloat(startXPosition) + CGFloat(idx) * (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth)
+            let open = model.Open ?? 0.0
+            let yPosition = abs(maxY - CGFloat(open - minAssert) / unitValue)
+            ///< 算开盘点, 收盘点, 最高点, 最低点
+            var openPoint = CGPoint(x: xPosition, y: yPosition)
+            let close = model.Close ?? 0.0
+            var closePointY = abs(maxY - CGFloat(close - minAssert) / unitValue)
+            if abs(closePointY - openPoint.y) < STOCK_CHART_K_LINE_MIN_WIDTH {
+                if openPoint.y > closePointY {
+                    openPoint.y = closePointY + STOCK_CHART_K_LINE_MIN_WIDTH
+                }else if openPoint.y < closePointY {
+                    closePointY = openPoint.y + STOCK_CHART_K_LINE_MIN_WIDTH
+                }else {
+                    if idx > 0 {
+                        let preKLineModel = models[idx - 1]
+                        let preClose = preKLineModel.Close ?? 0
+                        if open > preClose {
+                            openPoint.y = closePointY + STOCK_CHART_K_LINE_MIN_WIDTH
+                        }else {
+                            closePointY = openPoint.y + STOCK_CHART_K_LINE_MIN_WIDTH
+                        }
+                    }else if (idx + 1) < models.count {
+                        let subKLineModel = models[idx + 1]
+                        let subOpen = subKLineModel.Open ?? 0
+                        if close < subOpen {
+                            openPoint.y = closePointY + STOCK_CHART_K_LINE_MIN_WIDTH
+                        }else {
+                            closePointY = openPoint.y + STOCK_CHART_K_LINE_MIN_WIDTH
+                        }
+                    }
+                }
+            }
+            let closePoint = CGPoint(x: xPosition, y: closePointY)
+            let modelHigh = model.High ?? 0
+            let modelLow = model.Low ?? 0
+            let highPoint = CGPoint(x: xPosition, y: abs(maxY - CGFloat(modelHigh - minAssert) / unitValue))
+            let lowPoint = CGPoint(x: xPosition, y: abs(maxY - CGFloat(modelLow - minAssert) / unitValue))
+            let kLinePositionModel = YF_KLineVolumePositionModel.model(withStartPoint: openPoint, endPoint: closePoint, highPoint: highPoint, lowPoint: lowPoint)
+            needDrawKLinePositionModels.append(kLinePositionModel)
+            
+            ///< 响应代理方法
+            delegate?.kLineMainViewCurrentPrice(maxPrice: maxAssert, minPrice: minAssert)
+            delegate?.kLineMainViewPositionCurrent(needDrawKLinePositionModels: needDrawKLinePositionModels)
+            return needDrawKLinePositionModels
+        }
         
         return nil
     }

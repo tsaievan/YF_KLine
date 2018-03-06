@@ -299,7 +299,7 @@ extension YF_KLineView {
                 let oldLeftArrCount = Int(abs((centerPoint.x - scrollView.contentOffset.x) - YF_StockChartVariable.kLineGap) / (YF_StockChartVariable.kLineGap + oldKLineWidth))
                 let newLeftArrCount = Int(abs((centerPoint.x - scrollView.contentOffset.x) - YF_StockChartVariable.kLineGap) / (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth))
                 //FIXME: 这里先强制解包(强制解包会崩)
-                kLineMainView.pinchStartIndex = oldNeedDrawStartIndex! + oldLeftArrCount - newLeftArrCount
+                kLineMainView.pinchStartIndex = oldNeedDrawStartIndex + oldLeftArrCount - newLeftArrCount
             }
             kLineMainView.drawMainView()
         }
