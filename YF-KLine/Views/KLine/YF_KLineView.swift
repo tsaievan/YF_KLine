@@ -339,6 +339,14 @@ extension YF_KLineView: UIScrollViewDelegate {
 
 // MARK: - YF_KLineMainViewDelegate代理方法
 extension YF_KLineView: YF_KLineMainViewDelegate {
+    func kLineMainViewPositionCurrent(needDrawKLinePositionModels kLinePositionModels: [YF_KLineVolumePositionModel]) {
+        
+    }
+    
+    func kLineMainViewCurrentPrice(maxPrice: Double, minPrice: Double) {
+        
+    }
+    
     func kLineMainViewCurrent(needDrawKLineModels kLineModels: [YF_KLineModel]) {
         
     }

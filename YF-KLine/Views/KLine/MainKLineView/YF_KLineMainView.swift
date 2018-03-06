@@ -79,6 +79,36 @@ class YF_KLineMainView: UIView {
     
 }
 
+///< 绘图的相关方法
+extension YF_KLineMainView {
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        let context = UIGraphicsGetCurrentContext()
+        
+        ///< 如果数组为空, 则不进行绘制, 直接设置本view为背景
+        if kLineModels == nil {
+            context?.clear(rect)
+            context?.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
+            context?.fill(rect)
+            return
+        }
+        
+        ///< 设置view的背景颜色
+        var kLineColors = [UIColor]()
+        context?.clear(rect)
+        context?.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
+        context?.fill(rect)
+        
+        ///< 设置显示日期的区域背景颜色
+        context?.setFillColor(ASSISTANT_BACKGROUND_COLOR.cgColor)
+        let dateRect = CGRect(x: 0, y: height - 15, width: width, height: height)
+        context?.fill(dateRect)
+        
+        
+        
+    }
+}
+
 extension YF_KLineMainView {
     fileprivate func extractNeedDrawModels() {
         let lineGap = YF_StockChartVariable.kLineGap
@@ -123,18 +153,18 @@ extension YF_KLineMainView {
     ///< 将model转化为Position模型
     fileprivate func convertToKLinePositionModel() -> [YF_KLineVolumePositionModel]? {
         guard let firstModel = needDrawKLineModels.first else {
-            return nil
+            return needDrawKLinePositionModels
         }
         var minAssert = firstModel.Low ?? 0
         var maxAssert = firstModel.High ?? 0
         
         guard let models = kLineModels as? [YF_KLineModel] else {
-            return nil
+            return needDrawKLinePositionModels
         }
         for model in models {
             guard let high = model.High,
             let low = model.Low else {
-                return nil
+                return needDrawKLinePositionModels
             }
             if high > maxAssert {
                 maxAssert = high
@@ -190,7 +220,7 @@ extension YF_KLineMainView {
         minAssert *= 0.9991
         let minY = STOCK_CHART_K_LINE_MAIN_VIEW_MIN_Y
         guard let height = parentScrollView?.height else {
-            return nil
+            return needDrawKLinePositionModels
         }
         let maxY =  height * YF_StockChartVariable.kLineMainViewRatio - 15
         let unitValue = CGFloat(maxAssert - minAssert) / (maxY - minY)
@@ -242,8 +272,6 @@ extension YF_KLineMainView {
             delegate?.kLineMainViewPositionCurrent(needDrawKLinePositionModels: needDrawKLinePositionModels)
             return needDrawKLinePositionModels
         }
-        
-        return nil
+        return needDrawKLinePositionModels
     }
-    
 }
