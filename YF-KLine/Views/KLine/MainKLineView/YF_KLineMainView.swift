@@ -13,7 +13,7 @@ protocol YF_KLineMainViewDelegate: NSObjectProtocol {
     func kLineMainViewCurrent(needDrawKLineModels kLineModels: [YF_KLineModel])
     
     ///< 需要绘制的K线位置模型数组
-    func kLineMainViewPositionCurrent(needDrawKLinePositionModels kLinePositionModels: [YF_KLineVolumePositionModel])
+    func kLineMainViewPositionCurrent(needDrawKLinePositionModels kLinePositionModels: [YF_KLinePositionModel])
     
     ///< 当前MainView的最大值和最小值
     func kLineMainViewCurrentPrice(maxPrice: Double, minPrice: Double)
@@ -23,7 +23,7 @@ class YF_KLineMainView: UIView {
     ///< 父ScrollView
     var parentScrollView: UIScrollView?
     
-    var needDrawKLinePositionModels = [YF_KLineVolumePositionModel]()
+    var needDrawKLinePositionModels = [YF_KLinePositionModel]()
     
     var needDrawKLineModels = [YF_KLineModel]()
     
@@ -151,7 +151,7 @@ extension YF_KLineMainView {
     }
     
     ///< 将model转化为Position模型
-    fileprivate func convertToKLinePositionModel() -> [YF_KLineVolumePositionModel]? {
+    fileprivate func convertToKLinePositionModel() -> [YF_KLinePositionModel]? {
         guard let firstModel = needDrawKLineModels.first else {
             return needDrawKLinePositionModels
         }
@@ -264,7 +264,7 @@ extension YF_KLineMainView {
             let modelLow = model.Low ?? 0
             let highPoint = CGPoint(x: xPosition, y: abs(maxY - CGFloat(modelHigh - minAssert) / unitValue))
             let lowPoint = CGPoint(x: xPosition, y: abs(maxY - CGFloat(modelLow - minAssert) / unitValue))
-            let kLinePositionModel = YF_KLineVolumePositionModel.model(withStartPoint: openPoint, endPoint: closePoint, highPoint: highPoint, lowPoint: lowPoint)
+            let kLinePositionModel = YF_KLinePositionModel.model(withOpenPoint: openPoint, closePoint: closePoint, highPoint: highPoint, lowPoint: lowPoint)
             needDrawKLinePositionModels.append(kLinePositionModel)
             
             ///< 响应代理方法

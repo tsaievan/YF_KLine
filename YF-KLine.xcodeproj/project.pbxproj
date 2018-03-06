@@ -28,13 +28,15 @@
 		57126930204560C1001F0FFB /* YF_DefaultConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5712692F204560C1001F0FFB /* YF_DefaultConfig.swift */; };
 		5712693220456162001F0FFB /* UIColor+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5712693120456162001F0FFB /* UIColor+YF_Extension.swift */; };
 		5718364A204CD26D00800725 /* UILabel+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57183649204CD26D00800725 /* UILabel+YF_Extension.swift */; };
-		5789BA16204D262700174DFC /* YF_KLineVolumePositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789BA15204D262700174DFC /* YF_KLineVolumePositionModel.swift */; };
+		5789BA16204D262700174DFC /* YF_KLinePositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789BA15204D262700174DFC /* YF_KLinePositionModel.swift */; };
 		5789BA19204D2C1600174DFC /* YF_KLineVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789BA18204D2C1600174DFC /* YF_KLineVolume.swift */; };
 		57CC3B492046A03F00685264 /* UIView+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC3B482046A03F00685264 /* UIView+YF_Extension.swift */; };
 		57E702C82046345F0086DAD5 /* YF_KLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E702C72046345F0086DAD5 /* YF_KLineView.swift */; };
 		57E702CA204635550086DAD5 /* YF_StockChartSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E702C9204635550086DAD5 /* YF_StockChartSegmentView.swift */; };
 		57E702D32046483C0086DAD5 /* YF_StockChartVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E702D22046483C0086DAD5 /* YF_StockChartVariable.swift */; };
 		57E702D5204650C90086DAD5 /* YF_KLineConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E702D4204650C90086DAD5 /* YF_KLineConfig.swift */; };
+		57EF03F0204E65160005738B /* YF_KLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EF03EF204E65160005738B /* YF_KLine.swift */; };
+		57EF03F2204E69F00005738B /* YF_KLineVolumePositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57EF03F1204E69F00005738B /* YF_KLineVolumePositionModel.swift */; };
 		DE253BE0E4D60DA7465501E0 /* Pods_YF_KLine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FF16219D0097B4B7457E5BD /* Pods_YF_KLine.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,13 +66,15 @@
 		5712692F204560C1001F0FFB /* YF_DefaultConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_DefaultConfig.swift; sourceTree = "<group>"; };
 		5712693120456162001F0FFB /* UIColor+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+YF_Extension.swift"; sourceTree = "<group>"; };
 		57183649204CD26D00800725 /* UILabel+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+YF_Extension.swift"; sourceTree = "<group>"; };
-		5789BA15204D262700174DFC /* YF_KLineVolumePositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineVolumePositionModel.swift; sourceTree = "<group>"; };
+		5789BA15204D262700174DFC /* YF_KLinePositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLinePositionModel.swift; sourceTree = "<group>"; };
 		5789BA18204D2C1600174DFC /* YF_KLineVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineVolume.swift; sourceTree = "<group>"; };
 		57CC3B482046A03F00685264 /* UIView+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+YF_Extension.swift"; sourceTree = "<group>"; };
 		57E702C72046345F0086DAD5 /* YF_KLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineView.swift; sourceTree = "<group>"; };
 		57E702C9204635550086DAD5 /* YF_StockChartSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_StockChartSegmentView.swift; sourceTree = "<group>"; };
 		57E702D22046483C0086DAD5 /* YF_StockChartVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_StockChartVariable.swift; sourceTree = "<group>"; };
 		57E702D4204650C90086DAD5 /* YF_KLineConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineConfig.swift; sourceTree = "<group>"; };
+		57EF03EF204E65160005738B /* YF_KLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLine.swift; sourceTree = "<group>"; };
+		57EF03F1204E69F00005738B /* YF_KLineVolumePositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineVolumePositionModel.swift; sourceTree = "<group>"; };
 		7B424C63BB5D9AB892E0A358 /* Pods-YF-KLine.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YF-KLine.release.xcconfig"; path = "Pods/Target Support Files/Pods-YF-KLine/Pods-YF-KLine.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,6 +150,7 @@
 		57083C1320480A420078AE04 /* MainKLineView */ = {
 			isa = PBXGroup;
 			children = (
+				57EF03EE204E650A0005738B /* Line */,
 				57083C002047CAAE0078AE04 /* YF_KLineMainView.swift */,
 			);
 			path = MainKLineView;
@@ -267,7 +272,8 @@
 			children = (
 				5712692D20455869001F0FFB /* YF_KLineGroupModel.swift */,
 				57083C0C2047EAD60078AE04 /* YF_KLineModel.swift */,
-				5789BA15204D262700174DFC /* YF_KLineVolumePositionModel.swift */,
+				5789BA15204D262700174DFC /* YF_KLinePositionModel.swift */,
+				57EF03F1204E69F00005738B /* YF_KLineVolumePositionModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -282,6 +288,14 @@
 				5712691F20452EDA001F0FFB /* Info.plist */,
 			);
 			path = Others;
+			sourceTree = "<group>";
+		};
+		57EF03EE204E650A0005738B /* Line */ = {
+			isa = PBXGroup;
+			children = (
+				57EF03EF204E65160005738B /* YF_KLine.swift */,
+			);
+			path = Line;
 			sourceTree = "<group>";
 		};
 		A38A226A30AA3074F6C8E67F /* Pods */ = {
@@ -426,14 +440,16 @@
 			files = (
 				57E702D32046483C0086DAD5 /* YF_StockChartVariable.swift in Sources */,
 				5712692A204543AB001F0FFB /* YF_NetworkTool.swift in Sources */,
+				57EF03F0204E65160005738B /* YF_KLine.swift in Sources */,
 				5718364A204CD26D00800725 /* UILabel+YF_Extension.swift in Sources */,
 				57083C012047CAAE0078AE04 /* YF_KLineMainView.swift in Sources */,
 				57083C052047D4470078AE04 /* YF_KLineAccessoryView.swift in Sources */,
+				57EF03F2204E69F00005738B /* YF_KLineVolumePositionModel.swift in Sources */,
 				57083C0B2047E67E0078AE04 /* YF_AccessoryMAView.swift in Sources */,
 				57E702D5204650C90086DAD5 /* YF_KLineConfig.swift in Sources */,
 				5712692C204552C1001F0FFB /* YF_StockChartView.swift in Sources */,
 				57126930204560C1001F0FFB /* YF_DefaultConfig.swift in Sources */,
-				5789BA16204D262700174DFC /* YF_KLineVolumePositionModel.swift in Sources */,
+				5789BA16204D262700174DFC /* YF_KLinePositionModel.swift in Sources */,
 				57E702CA204635550086DAD5 /* YF_StockChartSegmentView.swift in Sources */,
 				57E702C82046345F0086DAD5 /* YF_KLineView.swift in Sources */,
 				57083C0D2047EAD60078AE04 /* YF_KLineModel.swift in Sources */,

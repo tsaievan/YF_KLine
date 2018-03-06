@@ -113,7 +113,7 @@ class YF_KLineView: UIView {
             make.top.equalTo(scrollView).offset(5)
             make.left.equalTo(scrollView)
             // FIXME: - 这里先改成SCREEN_WIDTH - 100, 先出来视图
-            make.width.equalTo(SCREEN_WIDTH - 100)
+            make.width.equalTo(SCREEN_WIDTH)
             ///< 获取K线主视图高度约束, 保存在属性中
             kLineMainViewHeightConstraint =
                 make.height.equalTo(scrollView).multipliedBy(mainViewRatio).constraint
@@ -339,7 +339,7 @@ extension YF_KLineView: UIScrollViewDelegate {
 
 // MARK: - YF_KLineMainViewDelegate代理方法
 extension YF_KLineView: YF_KLineMainViewDelegate {
-    func kLineMainViewPositionCurrent(needDrawKLinePositionModels kLinePositionModels: [YF_KLineVolumePositionModel]) {
+    func kLineMainViewPositionCurrent(needDrawKLinePositionModels kLinePositionModels: [YF_KLinePositionModel]) {
         
     }
     
