@@ -50,8 +50,9 @@ extension YF_KLine {
             strokeColor = K_LINE_INCREASE_COLOR
         }
         ///< 这里先强行解包
-        context.setStrokeColor(strokeColor!.cgColor)
-        
+        let color = strokeColor!.cgColor
+        context.setStrokeColor(color)
+        return nil;
     }
     
 }
