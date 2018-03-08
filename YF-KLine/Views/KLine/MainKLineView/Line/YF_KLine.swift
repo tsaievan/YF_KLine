@@ -42,9 +42,9 @@ extension YF_KLine {
             return strokeColor
         }
         ///< 设置画笔颜色
-        let openPoint = positionModel.OpenPoint?.y ?? 0
-        let closePoint = positionModel.ClosePoint?.y ?? 0
-        if openPoint > closePoint {
+        let openPointY = positionModel.OpenPoint?.y ?? 0
+        let closePointY = positionModel.ClosePoint?.y ?? 0
+        if openPointY > closePointY {
             strokeColor = K_LINE_DECREASE_COLOR
         }else {
             strokeColor = K_LINE_INCREASE_COLOR
@@ -52,16 +52,22 @@ extension YF_KLine {
         ///< 这里先强行解包
         context.setStrokeColor(strokeColor!.cgColor)
         
+        let highPoint = positionModel.HighPoint ?? .zero
+        let lowPoint = positionModel.LowPoint ?? .zero
+        let openPoint = positionModel.OpenPoint ?? .zero
+        let closePoint = positionModel.ClosePoint ?? .zero
         ///< 画中间较宽的开收盘线段-实体线
         ///< 设置线宽
         context.setLineWidth(YF_StockChartVariable.kLineWidth)
-        let highPoint = positionModel.HighPoint ?? CGPoint.zero
-        let lowPoint = positionModel.LowPoint ?? CGPoint.zero
-        
-        let solidPoints:[CGPoint] = [highPoint, lowPoint]
+        let solidPoints: [CGPoint] = [openPoint, closePoint]
         ///< 这个函数会创建一条新的路径, 添加独立的线段到这条路径中, 然后再画这条路径
         ///< 当前的路径将被清除
         context.strokeLineSegments(between: solidPoints)
+        
+        ///< 画上下影线
+        context.setLineWidth(STOCK_CHART_SHADOW_LINE_WIDTH)
+        let shadowPoints: [CGPoint] = [highPoint, lowPoint]
+        context.strokeLineSegments(between: shadowPoints)
         
         ///< 计算每个模型对应的时间字符串
         let timeInterval = (model.date ?? 0) / 1000.0
