@@ -83,7 +83,6 @@ class YF_KLineView: UIView {
     ///< scrollView的懒加载属性
     fileprivate lazy var scrollView: UIScrollView = {
         let sv = UIScrollView()
-        sv.backgroundColor = .white
         sv.showsVerticalScrollIndicator = false
         sv.showsHorizontalScrollIndicator = false
         sv.bounces = false
@@ -113,7 +112,7 @@ class YF_KLineView: UIView {
             make.top.equalTo(scrollView).offset(5)
             make.left.equalTo(scrollView)
             // FIXME: - 这里先改成SCREEN_WIDTH - 100, 先出来视图
-            make.width.equalTo(SCREEN_WIDTH)
+            make.width.equalTo(0)
             ///< 获取K线主视图高度约束, 保存在属性中
             kLineMainViewHeightConstraint =
                 make.height.equalTo(scrollView).multipliedBy(mainViewRatio).constraint
@@ -338,6 +337,7 @@ extension YF_KLineView: UIScrollViewDelegate {
 }
 
 // MARK: - YF_KLineMainViewDelegate代理方法
+///< MainView更新时及时通知下方的view进行相应内容更新
 extension YF_KLineView: YF_KLineMainViewDelegate {
     func kLineMainViewPositionCurrent(needDrawKLinePositionModels kLinePositionModels: [YF_KLinePositionModel]) {
         

@@ -12,14 +12,16 @@ import Alamofire
 ///< 这里先简单封装一下
 class YF_NetworkTool {
     class func request(url: String, params: [String : Any]?, success: (([String : Any]) -> ())?, failue: (() -> ())?) {
-        Alamofire.request(url, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (result) in
-            if result.error != nil {
-                failue?()
-            }else {
-                if let data = result.data,
-                    let rawValue = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments),
-                    let dict = rawValue as? [String : Any] {
-                    success?(dict)
+        DispatchQueue.global().async {
+            Alamofire.request(url, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (result) in
+                if result.error != nil {
+                    failue?()
+                }else {
+                    if let data = result.data,
+                        let rawValue = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments),
+                        let dict = rawValue as? [String : Any] {
+                        success?(dict)
+                    }
                 }
             }
         }

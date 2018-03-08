@@ -18,7 +18,6 @@ class YF_StockChartView: UIView {
     ///< K线图View
     lazy var kLine: YF_KLineView = {
         let k = YF_KLineView()
-        k.backgroundColor = .red
         addSubview(k)
         k.snp.makeConstraints { (make) in
             make.bottom.right.top.equalTo(self)

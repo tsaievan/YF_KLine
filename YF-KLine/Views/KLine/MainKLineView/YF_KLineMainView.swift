@@ -69,13 +69,60 @@ class YF_KLineMainView: UIView {
     func drawMainView() {
         extractNeedDrawModels()
         convertToKLinePositionModel()
-        setNeedsDisplay()
+        self.setNeedsDisplay()
+//        setNeedsLayout()
     }
     
     ///< 更新宽度
     func updateMainViewWidth() {
         
     }
+    
+    override func draw(_ rect: CGRect) {
+        
+    }
+    
+//    override func draw(_ rect: CGRect) {
+//        super.draw(rect)
+//        guard let context = UIGraphicsGetCurrentContext() else {
+//            return
+//        }
+//
+//        ///< 如果数组为空, 则不进行绘制, 直接设置本view为背景
+//        if kLineModels == nil {
+//            context.clear(rect)
+//            context.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
+//            context.fill(rect)
+//            return
+//        }
+//
+//        ///< 设置view的背景颜色
+//        var kLineColors = [UIColor]()
+//        context.clear(rect)
+//        context.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
+//        context.fill(rect)
+//
+//        ///< 设置显示日期的区域背景颜色
+//        context.setFillColor(ASSISTANT_BACKGROUND_COLOR.cgColor)
+//        let dateRect = CGRect(x: 0, y: height - 15, width: width, height: height)
+//        context.fill(dateRect)
+//
+//        ///< 这里开始画各种线
+//        if mainViewType == .kLine {
+//            let kLine = YF_KLine(context: context)
+//            kLine.maxY = height - 15
+//            for (idx, positionModel) in needDrawKLinePositionModels.enumerated() {
+//                kLine.kLinePositionModel = positionModel
+//                kLine.kLineModel = needDrawKLineModels[idx]
+//                guard let kLineColor = kLine.draw() else {
+//                    return
+//                }
+//                kLineColors.append(kLineColor)
+//            }
+//        }else {
+//
+//        }
+//    }
 }
 
 
@@ -91,51 +138,6 @@ extension YF_KLineMainView {
     }
 }
 
-///< 绘图的相关方法
-extension YF_KLineMainView {
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        guard let context = UIGraphicsGetCurrentContext() else {
-            return
-        }
-        
-        ///< 如果数组为空, 则不进行绘制, 直接设置本view为背景
-        if kLineModels == nil {
-            context.clear(rect)
-            context.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
-            context.fill(rect)
-            return
-        }
-        
-        ///< 设置view的背景颜色
-        var kLineColors = [UIColor]()
-        context.clear(rect)
-        context.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
-        context.fill(rect)
-        
-        ///< 设置显示日期的区域背景颜色
-        context.setFillColor(ASSISTANT_BACKGROUND_COLOR.cgColor)
-        let dateRect = CGRect(x: 0, y: height - 15, width: width, height: height)
-        context.fill(dateRect)
-        
-        ///< 这里开始画各种线
-        if mainViewType == .kLine {
-            let kLine = YF_KLine(context: context)
-            kLine.maxY = height - 15
-            for (idx, positionModel) in needDrawKLinePositionModels.enumerated() {
-                kLine.kLinePositionModel = positionModel
-                kLine.kLineModel = needDrawKLineModels[idx]
-                guard let kLineColor = kLine.draw() else {
-                    return
-                }
-                kLineColors.append(kLineColor)
-            }
-        }else {
-            
-        }
-    }
-}
-
 extension YF_KLineMainView {
     fileprivate func extractNeedDrawModels() {
         let lineGap = YF_StockChartVariable.kLineGap
@@ -147,9 +149,10 @@ extension YF_KLineMainView {
         }
         let needDrawKLineCount = Int((scrollViewWidth - lineGap) / (lineGap + lineWidth))
         var needDrawKLineStartIndex: Int
-        guard let startIndex = pinchStartIndex else {
-            return
-        }
+//        guard let startIndex = pinchStartIndex else {
+//            return
+//        }
+        let startIndex = pinchStartIndex ?? 0
         if startIndex > 0 {
             needDrawKLineStartIndex = startIndex
             needDrawStartIndex = startIndex

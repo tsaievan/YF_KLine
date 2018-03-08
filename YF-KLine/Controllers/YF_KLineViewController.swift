@@ -61,7 +61,6 @@ extension YF_KLineViewController {
 // MARK: 设置UI
 extension YF_KLineViewController {
     fileprivate func setupUI() {
-        view.backgroundColor = UIColor.red
         view.addSubview(stockChartView)
         ///< 设置stockView的约束
         makeConstraints()
