@@ -35,6 +35,9 @@ class YF_KLineMainView: UIView {
     ///< Accessory指标种类
     var targetLineStatus: YF_StockChartTargetLineStatus?
     
+    ///< 捏合点
+    var pinchStartIndex: Int?
+    
     ///< k线模型对象的数组
     var kLineModels: [Any]? {
         didSet {
@@ -61,10 +64,7 @@ class YF_KLineMainView: UIView {
         return Int(startXPosition)
         
     }()
-    
-    ///< 捏合点
-    var pinchStartIndex: Int?
-    
+
     ///< 画K线主视图
     func drawMainView() {
         extractNeedDrawModels()
@@ -76,36 +76,63 @@ class YF_KLineMainView: UIView {
     func updateMainViewWidth() {
         
     }
-    
+}
+
+
+// MARK: - 系统方法
+extension YF_KLineMainView {
+    override func didMoveToWindow() {
+        guard let superView = superview else {
+            super.didMoveToWindow()
+            return
+        }
+        parentScrollView = superView as? UIScrollView
+        super.didMoveToWindow()
+    }
 }
 
 ///< 绘图的相关方法
 extension YF_KLineMainView {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        let context = UIGraphicsGetCurrentContext()
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
         
         ///< 如果数组为空, 则不进行绘制, 直接设置本view为背景
         if kLineModels == nil {
-            context?.clear(rect)
-            context?.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
-            context?.fill(rect)
+            context.clear(rect)
+            context.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
+            context.fill(rect)
             return
         }
         
         ///< 设置view的背景颜色
         var kLineColors = [UIColor]()
-        context?.clear(rect)
-        context?.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
-        context?.fill(rect)
+        context.clear(rect)
+        context.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
+        context.fill(rect)
         
         ///< 设置显示日期的区域背景颜色
-        context?.setFillColor(ASSISTANT_BACKGROUND_COLOR.cgColor)
+        context.setFillColor(ASSISTANT_BACKGROUND_COLOR.cgColor)
         let dateRect = CGRect(x: 0, y: height - 15, width: width, height: height)
-        context?.fill(dateRect)
+        context.fill(dateRect)
         
-        
-        
+        ///< 这里开始画各种线
+        if mainViewType == .kLine {
+            let kLine = YF_KLine(context: context)
+            kLine.maxY = height - 15
+            for (idx, positionModel) in needDrawKLinePositionModels.enumerated() {
+                kLine.kLinePositionModel = positionModel
+                kLine.kLineModel = needDrawKLineModels[idx]
+                guard let kLineColor = kLine.draw() else {
+                    return
+                }
+                kLineColors.append(kLineColor)
+            }
+        }else {
+            
+        }
     }
 }
 
