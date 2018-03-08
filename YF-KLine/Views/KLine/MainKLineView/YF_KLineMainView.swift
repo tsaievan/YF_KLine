@@ -39,9 +39,11 @@ class YF_KLineMainView: UIView {
     var pinchStartIndex: Int?
     
     ///< k线模型对象的数组
+    
+    ///< 在kLineModels的setter方法里面更新KLineMainView的宽度
     var kLineModels: [Any]? {
         didSet {
-            
+            updateMainViewWidth()
         }
     }
     
@@ -64,65 +66,81 @@ class YF_KLineMainView: UIView {
         return Int(startXPosition)
         
     }()
-
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     ///< 画K线主视图
     func drawMainView() {
         extractNeedDrawModels()
         convertToKLinePositionModel()
-        self.setNeedsDisplay()
-//        setNeedsLayout()
+        setNeedsDisplay()
     }
     
     ///< 更新宽度
     func updateMainViewWidth() {
-        
+        guard let models = kLineModels,
+        let parentView = parentScrollView else {
+            return
+        }
+        var kLineViewWidth = CGFloat(models.count) * (YF_StockChartVariable.kLineWidth) + CGFloat(models.count + 1) * (YF_StockChartVariable.kLineGap) + 10
+        if kLineViewWidth < parentView.width {
+            kLineViewWidth = parentView.width
+        }
+        snp.updateConstraints { (update) in
+            update.width.equalTo(kLineViewWidth)
+        }
+        layoutIfNeeded()
+        parentScrollView?.contentSize = CGSize(width: kLineViewWidth, height: parentView.height)
     }
     
     override func draw(_ rect: CGRect) {
-        
+        super.draw(rect)
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
+
+        ///< 如果数组为空, 则不进行绘制, 直接设置本view为背景
+        if kLineModels == nil {
+            context.clear(rect)
+            context.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
+            context.fill(rect)
+            return
+        }
+
+        ///< 设置view的背景颜色
+        var kLineColors = [UIColor]()
+        context.clear(rect)
+        context.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
+        context.fill(rect)
+
+        ///< 设置显示日期的区域背景颜色
+        context.setFillColor(ASSISTANT_BACKGROUND_COLOR.cgColor)
+        let dateRect = CGRect(x: 0, y: height - 15, width: width, height: height)
+        context.fill(dateRect)
+
+        ///< 这里开始画各种线
+        if mainViewType == .kLine {
+            let kLine = YF_KLine(context: context)
+            kLine.maxY = height - 15
+            for (idx, positionModel) in needDrawKLinePositionModels.enumerated() {
+                kLine.kLinePositionModel = positionModel
+                kLine.kLineModel = needDrawKLineModels[idx]
+                guard let kLineColor = kLine.draw() else {
+                    return
+                }
+                kLineColors.append(kLineColor)
+            }
+        }else {
+
+        }
     }
-    
-//    override func draw(_ rect: CGRect) {
-//        super.draw(rect)
-//        guard let context = UIGraphicsGetCurrentContext() else {
-//            return
-//        }
-//
-//        ///< 如果数组为空, 则不进行绘制, 直接设置本view为背景
-//        if kLineModels == nil {
-//            context.clear(rect)
-//            context.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
-//            context.fill(rect)
-//            return
-//        }
-//
-//        ///< 设置view的背景颜色
-//        var kLineColors = [UIColor]()
-//        context.clear(rect)
-//        context.setFillColor(CHARTVIEW_BACKGROUND_COLOR.cgColor)
-//        context.fill(rect)
-//
-//        ///< 设置显示日期的区域背景颜色
-//        context.setFillColor(ASSISTANT_BACKGROUND_COLOR.cgColor)
-//        let dateRect = CGRect(x: 0, y: height - 15, width: width, height: height)
-//        context.fill(dateRect)
-//
-//        ///< 这里开始画各种线
-//        if mainViewType == .kLine {
-//            let kLine = YF_KLine(context: context)
-//            kLine.maxY = height - 15
-//            for (idx, positionModel) in needDrawKLinePositionModels.enumerated() {
-//                kLine.kLinePositionModel = positionModel
-//                kLine.kLineModel = needDrawKLineModels[idx]
-//                guard let kLineColor = kLine.draw() else {
-//                    return
-//                }
-//                kLineColors.append(kLineColor)
-//            }
-//        }else {
-//
-//        }
-//    }
 }
 
 
@@ -149,9 +167,6 @@ extension YF_KLineMainView {
         }
         let needDrawKLineCount = Int((scrollViewWidth - lineGap) / (lineGap + lineWidth))
         var needDrawKLineStartIndex: Int
-//        guard let startIndex = pinchStartIndex else {
-//            return
-//        }
         let startIndex = pinchStartIndex ?? 0
         if startIndex > 0 {
             needDrawKLineStartIndex = startIndex
@@ -165,13 +180,13 @@ extension YF_KLineMainView {
         }
         if needDrawKLineStartIndex < models.count {
             if needDrawKLineStartIndex + needDrawKLineCount < models.count {
-                let subArry = models[needDrawKLineStartIndex...needDrawKLineCount]
+                let subArry = models[needDrawKLineStartIndex..<needDrawKLineCount]
                 //FIXME:- 数组的切片还不怎么会用
                 let combineArray: [YF_KLineModel] = (needDrawKLineModels as [Any] + subArry) as! [YF_KLineModel]
                 needDrawKLineModels = combineArray
             }else {
                 let endIndex = models.count - needDrawKLineStartIndex
-                let subArry = models[needDrawKLineStartIndex...endIndex]
+                let subArry = models[needDrawKLineStartIndex..<endIndex]
                 let combineArray: [YF_KLineModel] = (needDrawKLineModels as [Any] + subArry) as! [YF_KLineModel]
                 needDrawKLineModels = combineArray
             }
@@ -187,11 +202,8 @@ extension YF_KLineMainView {
         }
         var minAssert = firstModel.Low ?? 0
         var maxAssert = firstModel.High ?? 0
-        
-        guard let models = kLineModels as? [YF_KLineModel] else {
-            return needDrawKLinePositionModels
-        }
-        for model in models {
+
+        for model in needDrawKLineModels {
             guard let high = model.High,
             let low = model.Low else {
                 return needDrawKLinePositionModels
@@ -256,7 +268,7 @@ extension YF_KLineMainView {
         let unitValue = CGFloat(maxAssert - minAssert) / (maxY - minY)
         needDrawKLinePositionModels.removeAll()
         //FIXME:- 其他的线先不画, 先画K线
-        for (idx, model) in models.enumerated() {
+        for (idx, model) in needDrawKLineModels.enumerated() {
             let xPosition = CGFloat(startXPosition) + CGFloat(idx) * (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth)
             let open = model.Open ?? 0.0
             let yPosition = abs(maxY - CGFloat(open - minAssert) / unitValue)
@@ -271,15 +283,15 @@ extension YF_KLineMainView {
                     closePointY = openPoint.y + STOCK_CHART_K_LINE_MIN_WIDTH
                 }else {
                     if idx > 0 {
-                        let preKLineModel = models[idx - 1]
+                        let preKLineModel = needDrawKLineModels[idx - 1]
                         let preClose = preKLineModel.Close ?? 0
                         if open > preClose {
                             openPoint.y = closePointY + STOCK_CHART_K_LINE_MIN_WIDTH
                         }else {
                             closePointY = openPoint.y + STOCK_CHART_K_LINE_MIN_WIDTH
                         }
-                    }else if (idx + 1) < models.count {
-                        let subKLineModel = models[idx + 1]
+                    }else if (idx + 1) < needDrawKLineModels.count {
+                        let subKLineModel = needDrawKLineModels[idx + 1]
                         let subOpen = subKLineModel.Open ?? 0
                         if close < subOpen {
                             openPoint.y = closePointY + STOCK_CHART_K_LINE_MIN_WIDTH
@@ -300,7 +312,6 @@ extension YF_KLineMainView {
             ///< 响应代理方法
             delegate?.kLineMainViewCurrentPrice(maxPrice: maxAssert, minPrice: minAssert)
             delegate?.kLineMainViewPositionCurrent(needDrawKLinePositionModels: needDrawKLinePositionModels)
-            return needDrawKLinePositionModels
         }
         return needDrawKLinePositionModels
     }
