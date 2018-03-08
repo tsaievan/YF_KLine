@@ -30,6 +30,7 @@
 		5718364A204CD26D00800725 /* UILabel+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57183649204CD26D00800725 /* UILabel+YF_Extension.swift */; };
 		5789BA16204D262700174DFC /* YF_KLinePositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789BA15204D262700174DFC /* YF_KLinePositionModel.swift */; };
 		5789BA19204D2C1600174DFC /* YF_KLineVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789BA18204D2C1600174DFC /* YF_KLineVolume.swift */; };
+		579D284820516A07007F3FF5 /* YF_MALine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D284720516A07007F3FF5 /* YF_MALine.swift */; };
 		57CC3B492046A03F00685264 /* UIView+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CC3B482046A03F00685264 /* UIView+YF_Extension.swift */; };
 		57E702C82046345F0086DAD5 /* YF_KLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E702C72046345F0086DAD5 /* YF_KLineView.swift */; };
 		57E702CA204635550086DAD5 /* YF_StockChartSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E702C9204635550086DAD5 /* YF_StockChartSegmentView.swift */; };
@@ -68,6 +69,7 @@
 		57183649204CD26D00800725 /* UILabel+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+YF_Extension.swift"; sourceTree = "<group>"; };
 		5789BA15204D262700174DFC /* YF_KLinePositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLinePositionModel.swift; sourceTree = "<group>"; };
 		5789BA18204D2C1600174DFC /* YF_KLineVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineVolume.swift; sourceTree = "<group>"; };
+		579D284720516A07007F3FF5 /* YF_MALine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_MALine.swift; sourceTree = "<group>"; };
 		57CC3B482046A03F00685264 /* UIView+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+YF_Extension.swift"; sourceTree = "<group>"; };
 		57E702C72046345F0086DAD5 /* YF_KLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineView.swift; sourceTree = "<group>"; };
 		57E702C9204635550086DAD5 /* YF_StockChartSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_StockChartSegmentView.swift; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 			isa = PBXGroup;
 			children = (
 				57EF03EF204E65160005738B /* YF_KLine.swift */,
+				579D284720516A07007F3FF5 /* YF_MALine.swift */,
 			);
 			path = Line;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 				5718364A204CD26D00800725 /* UILabel+YF_Extension.swift in Sources */,
 				57083C012047CAAE0078AE04 /* YF_KLineMainView.swift in Sources */,
 				57083C052047D4470078AE04 /* YF_KLineAccessoryView.swift in Sources */,
+				579D284820516A07007F3FF5 /* YF_MALine.swift in Sources */,
 				57EF03F2204E69F00005738B /* YF_KLineVolumePositionModel.swift in Sources */,
 				57083C0B2047E67E0078AE04 /* YF_AccessoryMAView.swift in Sources */,
 				57E702D5204650C90086DAD5 /* YF_KLineConfig.swift in Sources */,

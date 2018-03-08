@@ -42,4 +42,15 @@ let K_LINE_INCREASE_COLOR = UIColor.red
 ///< 下跌K线颜色
 let K_LINE_DECREASE_COLOR = UIColor.cyan
 
+///< BOLL_UP颜色
+let BOLL_UP_COLOR = UIColor.purple
+
+///< BOLL_MB颜色
+let BOLL_MB_COLOR = UIColor.white
+
+///< BOLL_DN颜色
+let BOLL_DN_COLOR = UIColor.green
+
+
+
 

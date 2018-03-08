@@ -33,6 +33,15 @@ enum YF_CoinType {
     case None ///< 未定义货币
 }
 
+///< 均线类型
+enum YF_MAType: Int {
+    case MA7Type = 0 ///< 7日均线
+    case MA30Type ///< 30日均线
+    case BOLL_MB ///< MB
+    case BOLL_UP ///< UP
+    case BOLL_DN ///< DN
+}
+
 ///< K线图YView的宽度
 let STOCK_CHART_K_LINE_PRICE_VIEW_WIDTH: CGFloat = 47
 
@@ -51,4 +60,8 @@ let STOCK_CHART_SCALE_SCALE: CGFloat = 0.03
 ///< K线图最小的宽度
 let STOCK_CHART_K_LINE_MIN_WIDTH: CGFloat = 2
 
+///< 上下影的宽度
 let STOCK_CHART_SHADOW_LINE_WIDTH: CGFloat = 1
+
+///< MA线的宽度
+let STOCK_CHART_MA_LINE_WIDTH: CGFloat = 0.8

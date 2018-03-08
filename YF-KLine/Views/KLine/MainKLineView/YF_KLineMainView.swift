@@ -124,6 +124,9 @@ class YF_KLineMainView: UIView {
         context.setFillColor(ASSISTANT_BACKGROUND_COLOR.cgColor)
         let dateRect = CGRect(x: 0, y: height - 15, width: width, height: height)
         context.fill(dateRect)
+        
+        ///< 初始化MA线对象
+        let MALine = YF_MALine(context: context)
 
         ///< 这里开始画各种线
         if mainViewType == .kLine {
@@ -138,7 +141,38 @@ class YF_KLineMainView: UIView {
                 kLineColors.append(kLineColor)
             }
         }else {
-
+            var positions = [CGPoint]()
+            for positonModel in needDrawKLinePositionModels {
+                let openPointY = positonModel.OpenPoint?.y ?? 0.0
+                let closePointY = positonModel.ClosePoint?.y ?? 0.0
+                let strokeColor = openPointY < closePointY ? K_LINE_INCREASE_COLOR : K_LINE_DECREASE_COLOR
+                kLineColors.append(strokeColor)
+                ///< 添加位置模型的收盘点
+                positions.append(positonModel.ClosePoint ?? .zero)
+            }
+            MALine.MAPositions = positions
+            MALine.MAType = YF_MAType(rawValue: -1)
+            MALine.draw()
+            
+            var lastDrawDatePoint = CGPoint.zero
+            for (idx, _) in needDrawKLinePositionModels.enumerated() {
+                let point = positions[idx]
+                let date = Date(timeIntervalSince1970: needDrawKLineModels[idx].date ?? 0)
+                let formatter = DateFormatter()
+                formatter.dateFormat = "HH:mm"
+                let dateStr = formatter.string(from: date)
+                let drawDatePoint = CGPoint(x: point.x + 1, y: height + 1.5)
+                if lastDrawDatePoint == .zero || point.x - lastDrawDatePoint.x > 60 {
+                    (dateStr as NSString).draw(at: drawDatePoint, withAttributes: [.font : UIFont.systemFont(ofSize: 11),
+                                                                                   .foregroundColor : ASSISTANT_TEXT_COLOR])
+                    lastDrawDatePoint = drawDatePoint
+                }
+            }
+        }
+        if targetLineStatus == .BOLL {
+            ///< 画BOLL MB线 标准线
+            MALine.MAType = .BOLL_MB
+            //TODO: - BOLL点模型还没处理好
         }
     }
 }
