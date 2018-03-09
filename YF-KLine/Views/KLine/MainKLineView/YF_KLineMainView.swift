@@ -38,8 +38,22 @@ class YF_KLineMainView: UIView {
     ///< 捏合点
     var pinchStartIndex: Int?
     
-    ///< k线模型对象的数组
+    ///< 7日均线的点的集合, 初始化
+    var MA7Positions = [CGPoint]()
     
+    ///< 30日均线的点的集合, 初始化
+    var MA30Positions = [CGPoint]()
+    
+    ///< BOLL_MB线的点的集合, 初始化
+    var BOLL_MBPositions = [CGPoint]()
+    
+    ///< BOLL_DN线的点的集合, 初始化
+    var BOLL_DNPositions = [CGPoint]()
+
+    ///< BOLL_UP线的点的集合, 初始化
+    var BOLL_UPPositions = [CGPoint]()
+    
+    ///< k线模型对象的数组
     ///< 在kLineModels的setter方法里面更新KLineMainView的宽度
     var kLineModels: [Any]? {
         didSet {
@@ -173,6 +187,7 @@ class YF_KLineMainView: UIView {
             ///< 画BOLL MB线 标准线
             MALine.MAType = .BOLL_MB
             //TODO: - BOLL点模型还没处理好
+            
         }
     }
 }
@@ -342,6 +357,61 @@ extension YF_KLineMainView {
             let lowPoint = CGPoint(x: xPosition, y: abs(maxY - CGFloat(modelLow - minAssert) / unitValue))
             let kLinePositionModel = YF_KLinePositionModel.model(withOpenPoint: openPoint, closePoint: closePoint, highPoint: highPoint, lowPoint: lowPoint)
             needDrawKLinePositionModels.append(kLinePositionModel)
+            
+            ///< MA坐标转换
+            ///< 再注明一下, maxY是屏幕的高度 * K线主view所占的比例 - 15
+            var ma7Y = maxY
+            var ma30Y = maxY
+            if unitValue > 0.0000001 {
+                if let ma7 = model.MA7 {
+                    ma7Y = maxY - CGFloat(ma7 - minAssert) / unitValue
+                }
+                
+                if let ma30 = model.MA30 {
+                    ma30Y = maxY - CGFloat(ma30 - minAssert) / unitValue
+                }
+            }
+            let ma7Point = CGPoint(x: xPosition, y: ma7Y)
+            let ma30Point = CGPoint(x: xPosition, y: ma30Y)
+            
+            if model.MA7 != nil {
+                MA7Positions.append(ma7Point)
+            }
+            if model.MA30 != nil {
+                MA7Positions.append(ma30Point)
+            }
+            
+            ///< Accessory指标种类是BOLL线
+            if targetLineStatus == .BOLL {
+                ///< BOLL坐标转换
+                var boll_mbY = maxY
+                var boll_upY = maxY
+                var boll_dnY = maxY
+                
+                if unitValue > 0.0000001 {
+                    if let boll_mb = model.BOLL_MB {
+                        boll_mbY = maxY - CGFloat(boll_mb - minAssert) / unitValue
+                    }
+                    
+                    if let boll_dn = model.BOLL_DN {
+                        boll_dnY = maxY - CGFloat(boll_dn - minAssert) / unitValue
+                    }
+                    
+                    if let boll_up = model.BOLL_UP {
+                        boll_upY = maxY - CGFloat(boll_up - minAssert) / unitValue
+                    }
+                }
+                
+                let boll_mbPoint = CGPoint(x: xPosition, y: boll_mbY)
+                let boll_upPoint = CGPoint(x: xPosition, y: boll_upY)
+                let boll_dnPoint = CGPoint(x: xPosition, y: boll_dnY)
+                
+                if model.BOLL_MB != nil {
+                    BOLL_MBPositions.append(boll_mbPoint)
+                    BOLL_DNPositions.append(boll_dnPoint)
+                    BOLL_UPPositions.append(boll_upPoint)
+                }
+            }
             
             ///< 响应代理方法
             delegate?.kLineMainViewCurrentPrice(maxPrice: maxAssert, minPrice: minAssert)
