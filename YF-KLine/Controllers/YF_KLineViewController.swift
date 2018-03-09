@@ -137,10 +137,12 @@ extension YF_KLineViewController {
     ///< 加载数据
     fileprivate func reloadData() {
         var params = [String : Any]()
-        params["period"] = self.currentType
-        params["symbol"] = "btcusdt"
-        params["size"] = "300"
-        YF_NetworkTool.request(url: "https://api.huobi.pro/market/history/kline", params: params, success: { (response) in
+//        params["period"] = self.currentType
+//        params["symbol"] = "btcusdt"
+//        params["size"] = "300"
+        ///< http://img1.money.126.net/data/hs/kline/day/history/2015/1399001.json
+        ///< https://api.huobi.pro/market/history/kline
+        YF_NetworkTool.request(url: "http://img1.money.126.net/data/hs/kline/day/history/2015/1399001.json", params: params, success: { (response) in
             guard let dict = response["data"] as? [Any],
                 let groupModel = YF_KLineGroupModel.getObject(array: dict), ///< 字典转模型
                 let type = self.currentType else {

@@ -532,25 +532,13 @@ class YF_KLineModel: NSObject {
     }()
     
     ///< 初始化一些基本数据
-    func initWith(dictionary dict: [String : Any]) {
-        if let d = dict["id"] {
-            date = d as? Double
-        }
-        if let open = dict["open"] {
-            Open = open as? Double
-        }
-        if let low = dict["low"] {
-            Low = low as? Double
-        }
-        if let high = dict["high"] {
-            High = high as? Double
-        }
-        if let close = dict["close"] {
-            Close = close as? Double
-        }
-        if let volume = dict["vol"] {
-            Volume = volume as? Double
-        }
+    func initWith(array: [Any]) {
+        date = array[0] as? Double
+        Open = array[1] as? Double
+        Close = array[2] as? Double
+        High = array[3] as? Double
+        Low = array[4] as? Double
+        Volume = array[5] as? Double
         SumOfLastClose = (Close ?? 0) + (previousKLineModel?.SumOfLastClose ?? 0)
         SumOfLastVolume = (Volume ?? 0) + (previousKLineModel?.SumOfLastVolume ?? 0)
     }
