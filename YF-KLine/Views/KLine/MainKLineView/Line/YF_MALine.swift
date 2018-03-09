@@ -81,7 +81,7 @@ extension YF_MALine {
             ///< 图形上下文移到第一个点
             context.move(to: firstPoint)
             ///< 然后遍历余下的点, 把他们连接起来
-            for point in maPositions {
+            for point in maPositions[1...] {
                 context.addLine(to: point)
             }
         }

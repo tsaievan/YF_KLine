@@ -186,8 +186,28 @@ class YF_KLineMainView: UIView {
         if targetLineStatus == .BOLL {
             ///< 画BOLL MB线 标准线
             MALine.MAType = .BOLL_MB
-            //TODO: - BOLL点模型还没处理好
+            MALine.BOLLPositions = BOLL_MBPositions
+            MALine.draw()
             
+            ///< 画BOLL UP线 上浮线
+            MALine.MAType = .BOLL_UP
+            MALine.BOLLPositions = BOLL_UPPositions
+            MALine.draw()
+            
+            ///< 画BOLL DN线 下浮线
+            MALine.MAType = .BOLL_DN
+            MALine.BOLLPositions = BOLL_DNPositions
+            MALine.draw()
+        }else if targetLineStatus != .CloseMA {
+            ///< 画MA7线
+            MALine.MAType = .MA7Type
+            MALine.MAPositions = MA7Positions
+            MALine.draw()
+            
+            ///< 画MA30线
+            MALine.MAType = .MA30Type
+            MALine.MAPositions = MA30Positions
+            MALine.draw()
         }
     }
 }
@@ -223,7 +243,14 @@ extension YF_KLineMainView {
         }else {
             needDrawKLineStartIndex = needDrawStartIndex
         }
+        ///< 把之前的数组的元素全部删除, 再重新添加 (这一步不能忘, 否则点集合有问题, 线就会有问题)
         needDrawKLineModels.removeAll()
+        MA7Positions.removeAll()
+        MA30Positions.removeAll()
+        BOLL_DNPositions.removeAll()
+        BOLL_UPPositions.removeAll()
+        BOLL_MBPositions.removeAll()
+        
         guard let models = kLineModels else {
             return
         }
@@ -378,7 +405,7 @@ extension YF_KLineMainView {
                 MA7Positions.append(ma7Point)
             }
             if model.MA30 != nil {
-                MA7Positions.append(ma30Point)
+                MA30Positions.append(ma30Point)
             }
             
             ///< Accessory指标种类是BOLL线
