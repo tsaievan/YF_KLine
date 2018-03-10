@@ -51,6 +51,9 @@ let STOCK_CHART_K_LINE_VOLUME_VIEW_MIN_Y: CGFloat = 20
 ///< K线图上可画区域最小的Y
 let STOCK_CHART_K_LINE_MAIN_VIEW_MIN_Y: CGFloat = 20
 
+///< K线图上副图最小的Y
+let STOCK_CHART_K_LINE_ACCESSORY_VIEW_MIN_Y: CGFloat = 20
+
 ///< K线图的缩放界线
 let STOCK_CHART_SCALE_BOUND: CGFloat = 0.03
 

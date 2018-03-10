@@ -76,7 +76,7 @@ extension YF_KLineVolumeView {
     ///< 根据KLineModel转换成Position数组
     fileprivate func convertToKLinePositionModel(withKLineModels kLineModels: [YF_KLineModel]) -> [YF_KLineVolumePositionModel]? {
         let minY = STOCK_CHART_K_LINE_VOLUME_VIEW_MIN_Y
-        let maxY = bounds.height
+        let maxY = height
         
         guard let firstModel = kLineModels.first else {
             return nil

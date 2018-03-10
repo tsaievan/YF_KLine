@@ -105,7 +105,7 @@ class YF_KLineView: UIView {
     ///< 主K线图
     fileprivate lazy var kLineMainView: YF_KLineMainView = {
         let main = YF_KLineMainView()
-        main.backgroundColor = .yellow
+        main.backgroundColor = CHARTVIEW_BACKGROUND_COLOR
         main.delegate = self
         scrollView.addSubview(main)
         main.snp.makeConstraints({ (make) in
@@ -124,7 +124,7 @@ class YF_KLineView: UIView {
     fileprivate lazy var kLineVolumeView: YF_KLineVolumeView = {
         let vv = YF_KLineVolumeView()
         vv.delegate = self
-        vv.backgroundColor = .black
+        vv.backgroundColor = CHARTVIEW_BACKGROUND_COLOR
         scrollView.addSubview(vv)
         vv.snp.makeConstraints({ (make) in
             make.left.equalTo(kLineMainView)
@@ -141,7 +141,7 @@ class YF_KLineView: UIView {
     fileprivate lazy var kLineAccessoryView: YF_KLineAccessoryView = {
         let av = YF_KLineAccessoryView()
         av.delegate = self
-        av.backgroundColor = .clear
+        av.backgroundColor = CHARTVIEW_BACKGROUND_COLOR
         scrollView.addSubview(av)
         av.snp.makeConstraints({ (make) in
             make.left.equalTo(kLineVolumeView)
@@ -367,5 +367,9 @@ extension YF_KLineView: YF_KLineVolumeViewDelegate {
 
 // MARK: - YF_KLineAccessoryViewDelegate代理方法
 extension YF_KLineView: YF_KLineAccessoryViewDelegate {
+    func kLineAccessoryViewCurrent(withMaxVaule maxValue: CGFloat, minValue: CGFloat) {
+        
+    }
+    
     
 }
