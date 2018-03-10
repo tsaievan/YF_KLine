@@ -339,8 +339,14 @@ extension YF_KLineView: UIScrollViewDelegate {
 // MARK: - YF_KLineMainViewDelegate代理方法
 ///< MainView更新时及时通知下方的view进行相应内容更新
 extension YF_KLineView: YF_KLineMainViewDelegate {
+    func kLineMainViewCurrentLineColors(needDrawKLineColors kLineColors: [UIColor]) {
+        kLineVolumeView.kLineColors = kLineColors
+        //FIXME:- 这里先画Volume线
+        drawKLineVolumeView()
+    }
+    
     func kLineMainViewPositionCurrent(needDrawKLinePositionModels kLinePositionModels: [YF_KLinePositionModel]) {
-        
+        kLineVolumeView.needDrawKLinePositionModles = kLinePositionModels
     }
     
     func kLineMainViewCurrentPrice(maxPrice: Double, minPrice: Double) {
@@ -348,7 +354,7 @@ extension YF_KLineView: YF_KLineMainViewDelegate {
     }
     
     func kLineMainViewCurrent(needDrawKLineModels kLineModels: [YF_KLineModel]) {
-        
+        kLineVolumeView.needDrawKLineModels = kLineModels
     }
 }
 

@@ -17,6 +17,10 @@ class YF_KLineVolumeView: UIView {
     ///< 需要绘制的K线模型数组
     var needDrawKLineModels: [YF_KLineModel]?
     
+    ///< 需要绘制的K线位置数组
+    var needDrawKLinePositionModles: [YF_KLinePositionModel]?
+    
+    ///< K线颜色
     var kLineColors: [UIColor]?
     
     ///< 需要绘制的成交量的位置模型数组
@@ -28,6 +32,7 @@ class YF_KLineVolumeView: UIView {
     ///< Volume_MA30位置数组
     fileprivate var Volume_MA30Positions = [CGPoint]()
     
+    ///< 代理
     weak var delegate: YF_KLineVolumeViewDelegate?
     
     override func draw(_ rect: CGRect) {
@@ -63,8 +68,7 @@ class YF_KLineVolumeView: UIView {
         }
         needDrawKLineVolumePositionModels = convertToKLinePositionModel(withKLineModels: models)
         setNeedsDisplay()
-    }
-    
+    }   
 }
 
 extension YF_KLineVolumeView {
@@ -113,14 +117,42 @@ extension YF_KLineVolumeView {
         Volume_MA30Positions.removeAll()
         
         for (idx, model) in kLineModels.enumerated() {
-            guard let positionModels = needDrawKLineVolumePositionModels else {
+            guard let positionModels = needDrawKLinePositionModles else {
                 return nil
             }
             let kLinePositionModel = positionModels[idx]
+            let xPosition = kLinePositionModel.HighPoint?.x ?? 0
+            var yPosition = abs(maxY - CGFloat((model.Volume ?? 0) - minVolume) / CGFloat(unitValue))
+            if abs(yPosition - height) < 0.5 {
+                yPosition = height - 1
+            }
+            let startPoint = CGPoint(x: xPosition, y: yPosition)
+            let endPoint = CGPoint(x: xPosition, y: height)
+            let volumePositionModel = YF_KLineVolumePositionModel.model(withStartPoint: startPoint, endPoint: endPoint)
+            volumePositonModels.append(volumePositionModel)
+            
+            ///< MA坐标转换
+            var ma7Y = maxY
+            var ma30Y = maxY
+            if unitValue > 0.0000001 {
+                if model.Volume_MA7 != nil {
+                    ma7Y = maxY - CGFloat((model.Volume_MA7! - minVolume) / unitValue)
+                }
+                if model.Volume_MA30 != nil {
+                    ma30Y = maxY - CGFloat((model.Volume_MA30! - minVolume) / unitValue)
+                }
+            }
+            let ma7Point = CGPoint(x: xPosition, y: ma7Y)
+            let ma30Point = CGPoint(x: xPosition, y: ma30Y)
+            
+            if model.Volume_MA7 != nil {
+                Volume_MA7Positions.append(ma7Point)
+            }
+            if model.Volume_MA30 != nil {
+                Volume_MA30Positions.append(ma30Point)
+            }
         }
-        
-        
-        
-        return nil
+        delegate?.kLineVolumeView(currentMaxVolume: CGFloat(maxVolume), minVolume: CGFloat(minVolume))
+        return volumePositonModels
     }
 }

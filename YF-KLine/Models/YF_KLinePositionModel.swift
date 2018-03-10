@@ -22,6 +22,7 @@ class YF_KLinePositionModel: NSObject {
     ///< 最低点
     var LowPoint: CGPoint?
     
+    ///< 工厂方法
     class func model(withOpenPoint openPoint: CGPoint, closePoint: CGPoint, highPoint: CGPoint, lowPoint: CGPoint) -> YF_KLinePositionModel {
         let positionModel = YF_KLinePositionModel()
         positionModel.OpenPoint = openPoint

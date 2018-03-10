@@ -17,6 +17,9 @@ protocol YF_KLineMainViewDelegate: NSObjectProtocol {
     
     ///< 当前MainView的最大值和最小值
     func kLineMainViewCurrentPrice(maxPrice: Double, minPrice: Double)
+    
+    ///< 当前需要绘制的K线颜色数组
+    func kLineMainViewCurrentLineColors(needDrawKLineColors kLineColors: [UIColor])
 }
 
 class YF_KLineMainView: UIView {
@@ -209,6 +212,7 @@ class YF_KLineMainView: UIView {
             MALine.MAPositions = MA30Positions
             MALine.draw()
         }
+        delegate?.kLineMainViewCurrentLineColors(needDrawKLineColors: kLineColors)
     }
 }
 
