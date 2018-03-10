@@ -48,7 +48,51 @@ class YF_KLineAccessoryView: UIView {
     
     ///< 重写drawRect方法
     override func draw(_ rect: CGRect) {
-        
+        super.draw(rect)
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
+        ///< 副图, 需要区分是MACD线还是KDJ线, 进而选择不同的数据源和绘制方法
+        if targetLineStatus != .KDJ {
+            ///< MACD线
+            let kLineAccessory = YF_KLineAccessory(context: context)
+            for (idx, volumePositionModel) in needDrawKLineAccessoryPositionModels.enumerated() {
+                kLineAccessory.positionModel = volumePositionModel
+                guard let models = needDrawKLineModels,
+                    let colors = kLineColors else {
+                    return
+                }
+                kLineAccessory.kLineModel = models[idx]
+                kLineAccessory.lineColor = colors[idx]
+                kLineAccessory.draw()
+            }
+            let MALine = YF_MALine(context: context)
+            ///< 画DIF线
+            MALine.MAType = .MA7Type
+            MALine.MAPositions = Accessory_DIFPositions
+            MALine.draw()
+            
+            ///< 画DEA线
+            MALine.MAType = .MA30Type
+            MALine.MAPositions = Accessory_DEAPositions
+            MALine.draw()
+        }else {
+            let MALine = YF_MALine(context: context)
+            ///< 画KDJ_K线
+            MALine.MAType = .MA7Type
+            MALine.MAPositions = Accessory_KDJ_KPositions
+            MALine.draw()
+            
+            ///< 画KDJ_D线
+            MALine.MAType = .MA30Type
+            MALine.MAPositions = Accessory_KDJ_DPositions
+            MALine.draw()
+            
+            ///< 画KDJ_J线
+            MALine.MAType = YF_MAType(rawValue: -1)
+            MALine.MAPositions = Accessory_KDJ_JPositions
+            MALine.draw()
+        }   
     }
 }
 

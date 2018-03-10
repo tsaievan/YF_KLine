@@ -28,6 +28,7 @@
 		57126930204560C1001F0FFB /* YF_DefaultConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5712692F204560C1001F0FFB /* YF_DefaultConfig.swift */; };
 		5712693220456162001F0FFB /* UIColor+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5712693120456162001F0FFB /* UIColor+YF_Extension.swift */; };
 		5718364A204CD26D00800725 /* UILabel+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57183649204CD26D00800725 /* UILabel+YF_Extension.swift */; };
+		571E2CE52053FF69003B7046 /* YF_KLineAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571E2CE42053FF69003B7046 /* YF_KLineAccessory.swift */; };
 		5789BA16204D262700174DFC /* YF_KLinePositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789BA15204D262700174DFC /* YF_KLinePositionModel.swift */; };
 		5789BA19204D2C1600174DFC /* YF_KLineVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789BA18204D2C1600174DFC /* YF_KLineVolume.swift */; };
 		579D284820516A07007F3FF5 /* YF_MALine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D284720516A07007F3FF5 /* YF_MALine.swift */; };
@@ -67,6 +68,7 @@
 		5712692F204560C1001F0FFB /* YF_DefaultConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_DefaultConfig.swift; sourceTree = "<group>"; };
 		5712693120456162001F0FFB /* UIColor+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+YF_Extension.swift"; sourceTree = "<group>"; };
 		57183649204CD26D00800725 /* UILabel+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+YF_Extension.swift"; sourceTree = "<group>"; };
+		571E2CE42053FF69003B7046 /* YF_KLineAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineAccessory.swift; sourceTree = "<group>"; };
 		5789BA15204D262700174DFC /* YF_KLinePositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLinePositionModel.swift; sourceTree = "<group>"; };
 		5789BA18204D2C1600174DFC /* YF_KLineVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineVolume.swift; sourceTree = "<group>"; };
 		579D284720516A07007F3FF5 /* YF_MALine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_MALine.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 		57083C1220480A420078AE04 /* AccessoryView */ = {
 			isa = PBXGroup;
 			children = (
+				571E2CE42053FF69003B7046 /* YF_KLineAccessory.swift */,
 				57083C042047D4470078AE04 /* YF_KLineAccessoryView.swift */,
 			);
 			path = AccessoryView;
@@ -467,6 +470,7 @@
 				5712692820453985001F0FFB /* UIButton+YF_Extension.swift in Sources */,
 				5789BA19204D2C1600174DFC /* YF_KLineVolume.swift in Sources */,
 				57126926204530DD001F0FFB /* YF_KLineViewController.swift in Sources */,
+				571E2CE52053FF69003B7046 /* YF_KLineAccessory.swift in Sources */,
 				57CC3B492046A03F00685264 /* UIView+YF_Extension.swift in Sources */,
 				57083BFF2047BA040078AE04 /* YF_KLineMAView.swift in Sources */,
 			);

@@ -341,12 +341,22 @@ extension YF_KLineView: UIScrollViewDelegate {
 extension YF_KLineView: YF_KLineMainViewDelegate {
     func kLineMainViewCurrentLineColors(needDrawKLineColors kLineColors: [UIColor]) {
         kLineVolumeView.kLineColors = kLineColors
-        //FIXME:- 这里先画Volume线
+        if (targetLineStatus?.rawValue ?? 0) > 103 {
+            
+        }
+        ///< 画成交量的图
         drawKLineVolumeView()
+        kLineAccessoryView.kLineColors = kLineColors
+        if (targetLineStatus?.rawValue ?? 0) < 103 {
+            
+        }
+        ///< 画副图
+        drawKLineAccessoryView()
     }
     
     func kLineMainViewPositionCurrent(needDrawKLinePositionModels kLinePositionModels: [YF_KLinePositionModel]) {
         kLineVolumeView.needDrawKLinePositionModles = kLinePositionModels
+
     }
     
     func kLineMainViewCurrentPrice(maxPrice: Double, minPrice: Double) {
@@ -370,6 +380,4 @@ extension YF_KLineView: YF_KLineAccessoryViewDelegate {
     func kLineAccessoryViewCurrent(withMaxVaule maxValue: CGFloat, minValue: CGFloat) {
         
     }
-    
-    
 }

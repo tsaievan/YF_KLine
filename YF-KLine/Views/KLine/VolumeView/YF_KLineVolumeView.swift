@@ -23,6 +23,9 @@ class YF_KLineVolumeView: UIView {
     ///< K线颜色
     var kLineColors: [UIColor]?
     
+    ///< Accessory指标种类
+    var targetLineStatus: YF_StockChartTargetLineStatus?
+    
     ///< 需要绘制的成交量的位置模型数组
     fileprivate var needDrawKLineVolumePositionModels: [YF_KLineVolumePositionModel]?
     
@@ -55,9 +58,19 @@ class YF_KLineVolumeView: UIView {
             kLineVolume.lineColor = colors[i]
             kLineVolume.draw()
         }
-        
-        //FIXME:- MA线先不画
-        
+        if targetLineStatus != .CloseMA {
+            let MALine = YF_MALine(context: context)
+            
+            ///< 画MA7线
+            MALine.MAType = .MA7Type
+            MALine.MAPositions = Volume_MA7Positions
+            MALine.draw()
+            
+            ///< 画MA30线
+            MALine.MAType = .MA30Type
+            MALine.MAPositions = Volume_MA30Positions
+            MALine.draw()
+        }
     }
     
     ///< 绘制Volume方法
