@@ -14,5 +14,7 @@ extension UILabel {
         font = UIFont.systemFont(ofSize: fontSize)
         self.text = text
         self.textColor = textColor
+        textAlignment = .left
+        adjustsFontSizeToFitWidth = true
     }
 }

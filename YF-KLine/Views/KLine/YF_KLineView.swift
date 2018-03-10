@@ -354,7 +354,9 @@ extension YF_KLineView: YF_KLineMainViewDelegate {
     }
     
     func kLineMainViewCurrentPrice(maxPrice: Double, minPrice: Double) {
-        
+        priceView.maxValue = CGFloat(maxPrice)
+        priceView.minValue = CGFloat(minPrice)
+        priceView.middleValue = CGFloat((maxPrice - minPrice) / 2 + minPrice)
     }
     
     func kLineMainViewCurrent(needDrawKLineModels kLineModels: [YF_KLineModel]) {
@@ -366,13 +368,17 @@ extension YF_KLineView: YF_KLineMainViewDelegate {
 // MARK: - YF_KLineVolumeViewDelegate代理方法
 extension YF_KLineView: YF_KLineVolumeViewDelegate {
     func kLineVolumeView(currentMaxVolume maxVolume: CGFloat, minVolume: CGFloat) {
-        
+        volumeView.maxValue = maxVolume
+        volumeView.minValue = minVolume
+        volumeView.middleValue = (maxVolume - minVolume) / 2 + minVolume
     }
 }
 
 // MARK: - YF_KLineAccessoryViewDelegate代理方法
 extension YF_KLineView: YF_KLineAccessoryViewDelegate {
     func kLineAccessoryViewCurrent(withMaxVaule maxValue: CGFloat, minValue: CGFloat) {
-        
+        accessoryView.maxValue = maxValue
+        accessoryView.minValue = minValue
+        accessoryView.middleValue = (maxValue - minValue) / 2 + minValue
     }
 }
