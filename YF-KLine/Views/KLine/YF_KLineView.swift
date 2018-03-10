@@ -156,7 +156,6 @@ class YF_KLineView: UIView {
     ///< 右侧价格图
     fileprivate lazy var priceView: YF_StockChartRightYView = {
         let yv = YF_StockChartRightYView()
-        yv.backgroundColor = .clear
         ///< 因为y轴是不滚动的, 所以直接加载view上, 而不是加到scrollView上
         ///< 而且要加到scrollView上面
         insertSubview(yv, aboveSubview: scrollView)
@@ -172,7 +171,6 @@ class YF_KLineView: UIView {
     ///< 右侧成交量图
     fileprivate lazy var volumeView: YF_StockChartRightYView = {
         let yv = YF_StockChartRightYView()
-        yv.backgroundColor = .orange
         insertSubview(yv, aboveSubview: scrollView)
         yv.snp.makeConstraints({ (make) in
             make.top.equalTo(kLineVolumeView).offset(10)
@@ -185,7 +183,6 @@ class YF_KLineView: UIView {
     ///< 右侧Accessory图
     fileprivate lazy var accessoryView: YF_StockChartRightYView = {
         let yv = YF_StockChartRightYView()
-        yv.backgroundColor = .gray
         insertSubview(yv, aboveSubview: scrollView)
         yv.snp.makeConstraints({ (make) in
             make.top.equalTo(kLineAccessoryView).offset(10)
@@ -198,7 +195,6 @@ class YF_KLineView: UIView {
     ///< kLine-MAView
     fileprivate lazy var kLineMAView: YF_KLineMAView = {
         let mv = YF_KLineMAView()
-        mv.backgroundColor = .darkGray
         addSubview(mv)
         mv.snp.makeConstraints({ (make) in
             make.right.left.equalTo(self)
@@ -210,7 +206,6 @@ class YF_KLineView: UIView {
     
     fileprivate lazy var volumeMAView: YF_VolumeMAView = {
         let vmv = YF_VolumeMAView()
-        vmv.backgroundColor = .darkGray
         addSubview(vmv)
         vmv.snp.makeConstraints({ (make) in
             make.right.left.equalTo(self)
@@ -222,7 +217,6 @@ class YF_KLineView: UIView {
     
     fileprivate lazy var accessoryMAView: YF_AccessoryMAView = {
         let amv = YF_AccessoryMAView()
-        amv.backgroundColor = .cyan
         addSubview(amv)
         amv.snp.makeConstraints({ (make) in
             make.right.left.equalTo(self)
@@ -342,13 +336,13 @@ extension YF_KLineView: YF_KLineMainViewDelegate {
     func kLineMainViewCurrentLineColors(needDrawKLineColors kLineColors: [UIColor]) {
         kLineVolumeView.kLineColors = kLineColors
         if (targetLineStatus?.rawValue ?? 0) > 103 {
-            
+            kLineVolumeView.targetLineStatus = targetLineStatus
         }
         ///< 画成交量的图
         drawKLineVolumeView()
         kLineAccessoryView.kLineColors = kLineColors
         if (targetLineStatus?.rawValue ?? 0) < 103 {
-            
+            kLineAccessoryView.targetLineStatus = targetLineStatus
         }
         ///< 画副图
         drawKLineAccessoryView()
@@ -356,7 +350,7 @@ extension YF_KLineView: YF_KLineMainViewDelegate {
     
     func kLineMainViewPositionCurrent(needDrawKLinePositionModels kLinePositionModels: [YF_KLinePositionModel]) {
         kLineVolumeView.needDrawKLinePositionModles = kLinePositionModels
-
+        kLineAccessoryView.needDrawKLinePositionModels = kLinePositionModels
     }
     
     func kLineMainViewCurrentPrice(maxPrice: Double, minPrice: Double) {
@@ -365,6 +359,7 @@ extension YF_KLineView: YF_KLineMainViewDelegate {
     
     func kLineMainViewCurrent(needDrawKLineModels kLineModels: [YF_KLineModel]) {
         kLineVolumeView.needDrawKLineModels = kLineModels
+        kLineAccessoryView.needDrawKLineModels = kLineModels
     }
 }
 
