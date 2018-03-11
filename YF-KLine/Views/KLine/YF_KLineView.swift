@@ -25,6 +25,7 @@ class YF_KLineView: UIView {
             drawKLineMainView()
             ///< 设置contentOffset(偏移值)
             ///< 算法: 模型数组的个数 * 宽度值 + (模型数组的个数 + 1) * 间隔值 + 10
+            //FIXME:- 这个地方有点问题, 模型的数量有点问题
             let kLineViewWidth = CGFloat(models.count) * YF_StockChartVariable.kLineWidth + CGFloat(models.count + 1) * YF_StockChartVariable.kLineGap + 10.0
             
             ///< 偏移量减去scrollView的宽度

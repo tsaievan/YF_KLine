@@ -137,20 +137,33 @@ extension YF_KLineViewController {
     ///< 加载数据
     fileprivate func reloadData() {
         var params = [String : Any]()
-//        params["period"] = self.currentType
-//        params["symbol"] = "btcusdt"
-//        params["size"] = "300"
+        //        params["period"] = self.currentType
+        //        params["symbol"] = "btcusdt"
+        //        params["size"] = "300"
         ///< http://img1.money.126.net/data/hs/kline/day/history/2015/1399001.json
         ///< https://api.huobi.pro/market/history/kline
-        YF_NetworkTool.request(url: "http://img1.money.126.net/data/hs/kline/day/history/2015/1399001.json", params: params, success: { (response) in
-            guard let dict = response["data"] as? [Any],
-                let groupModel = YF_KLineGroupModel.getObject(array: dict), ///< 字典转模型
-                let type = self.currentType else {
-                    return
+        YF_NetworkTool.request(url: "http://img1.money.126.net/data/hs/kline/day/history/2017/1399001.json", params: params, success: { (response) in
+            guard var array = response["data"] as? [Any] else {
+                //                let groupModel = YF_KLineGroupModel.getObject(array: array), ///< 字典转模型
+                //                let type = self.currentType else {
+                //                    return
+                return
             }
-            self.gModel = groupModel
-            self.modelsDict[type] = groupModel ///< 将模型放到字典里面, 用做缓存, 不用每次加载网络请求
-            self.stockChartView.reloadData() ///< stockChartView刷新数据
+            YF_NetworkTool.request(url: "http://img1.money.126.net/data/hs/kline/day/history/2014/1399001.json", params: params, success: { (response) in
+                guard let array2 = response["data"] as? [Any] else {
+                    return
+                }
+                array = array + array2
+                guard let groupModel = YF_KLineGroupModel.getObject(array: array), ///< 字典转模型
+                    let type = self.currentType else {
+                        return
+                }
+                self.gModel = groupModel
+                self.modelsDict[type] = groupModel ///< 将模型放到字典里面, 用做缓存, 不用每次加载网络请求
+                self.stockChartView.reloadData() ///< stockChartView刷新数据
+                
+            }, failue: nil)
+            
         }, failue: nil)
     }
 }

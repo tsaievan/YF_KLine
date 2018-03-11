@@ -11,8 +11,9 @@ import Alamofire
 
 ///< 这里先简单封装一下
 class YF_NetworkTool {
-    class func request(url: String, params: [String : Any]?, success: (([String : Any]) -> ())?, failue: (() -> ())?) {
-        DispatchQueue.global().async {
+    class func request(url: String, params: [String : Any]?, success: (([String: Any]) -> ())?, failue: (() -> ())?) {
+        let queue = DispatchQueue(label: "com.tsaievan.networktool")
+        queue.async {
             Alamofire.request(url, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (result) in
                 if result.error != nil {
                     failue?()
@@ -27,3 +28,5 @@ class YF_NetworkTool {
         }
     }
 }
+
+
