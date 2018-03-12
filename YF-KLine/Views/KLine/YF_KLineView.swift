@@ -85,7 +85,7 @@ class YF_KLineView: UIView {
     fileprivate lazy var scrollView: UIScrollView = {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
-        sv.showsHorizontalScrollIndicator = false
+        sv.showsHorizontalScrollIndicator = true
         sv.bounces = false
         sv.delegate = self
         ///< 添加缩放手势
@@ -250,6 +250,10 @@ class YF_KLineView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    deinit {
+        kLineMainView.removeAllObservers()
+    }
 }
 
 
@@ -269,11 +273,13 @@ extension YF_KLineView {
     @objc fileprivate func didPinchAction(sender: UIPinchGestureRecognizer) {
         var oldScale: CGFloat = 1.0
         let difValue = sender.scale - oldScale
+        
         ///< sender.scale是一个绝对值, difValue算出的是增长值
-        if !abs(difValue).isLessThanOrEqualTo(STOCK_CHART_SCALE_BOUND) { ///< 不小于等于, 即大于
-            ///< 获取原来的K线宽度(这个是不变了, 始终都是2)
+        if abs(difValue) > STOCK_CHART_SCALE_BOUND { ///< 不小于等于, 即大于
+            ///< 获取原来的K线宽度
             let oldKLineWidth = YF_StockChartVariable.kLineWidth
             let oldNeedDrawStartIndex = kLineMainView.needDrawStartIndex
+            print("原来的index\(kLineMainView.needDrawStartIndex)")
             ///< 线宽也需要做相应的改变
             ///< 在默认为2的线宽宽度上, 放大倍数
             let factor = difValue > 0 ? 1 + STOCK_CHART_SCALE_SCALE : 1 - STOCK_CHART_SCALE_SCALE
@@ -294,6 +300,7 @@ extension YF_KLineView {
                 let newLeftArrCount = Int(abs((centerPoint.x - scrollView.contentOffset.x) - YF_StockChartVariable.kLineGap) / (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth))
                 //FIXME: 这里先强制解包(强制解包会崩)
                 kLineMainView.pinchStartIndex = oldNeedDrawStartIndex + oldLeftArrCount - newLeftArrCount
+                print("计算得出的index\(kLineMainView.pinchStartIndex!)")
             }
             kLineMainView.drawMainView()
         }

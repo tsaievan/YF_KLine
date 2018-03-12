@@ -143,27 +143,27 @@ extension YF_KLineViewController {
         ///< http://img1.money.126.net/data/hs/kline/day/history/2015/1399001.json
         ///< https://api.huobi.pro/market/history/kline
         YF_NetworkTool.request(url: "http://img1.money.126.net/data/hs/kline/day/history/1999/1399001.json", params: params, success: { (response) in
-            guard var array = response["data"] as? [Any] else {
-                //                let groupModel = YF_KLineGroupModel.getObject(array: array), ///< 字典转模型
-                //                let type = self.currentType else {
-                //                    return
-                return
-            }
-            YF_NetworkTool.request(url: "http://img1.money.126.net/data/hs/kline/day/history/2000/1399001.json", params: params, success: { (response) in
-                guard let array2 = response["data"] as? [Any] else {
+            guard let array = response["data"] as? [Any], //else {
+                let groupModel = YF_KLineGroupModel.getObject(array: array), ///< 字典转模型
+                let type = self.currentType else {
                     return
-                }
-                array = array + array2
-                guard let groupModel = YF_KLineGroupModel.getObject(array: array), ///< 字典转模型
-                    let type = self.currentType else {
-                        return
-                }
-                self.gModel = groupModel
-                self.modelsDict[type] = groupModel ///< 将模型放到字典里面, 用做缓存, 不用每次加载网络请求
-                self.stockChartView.reloadData() ///< stockChartView刷新数据
-                
-            }, failue: nil)
+                    //                return
+            }
+            //            YF_NetworkTool.request(url: "http://img1.money.126.net/data/hs/kline/day/history/2000/1399001.json", params: params, success: { (response) in
+            //                guard let array2 = response["data"] as? [Any] else {
+            //                    return
+            //                }
+            //                array = array + array2
+            //                guard let groupModel = YF_KLineGroupModel.getObject(array: array), ///< 字典转模型
+            //                    let type = self.currentType else {
+            //                        return
+            //                }
+            self.gModel = groupModel
+            self.modelsDict[type] = groupModel ///< 将模型放到字典里面, 用做缓存, 不用每次加载网络请求
+            self.stockChartView.reloadData() ///< stockChartView刷新数据
             
         }, failue: nil)
+        
+        //    }, failue: nil)
     }
 }

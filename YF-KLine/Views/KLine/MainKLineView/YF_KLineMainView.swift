@@ -26,6 +26,9 @@ class YF_KLineMainView: UIView {
     ///< 父ScrollView
     var parentScrollView: UIScrollView?
     
+    ///< 旧的contentOffset值
+    var oldContentOffsetX: CGFloat = 0.0
+    
     var needDrawKLinePositionModels = [YF_KLinePositionModel]()
     
     var needDrawKLineModels = [YF_KLineModel]()
@@ -65,14 +68,19 @@ class YF_KLineMainView: UIView {
     }
     
     ///< 需要绘制Index开始值
-    lazy var needDrawStartIndex: Int = {
-        guard let scrollViewOffsetX = parentScrollView?.contentOffset.x else {
-            return 0
+    var needDrawStartIndex: Int {
+        set {
+            
         }
-        let offsetX = (scrollViewOffsetX < 0 ? 0 : scrollViewOffsetX)
-        let leftArrCount = abs(offsetX - YF_StockChartVariable.kLineGap) / (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth)
-        return Int(leftArrCount)
-    }()
+        get {
+            guard let scrollViewOffsetX = parentScrollView?.contentOffset.x else {
+                return 0
+            }
+            let offsetX = (scrollViewOffsetX < 0 ? 0 : scrollViewOffsetX)
+            let leftArrCount = abs(offsetX - YF_StockChartVariable.kLineGap) / (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth)
+            return Int(leftArrCount)
+        }
+    }
     
     ///< Index开始的X的值
     lazy var startXPosition: Int = {
@@ -93,10 +101,19 @@ class YF_KLineMainView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    ///< 在析构函数中移除观察者
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     ///< 画K线主视图
     func drawMainView() {
+        ///< kLineModels不能为空
+        guard let _ = kLineModels else {
+            return
+        }
         extractNeedDrawModels()
-        convertToKLinePositionModel()
+        needDrawKLinePositionModels = convertToKLinePositionModel()!
         setNeedsDisplay()
     }
     
@@ -219,12 +236,13 @@ class YF_KLineMainView: UIView {
 
 // MARK: - 系统方法
 extension YF_KLineMainView {
-    override func didMoveToWindow() {
+    override func didMoveToSuperview() {
         guard let superView = superview else {
             super.didMoveToWindow()
             return
         }
         parentScrollView = superView as? UIScrollView
+        addAllEventsListeners()
         super.didMoveToWindow()
     }
 }
@@ -244,17 +262,14 @@ extension YF_KLineMainView {
         if startIndex > 0 {
             needDrawKLineStartIndex = startIndex
             needDrawStartIndex = startIndex
+            pinchStartIndex = -1
         }else {
             needDrawKLineStartIndex = needDrawStartIndex
         }
+        
+        print("这是模型开始的index------------\(needDrawKLineStartIndex)")
         ///< 把之前的数组的元素全部删除, 再重新添加 (这一步不能忘, 否则点集合有问题, 线就会有问题)
         needDrawKLineModels.removeAll()
-        MA7Positions.removeAll()
-        MA30Positions.removeAll()
-        BOLL_DNPositions.removeAll()
-        BOLL_UPPositions.removeAll()
-        BOLL_MBPositions.removeAll()
-        
         guard let models = kLineModels else {
             return
         }
@@ -347,6 +362,11 @@ extension YF_KLineMainView {
         let maxY =  height * YF_StockChartVariable.kLineMainViewRatio - 15
         let unitValue = CGFloat(maxAssert - minAssert) / (maxY - minY)
         needDrawKLinePositionModels.removeAll()
+        MA7Positions.removeAll()
+        MA30Positions.removeAll()
+        BOLL_MBPositions.removeAll()
+        BOLL_DNPositions.removeAll()
+        BOLL_UPPositions.removeAll()
         //FIXME:- 其他的线先不画, 先画K线
         for (idx, model) in needDrawKLineModels.enumerated() {
             let xPosition = CGFloat(startXPosition) + CGFloat(idx) * (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth)
@@ -449,5 +469,30 @@ extension YF_KLineMainView {
             delegate?.kLineMainViewPositionCurrent(needDrawKLinePositionModels: needDrawKLinePositionModels)
         }
         return needDrawKLinePositionModels
+    }
+    
+    ///< KVO监听
+    fileprivate func addAllEventsListeners() {
+        parentScrollView?.addObserver(self, forKeyPath: "contentOffset", options: .new, context: nil)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "contentOffset" {
+            guard let sv = parentScrollView else {
+                return
+            }
+            let difValue = sv.contentOffset.x - oldContentOffsetX
+            if difValue >= YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth {
+                oldContentOffsetX = sv.contentOffset.x
+                drawMainView()
+            }
+        }
+    }
+}
+
+// MARK: - 移除所有观察者
+extension YF_KLineMainView {
+    func removeAllObservers() {
+        parentScrollView?.removeObserver(self, forKeyPath: "contentOffset", context: nil)
     }
 }
