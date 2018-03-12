@@ -83,14 +83,18 @@ class YF_KLineMainView: UIView {
     }
     
     ///< Index开始的X的值
-    lazy var startXPosition: Int = {
-        let totalKlineGap = CGFloat(needDrawStartIndex + 1) * YF_StockChartVariable.kLineGap
-        let totalKlineWidth = CGFloat(needDrawStartIndex) * YF_StockChartVariable.kLineWidth
-        let exceedWidth = (YF_StockChartVariable.kLineWidth) * 0.5
-        let startXPosition = totalKlineGap + totalKlineWidth + exceedWidth
-        return Int(startXPosition)
-        
-    }()
+    var startXPosition: Int {
+        set {
+            
+        }
+        get {
+            let totalKlineGap = CGFloat(needDrawStartIndex + 1) * YF_StockChartVariable.kLineGap
+            let totalKlineWidth = CGFloat(needDrawStartIndex) * YF_StockChartVariable.kLineWidth
+            let exceedWidth = (YF_StockChartVariable.kLineWidth) * 0.5
+            let startXPosition = totalKlineGap + totalKlineWidth + exceedWidth
+            return Int(startXPosition)
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -276,7 +280,7 @@ extension YF_KLineMainView {
         if needDrawKLineStartIndex < models.count {
             if needDrawKLineStartIndex + needDrawKLineCount < models.count {
                 let subArray = (models as NSArray).subarray(with: NSMakeRange(needDrawKLineStartIndex, needDrawKLineCount))
-                //FIXME:- 数组的切片还不怎么会用
+                //FIXME:- 数组的切片还不怎么会用, 转换成了NSArray对象来操作
                 let combineArray: [YF_KLineModel] = (needDrawKLineModels as [Any] + subArray) as! [YF_KLineModel]
                 needDrawKLineModels = combineArray
             }else {
@@ -481,7 +485,8 @@ extension YF_KLineMainView {
             guard let sv = parentScrollView else {
                 return
             }
-            let difValue = sv.contentOffset.x - oldContentOffsetX
+            ///< 终于把bug找出来了, 这里要取绝对值
+            let difValue = abs(sv.contentOffset.x - oldContentOffsetX)
             if difValue >= YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth {
                 oldContentOffsetX = sv.contentOffset.x
                 drawMainView()
