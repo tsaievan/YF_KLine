@@ -112,7 +112,7 @@ class YF_KLineView: UIView {
         main.snp.makeConstraints({ (make) in
             make.top.equalTo(scrollView).offset(5)
             make.left.equalTo(scrollView)
-            // FIXME: - 这里先改成SCREEN_WIDTH - 100, 先出来视图
+            ///< 这里宽度是定为0的, 设置模型对象之后, 有一个更新宽度的方法 : updateMainViewWidth
             make.width.equalTo(0)
             ///< 获取K线主视图高度约束, 保存在属性中
             kLineMainViewHeightConstraint =

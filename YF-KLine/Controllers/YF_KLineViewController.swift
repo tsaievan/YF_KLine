@@ -142,14 +142,14 @@ extension YF_KLineViewController {
         //        params["size"] = "300"
         ///< http://img1.money.126.net/data/hs/kline/day/history/2015/1399001.json
         ///< https://api.huobi.pro/market/history/kline
-        YF_NetworkTool.request(url: "http://img1.money.126.net/data/hs/kline/day/history/2016/1399001.json", params: params, success: { (response) in
+        YF_NetworkTool.request(url: "http://img1.money.126.net/data/hs/kline/day/history/1999/1399001.json", params: params, success: { (response) in
             guard var array = response["data"] as? [Any] else {
                 //                let groupModel = YF_KLineGroupModel.getObject(array: array), ///< 字典转模型
                 //                let type = self.currentType else {
                 //                    return
                 return
             }
-            YF_NetworkTool.request(url: "http://img1.money.126.net/data/hs/kline/day/history/2014/1399001.json", params: params, success: { (response) in
+            YF_NetworkTool.request(url: "http://img1.money.126.net/data/hs/kline/day/history/2000/1399001.json", params: params, success: { (response) in
                 guard let array2 = response["data"] as? [Any] else {
                     return
                 }
