@@ -40,7 +40,7 @@ extension UIView {
             frame.size.width = W
         }
         get {
-            return bounds.width
+            return frame.width
         }
     }
     
@@ -50,7 +50,7 @@ extension UIView {
             frame.size.height = H
         }
         get {
-            return bounds.height
+            return frame.height
         }
     }
 }

@@ -70,7 +70,7 @@ class YF_KLineMainView: UIView {
     ///< 需要绘制Index开始值
     var needDrawStartIndex: Int {
         set {
-            
+            print("===========\(newValue)===========")
         }
         get {
             guard let scrollViewOffsetX = parentScrollView?.contentOffset.x else {
@@ -113,7 +113,7 @@ class YF_KLineMainView: UIView {
             return
         }
         extractNeedDrawModels()
-        needDrawKLinePositionModels = convertToKLinePositionModel()!
+        convertToKLinePositionModel()!
         setNeedsDisplay()
     }
     
@@ -275,14 +275,14 @@ extension YF_KLineMainView {
         }
         if needDrawKLineStartIndex < models.count {
             if needDrawKLineStartIndex + needDrawKLineCount < models.count {
-                let subArry = models[needDrawKLineStartIndex..<needDrawKLineCount]
+                let subArray = (models as NSArray).subarray(with: NSMakeRange(needDrawKLineStartIndex, needDrawKLineCount))
                 //FIXME:- 数组的切片还不怎么会用
-                let combineArray: [YF_KLineModel] = (needDrawKLineModels as [Any] + subArry) as! [YF_KLineModel]
+                let combineArray: [YF_KLineModel] = (needDrawKLineModels as [Any] + subArray) as! [YF_KLineModel]
                 needDrawKLineModels = combineArray
             }else {
                 let endIndex = models.count - needDrawKLineStartIndex
-                let subArry = models[needDrawKLineStartIndex..<endIndex]
-                let combineArray: [YF_KLineModel] = (needDrawKLineModels as [Any] + subArry) as! [YF_KLineModel]
+                let subArray = (models as NSArray).subarray(with: NSMakeRange(needDrawKLineStartIndex, endIndex))
+                let combineArray: [YF_KLineModel] = (needDrawKLineModels as [Any] + subArray) as! [YF_KLineModel]
                 needDrawKLineModels = combineArray
             }
         }
