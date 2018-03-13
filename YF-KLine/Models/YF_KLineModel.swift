@@ -55,7 +55,7 @@ class YF_KLineModel: NSObject {
     var SumOfLastVolume: Double?
     
     ///< 日期
-    var date: Double?
+    var date: String?
     
     ///< 开盘价
     var Open: Double?
@@ -531,7 +531,7 @@ class YF_KLineModel: NSObject {
     
     ///< 初始化一些基本数据
     func initWith(array: [Any]) {
-        date = array[0] as? Double
+        date = array[0] as? String
         Open = array[1] as? Double
         Close = array[2] as? Double
         High = array[3] as? Double
@@ -579,6 +579,8 @@ class YF_KLineModel: NSObject {
         //FIXME: -不知道这么写对不对, 先把这俩函数调一遍吧
         getNineClocksMaxPrice()
         getNineClocksMinPrice()
+        
+        //FIXME:- 这里的算法还有点问题, 前7个点应该没有MA7数据的
         if MA7 != nil {
             
         }

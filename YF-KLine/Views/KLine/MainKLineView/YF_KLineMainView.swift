@@ -195,10 +195,11 @@ class YF_KLineMainView: UIView {
             var lastDrawDatePoint = CGPoint.zero
             for (idx, _) in needDrawKLinePositionModels.enumerated() {
                 let point = positions[idx]
-                let date = Date(timeIntervalSince1970: needDrawKLineModels[idx].date ?? 0)
-                let formatter = DateFormatter()
-                formatter.dateFormat = "HH:mm"
-                let dateStr = formatter.string(from: date)
+//                let date = Date(timeIntervalSince1970: needDrawKLineModels[idx].date ?? 0)
+//                let formatter = DateFormatter()
+//                formatter.dateFormat = "HH:mm"
+                let dateStr = needDrawKLineModels[idx].date ?? ""
+//                let dateStr = formatter.string(from: date)
                 let drawDatePoint = CGPoint(x: point.x + 1, y: height + 1.5)
                 if lastDrawDatePoint == .zero || point.x - lastDrawDatePoint.x > 60 {
                     (dateStr as NSString).draw(at: drawDatePoint, withAttributes: [.font : UIFont.systemFont(ofSize: 11),

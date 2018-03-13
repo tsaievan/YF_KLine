@@ -70,11 +70,12 @@ extension YF_KLine {
         context.strokeLineSegments(between: shadowPoints)
         
         ///< 计算每个模型对应的时间字符串
-        let timeInterval = (model.date ?? 0) / 1000.0
-        let date = Date(timeIntervalSince1970: timeInterval)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm"
-        let dateString = dateFormatter.string(from: date)
+//        let timeInterval = (model.date ?? 0) / 1000.0
+//        let date = Date(timeIntervalSince1970: timeInterval)
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "HH:mm"
+//        let dateString = dateFormatter.string(from: date)
+        let dateString = model.date ?? ""
         
         let drawDatePoint = CGPoint(x: lowPoint.x + 1, y: (maxY ?? 0.0) + 1.5)
         guard let lastPoint = lastDrawDatePoint else {

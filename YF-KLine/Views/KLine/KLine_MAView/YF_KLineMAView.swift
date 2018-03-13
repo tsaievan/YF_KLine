@@ -127,10 +127,11 @@ class YF_KLineMAView: UIView {
 
     
     func maProfile(withModel model: YF_KLineModel) {
-        let date = Date(timeIntervalSince1970: (model.date ?? 1000.0) / 1000.0)
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let dateStr = formatter.string(from: date)
+//        let date = Date(timeIntervalSince1970: (model.date ?? 1000.0) / 1000.0)
+//        let formatter = DateFormatter()
+//        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+//        let dateStr = formatter.string(from: date)
+        let dateStr = model.date ?? ""
         dateDescLabel.text = " \(dateStr)"
         openLabel.text = String(format: "%.2f", model.Open ?? 0)
         highLabel.text = String(format: "%.2f", model.High ?? 0)
