@@ -201,6 +201,7 @@ class YF_KLineMainView: UIView {
                 let dateStr = needDrawKLineModels[idx].date ?? ""
 //                let dateStr = formatter.string(from: date)
                 let drawDatePoint = CGPoint(x: point.x + 1, y: height + 1.5)
+                ///< 距离大于60才画出来, 否则就不画, 不然密密麻麻不好看
                 if lastDrawDatePoint == .zero || point.x - lastDrawDatePoint.x > 60 {
                     (dateStr as NSString).draw(at: drawDatePoint, withAttributes: [.font : UIFont.systemFont(ofSize: 11),
                                                                                    .foregroundColor : ASSISTANT_TEXT_COLOR])
