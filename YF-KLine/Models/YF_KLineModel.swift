@@ -93,15 +93,13 @@ class YF_KLineModel: NSObject {
                     let oriArr = array as? [YF_KLineModel] else {
                         return ma7
                 }
-                ma7 = (sum - (oriArr[index - 7].SumOfLastClose ?? 0)) / 7
-                return ma7
-            }else {
-                guard let sum = SumOfLastClose else {
-                    return ma7
+                if index > 6 {
+                    ma7 = (sum - (oriArr[index - 7].SumOfLastClose ?? 0)) / 7
+                }else {
+                    ma7 = sum / 7
                 }
-                ma7 = sum / 7
-                return ma7
             }
+            return ma7
         }else {
             ma7 = EMA7
             return ma7
@@ -581,7 +579,9 @@ class YF_KLineModel: NSObject {
         //FIXME: -不知道这么写对不对, 先把这俩函数调一遍吧
         getNineClocksMaxPrice()
         getNineClocksMinPrice()
-        MA7 = MA7 ?? 0
+        if MA7 != nil {
+            
+        }
         MA12 = MA12 ?? 0
         MA26 = MA26 ?? 0
         MA30 = MA30 ?? 0
