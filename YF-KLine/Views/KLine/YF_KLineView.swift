@@ -85,7 +85,7 @@ class YF_KLineView: UIView {
     fileprivate lazy var scrollView: UIScrollView = {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
-        sv.showsHorizontalScrollIndicator = true
+        sv.showsHorizontalScrollIndicator = false
         sv.bounces = false
         sv.delegate = self
         ///< 添加缩放手势
@@ -306,8 +306,22 @@ extension YF_KLineView {
         }
     }
     
+    ///< 长按执行的方法
     @objc fileprivate func didLongPressAction(sender: UILongPressGestureRecognizer) {
-        print("长按")
+        var oldPositionX: CGFloat = 0.0
+        ///< 长按开始, 以及长按的位置的变化
+        if sender.state ==  .began || sender.state == .changed {
+            ///< 取到长按的点
+            let location = sender.location(in: scrollView)
+            ///< 如果长按的点的变化的间距小于蜡烛图的宽和间距的一半, 则直接return掉
+            if abs(oldPositionX - location.x) < ((YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth) * 0.5) {
+                return
+            }
+            ///< 此时, 暂停scrollView的滑动
+            scrollView.isScrollEnabled = false
+            ///< 把当前的长按的点赋值给oldPositionX变量
+            oldPositionX = location.x
+        }
     }
     
     fileprivate func drawKLineMainView() {
