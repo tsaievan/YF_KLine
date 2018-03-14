@@ -8,17 +8,22 @@
 
 import UIKit
 
+@objc
 protocol YF_KLineMainViewDelegate: NSObjectProtocol {
     ///< 需要绘制的K线模型数组
+    @objc optional
     func kLineMainViewCurrent(needDrawKLineModels kLineModels: [YF_KLineModel])
     
     ///< 需要绘制的K线位置模型数组
+    @objc optional
     func kLineMainViewPositionCurrent(needDrawKLinePositionModels kLinePositionModels: [YF_KLinePositionModel])
     
     ///< 当前MainView的最大值和最小值
+    @objc optional
     func kLineMainViewCurrentPrice(maxPrice: Double, minPrice: Double)
     
     ///< 当前需要绘制的K线颜色数组
+    @objc optional
     func kLineMainViewCurrentLineColors(needDrawKLineColors kLineColors: [UIColor])
 }
 
@@ -235,7 +240,7 @@ class YF_KLineMainView: UIView {
             MALine.MAPositions = MA30Positions
             MALine.draw()
         }
-        delegate?.kLineMainViewCurrentLineColors(needDrawKLineColors: kLineColors)
+        delegate?.kLineMainViewCurrentLineColors?(needDrawKLineColors: kLineColors)
     }
 }
 
@@ -293,7 +298,7 @@ extension YF_KLineMainView {
             }
         }
         ///< 响应代理
-        delegate?.kLineMainViewCurrent(needDrawKLineModels: needDrawKLineModels)
+        delegate?.kLineMainViewCurrent?(needDrawKLineModels: needDrawKLineModels)
     }
     
     ///< 将model转化为Position模型
@@ -471,8 +476,8 @@ extension YF_KLineMainView {
             }
             
             ///< 响应代理方法
-            delegate?.kLineMainViewCurrentPrice(maxPrice: maxAssert, minPrice: minAssert)
-            delegate?.kLineMainViewPositionCurrent(needDrawKLinePositionModels: needDrawKLinePositionModels)
+            delegate?.kLineMainViewCurrentPrice?(maxPrice: maxAssert, minPrice: minAssert)
+            delegate?.kLineMainViewPositionCurrent?(needDrawKLinePositionModels: needDrawKLinePositionModels)
         }
         return needDrawKLinePositionModels
     }
@@ -491,6 +496,11 @@ extension YF_KLineMainView {
             let difValue = abs(sv.contentOffset.x - oldContentOffsetX)
             if difValue >= YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth {
                 oldContentOffsetX = sv.contentOffset.x
+                if oldContentOffsetX == 0 {
+                    print("=============拽到底了============")
+                    ///< 这个地方要继续刷新数据
+                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "DataSourceNeedRefresh")))
+                }
                 drawMainView()
             }
         }

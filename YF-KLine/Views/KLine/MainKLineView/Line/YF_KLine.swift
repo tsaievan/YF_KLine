@@ -78,8 +78,8 @@ extension YF_KLine {
         
         ///< 字符串的截取
         var dateString = model.date ?? ""
-        let startIndex = dateString.index(dateString.startIndex, offsetBy: 4)
-        dateString = String(dateString[startIndex..<dateString.endIndex])
+//        let startIndex = dateString.index(dateString.startIndex, offsetBy: 4)
+//        dateString = String(dateString[startIndex..<dateString.endIndex])
         let drawDatePoint = CGPoint(x: lowPoint.x + 1, y: (maxY ?? 0.0) + 1.5)
         guard let lastPoint = lastDrawDatePoint else {
             return strokeColor
