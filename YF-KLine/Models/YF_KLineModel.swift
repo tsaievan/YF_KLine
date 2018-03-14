@@ -532,11 +532,11 @@ class YF_KLineModel: NSObject {
     ///< 初始化一些基本数据
     func initWith(array: [Any]) {
         date = array[0] as? String
-        Open = array[1] as? Double
-        Close = array[2] as? Double
-        High = array[3] as? Double
-        Low = array[4] as? Double
-        Volume = array[5] as? Double
+        Open = (array[1] as? NSString)?.doubleValue
+        Close = (array[2] as? NSString)?.doubleValue
+        Low = (array[5] as? NSString)?.doubleValue
+        High = (array[6] as? NSString)?.doubleValue
+        Volume = (array[8] as? NSString)?.doubleValue
         SumOfLastClose = (Close ?? 0) + (previousKLineModel?.SumOfLastClose ?? 0)
         SumOfLastVolume = (Volume ?? 0) + (previousKLineModel?.SumOfLastVolume ?? 0)
     }

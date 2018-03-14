@@ -14,17 +14,25 @@ class YF_NetworkTool {
     class func request(url: String, params: [String : Any]?, success: (([String: Any]) -> ())?, failue: (() -> ())?) {
         let queue = DispatchQueue(label: "com.tsaievan.networktool")
         queue.async {
-            Alamofire.request(url, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseJSON { (result) in
-                if result.error != nil {
+            Alamofire.request(url, method: .get, parameters: params, encoding: URLEncoding.default, headers: nil).responseString(completionHandler: { (response) in
+                if response.error != nil {
                     failue?()
                 }else {
-                    if let data = result.data,
-                        let rawValue = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments),
-                        let dict = rawValue as? [String : Any] {
-                        success?(dict)
+                    guard let resultString = response.value else {
+                        return
                     }
+                    let startIndex = resultString.index(resultString.startIndex, offsetBy: 10)
+                    let endIndex = resultString.index(resultString.endIndex, offsetBy: -3)
+                    
+                    let freshString = String(resultString[startIndex..<endIndex])
+                    guard let data = freshString.data(using: .utf8),
+                        let dict = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                        let responseDict = dict as? [String : Any] else {
+                            return
+                    }
+                    success?(responseDict)
                 }
-            }
+            })
         }
     }
 }
