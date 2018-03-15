@@ -498,8 +498,6 @@ extension YF_KLineMainView {
                 oldContentOffsetX = sv.contentOffset.x
                 if oldContentOffsetX == 0 {
                     print("=============拽到底了============")
-                    ///< 这个地方要继续刷新数据
-                    NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: "DataSourceNeedRefresh")))
                 }
                 drawMainView()
             }

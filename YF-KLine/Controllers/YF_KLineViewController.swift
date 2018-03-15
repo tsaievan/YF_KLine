@@ -47,7 +47,6 @@ class YF_KLineViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: Notification.Name(rawValue: "DataSourceNeedRefresh"), object: nil)
     }
 }
 
@@ -149,9 +148,6 @@ extension YF_KLineViewController {
     
     //FIXME:- 数据拼接的错误还在
     @objc fileprivate func loadData() {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
-            
-        }
         guard let filePath = YF_DefaultFunction.getBaseDataPath() else {
             return
         }
@@ -160,32 +156,12 @@ extension YF_KLineViewController {
             let url = URL(fileURLWithPath: filePath)
             guard let data = try? Data(contentsOf: url),
                 let rawData = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
-                let dataArray = rawData as? [Any] else {
-                    return
-            }
-            ///< 一次取300条数据
-            let count = remainDataCount < 300 ? remainDataCount : 300
-            if (loadTimes * 300 + count) > dataArray.count {
-                return
-            }
-            let subArray = (dataArray as NSArray).subarray(with: NSMakeRange(loadTimes * 300, remainDataCount < 300 ? remainDataCount : 300))
-            loadTimes += 1
-            remainDataCount = dataArray.count - 300
-            guard let groupModel = YF_KLineGroupModel.getObject(array: subArray), ///< 这是每一次请求下来的数组模型
-                let groupModelArray = groupModel.models,///< 数组模型里面的数组
+                let dataArray = rawData as? [Any],
+                let groupModel = YF_KLineGroupModel.getObject(array: dataArray),
                 let type = self.currentType else {
                     return
             }
-            
-//            self.gModel?.models =
-            if let models = self.gModel?.models {
-//                models.models = (models.models! as NSArray).addingObjects(from: groupModelArray)
-//                self.gModel = models
-                self.gModel?.models = (models as NSArray).addingObjects(from: groupModelArray)
-                
-            }else {
-                self.gModel = groupModel
-            }
+            self.gModel = groupModel
             self.modelsDict[type] = self.gModel ///< 将模型放到字典里面, 用做缓存, 不用每次加载网络请求
             self.stockChartView.reloadData() ///< stockChartView刷新数据
         }
