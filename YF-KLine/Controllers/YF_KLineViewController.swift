@@ -146,7 +146,7 @@ extension YF_KLineViewController {
         ///< http://q.stock.sohu.com/hisHq?code=zs_000001&start=19990504&end=20171215&stat=1&order=D&period=d&rt=jsonp&r=0.8391495715053367&0.9677250558488026
         YF_NetworkTool.request(url: "http://q.stock.sohu.com/hisHq?code=zs_000001&start=20150504&end=20171215&stat=1&order=D&period=d&rt=jsonp&r=0.8391495715053367&0.9677250558488026", params: params, success: { (response) in
             guard let array = response["hq"] as? [Any], //else {
-                let groupModel = YF_KLineGroupModel.getObject(array: array), ///< 字典转模型
+                let groupModel = YF_KLineGroupModel.getObject(array: array.reversed()), ///< 字典转模型
                 let type = self.currentType else {
                     return
                     //                return
