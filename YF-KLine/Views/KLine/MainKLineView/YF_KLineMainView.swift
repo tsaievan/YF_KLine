@@ -140,7 +140,8 @@ class YF_KLineMainView: UIView {
             update.width.equalTo(kLineViewWidth)
         }
         layoutIfNeeded()
-        parentScrollView?.contentSize = CGSize(width: kLineViewWidth, height: parentView.height)
+        ///< 这里contentSize的高度填0, 避免在垂直方向上的滑动
+        parentScrollView?.contentSize = CGSize(width: kLineViewWidth, height: 0)
     }
     
     override func draw(_ rect: CGRect) {

@@ -128,7 +128,6 @@ extension YF_KLineViewController: YF_StockChartViewDataSource {
 
 // MARK: 事件处理
 extension YF_KLineViewController {
-    
     ///< 双击返回页面
     @objc fileprivate func dismissViewController() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
@@ -140,10 +139,6 @@ extension YF_KLineViewController {
     }
     
     ///< 加载数据
-    
-
-    
-    //FIXME:- 数据拼接的错误还在
     @objc fileprivate func loadData() {
         guard let filePath = YF_DefaultFunction.getBaseDataPath() else {
             return

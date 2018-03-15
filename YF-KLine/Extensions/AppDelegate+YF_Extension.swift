@@ -18,7 +18,7 @@ extension AppDelegate {
         ///< 获取前一天的日期
         let date = Date(timeIntervalSinceNow: -60 * 60 * 24)
         ///< 获取五年前的日期
-        let twoYearsDate = Date(timeIntervalSinceNow: -60 * 60 * 24 * 365 * 5)
+        let twoYearsDate = Date(timeIntervalSinceNow: -60 * 60 * 24 * 365 * 8)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYYMMdd"
         let dateString = dateFormatter.string(from: date)

@@ -16,39 +16,41 @@ class YF_KLineGroupModel: NSObject {
         let groupModel = YF_KLineGroupModel()
         var mtArray: [YF_KLineModel] = [YF_KLineModel]()
         var preModel = YF_KLineModel()
-        DispatchQueue.global().async {
-            for arr in array {
-                guard let a = arr as? [Any] else {
-                    DispatchQueue.main.async {
-                        failue?()
-                    }
-                    return
+        
+        let time1 = CFAbsoluteTimeGetCurrent()
+        for arr in array {
+            guard let a = arr as? [Any] else {
+                DispatchQueue.main.async {
+                    failue?()
                 }
-                ///< 在这里字典转模型!
-                let m = YF_KLineModel()
-                ///< 这里将前一个klineModel赋值给当前klineModel的previous属性
-                m.previousKLineModel = preModel
-                m.initWith(array: a)
-                ///< 这里将本模型赋值给klineModel的parentGroupModel对象, 这样klineModel就知道自己所在的组
-                m.parentGroupModel = groupModel
-                ///< 用可变数组将模型都存起来
-                mtArray.append(m)
-                ///< 将当前模型赋值给preModel变量
-                preModel = m
+                return
             }
-            ///< 将可变数组赋值给组模型的models属性
-            groupModel.models = mtArray
-            ///< 初始化第一个model的数据
-            let firstModel = mtArray[0]
-            firstModel.initFirstModel()
-            
-            ///< 初始其他model的数据
+            ///< 在这里字典转模型!
+            let m = YF_KLineModel()
+            ///< 这里将前一个klineModel赋值给当前klineModel的previous属性
+            m.previousKLineModel = preModel
+            m.initWith(array: a)
+            ///< 这里将本模型赋值给klineModel的parentGroupModel对象, 这样klineModel就知道自己所在的组
+            m.parentGroupModel = groupModel
+            ///< 用可变数组将模型都存起来
+            mtArray.append(m)
+            ///< 将当前模型赋值给preModel变量
+            preModel = m
+        }
+        
+        ///< 将可变数组赋值给组模型的models属性
+        groupModel.models = mtArray
+        ///< 初始化第一个model的数据
+        let firstModel = mtArray[0]
+        firstModel.initFirstModel()
+        let time2 = CFAbsoluteTimeGetCurrent()
+        print("时间===========\(time2 - time1)===========")
+        ///< 初始其他model的数据
+        DispatchQueue.global().async {
             for m in mtArray {
                 m.initData()
             }
-            DispatchQueue.main.async {
-                successs?(groupModel)
-            }
         }
+        successs?(groupModel)
     }
 }
