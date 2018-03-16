@@ -30,7 +30,7 @@
 		5718364A204CD26D00800725 /* UILabel+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57183649204CD26D00800725 /* UILabel+YF_Extension.swift */; };
 		571E2CE52053FF69003B7046 /* YF_KLineAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571E2CE42053FF69003B7046 /* YF_KLineAccessory.swift */; };
 		573C27E62058F8A800EF9CCE /* AppDelegate+YF_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573C27E52058F8A800EF9CCE /* AppDelegate+YF_Extension.swift */; };
-		573C27E82058FA8600EF9CCE /* YF_DefaultFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573C27E72058FA8600EF9CCE /* YF_DefaultFunction.swift */; };
+		5763237A205BDA2600B5180C /* YF_DefaultFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57632379205BDA2600B5180C /* YF_DefaultFunction.swift */; };
 		5789BA16204D262700174DFC /* YF_KLinePositionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789BA15204D262700174DFC /* YF_KLinePositionModel.swift */; };
 		5789BA19204D2C1600174DFC /* YF_KLineVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5789BA18204D2C1600174DFC /* YF_KLineVolume.swift */; };
 		579D284820516A07007F3FF5 /* YF_MALine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579D284720516A07007F3FF5 /* YF_MALine.swift */; };
@@ -72,7 +72,7 @@
 		57183649204CD26D00800725 /* UILabel+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+YF_Extension.swift"; sourceTree = "<group>"; };
 		571E2CE42053FF69003B7046 /* YF_KLineAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineAccessory.swift; sourceTree = "<group>"; };
 		573C27E52058F8A800EF9CCE /* AppDelegate+YF_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+YF_Extension.swift"; sourceTree = "<group>"; };
-		573C27E72058FA8600EF9CCE /* YF_DefaultFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_DefaultFunction.swift; sourceTree = "<group>"; };
+		57632379205BDA2600B5180C /* YF_DefaultFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_DefaultFunction.swift; sourceTree = "<group>"; };
 		5789BA15204D262700174DFC /* YF_KLinePositionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLinePositionModel.swift; sourceTree = "<group>"; };
 		5789BA18204D2C1600174DFC /* YF_KLineVolume.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_KLineVolume.swift; sourceTree = "<group>"; };
 		579D284720516A07007F3FF5 /* YF_MALine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YF_MALine.swift; sourceTree = "<group>"; };
@@ -263,8 +263,8 @@
 			children = (
 				5712692F204560C1001F0FFB /* YF_DefaultConfig.swift */,
 				57E702D22046483C0086DAD5 /* YF_StockChartVariable.swift */,
-				573C27E72058FA8600EF9CCE /* YF_DefaultFunction.swift */,
 				57E702D4204650C90086DAD5 /* YF_KLineConfig.swift */,
+				57632379205BDA2600B5180C /* YF_DefaultFunction.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -459,7 +459,7 @@
 				579D284820516A07007F3FF5 /* YF_MALine.swift in Sources */,
 				57EF03F2204E69F00005738B /* YF_KLineVolumePositionModel.swift in Sources */,
 				57083C0B2047E67E0078AE04 /* YF_AccessoryMAView.swift in Sources */,
-				573C27E82058FA8600EF9CCE /* YF_DefaultFunction.swift in Sources */,
+				5763237A205BDA2600B5180C /* YF_DefaultFunction.swift in Sources */,
 				57E702D5204650C90086DAD5 /* YF_KLineConfig.swift in Sources */,
 				5712692C204552C1001F0FFB /* YF_StockChartView.swift in Sources */,
 				57126930204560C1001F0FFB /* YF_DefaultConfig.swift in Sources */,

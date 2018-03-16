@@ -25,6 +25,10 @@ protocol YF_KLineMainViewDelegate: NSObjectProtocol {
     ///< 当前需要绘制的K线颜色数组
     @objc optional
     func kLineMainViewCurrentLineColors(needDrawKLineColors kLineColors: [UIColor])
+    
+    ///< 长按显示手指按着的Y_KLinePosition和KLineModel
+    @objc optional
+    func kLineMainViewLongPress(kLinePositionModel positionModel: YF_KLinePositionModel, kLineModel: YF_KLineModel)
 }
 
 class YF_KLineMainView: UIView {
@@ -74,9 +78,7 @@ class YF_KLineMainView: UIView {
     
     ///< 需要绘制Index开始值
     var needDrawStartIndex: Int {
-        set {
-            print("===========\(newValue)===========")
-        }
+        set {}
         get {
             guard let scrollViewOffsetX = parentScrollView?.contentOffset.x else {
                 return 0
@@ -87,17 +89,16 @@ class YF_KLineMainView: UIView {
         }
     }
     
-    ///< Index开始的X的值
+    ///< 开始的x值
     var startXPosition: Int {
-        set {
-            
-        }
+        set {}
         get {
-            let totalKlineGap = CGFloat(needDrawStartIndex + 1) * YF_StockChartVariable.kLineGap
-            let totalKlineWidth = CGFloat(needDrawStartIndex) * YF_StockChartVariable.kLineWidth
+            let leftArrCount = needDrawStartIndex
+            let gap = CGFloat(leftArrCount + 1) * (YF_StockChartVariable.kLineGap)
+            let width = CGFloat(leftArrCount) * (YF_StockChartVariable.kLineWidth)
             let exceedWidth = (YF_StockChartVariable.kLineWidth) * 0.5
-            let startXPosition = totalKlineGap + totalKlineWidth + exceedWidth
-            return Int(startXPosition)
+            let xPosition = gap + width + exceedWidth
+            return Int(xPosition)
         }
     }
     
@@ -201,11 +202,7 @@ class YF_KLineMainView: UIView {
             var lastDrawDatePoint = CGPoint.zero
             for (idx, _) in needDrawKLinePositionModels.enumerated() {
                 let point = positions[idx]
-//                let date = Date(timeIntervalSince1970: needDrawKLineModels[idx].date ?? 0)
-//                let formatter = DateFormatter()
-//                formatter.dateFormat = "HH:mm"
                 let dateStr = needDrawKLineModels[idx].date ?? ""
-//                let dateStr = formatter.string(from: date)
                 let drawDatePoint = CGPoint(x: point.x + 1, y: height + 1.5)
                 ///< 距离大于60才画出来, 否则就不画, 不然密密麻麻不好看
                 if lastDrawDatePoint == .zero || point.x - lastDrawDatePoint.x > 60 {
@@ -256,6 +253,32 @@ extension YF_KLineMainView {
         parentScrollView = superView as? UIScrollView
         addAllEventsListeners()
         super.didMoveToWindow()
+    }
+}
+
+extension YF_KLineMainView {
+    ///< 长按的时候根据原始的x位置获得精确的x位置
+    func getExactXPosition(withOriginalXPosition xPosition: CGFloat) -> CGFloat {
+        let xPositionInMainView = xPosition
+        let startIndex = (Int(xPositionInMainView - CGFloat(startXPosition)) / Int ((YF_StockChartVariable.kLineGap) + (YF_StockChartVariable.kLineWidth)))
+        let arrCount = needDrawKLinePositionModels.count
+        let start = startIndex > 0 ? startIndex - 1 : 0
+        if start > arrCount {
+            return 0
+        }
+        for i in start..<arrCount {
+            let kLinePositionModel = needDrawKLinePositionModels[i+1]
+            guard let X = kLinePositionModel.HighPoint?.x else {
+                return 0
+            }
+            let minX = X - (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth * 0.5)
+            let maxX = X + (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth * 0.5)
+            if xPositionInMainView > minX && xPositionInMainView < maxX {
+                delegate?.kLineMainViewLongPress?(kLinePositionModel: needDrawKLinePositionModels[i], kLineModel: needDrawKLineModels[i])
+            }
+            return X
+        }
+        return 0
     }
 }
 
@@ -378,7 +401,6 @@ extension YF_KLineMainView {
         BOLL_MBPositions.removeAll()
         BOLL_DNPositions.removeAll()
         BOLL_UPPositions.removeAll()
-        //FIXME:- 其他的线先不画, 先画K线
         for (idx, model) in needDrawKLineModels.enumerated() {
             let xPosition = CGFloat(startXPosition) + CGFloat(idx) * (YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth)
             let open = model.Open ?? 0.0
@@ -446,31 +468,33 @@ extension YF_KLineMainView {
             ///< Accessory指标种类是BOLL线
             if targetLineStatus == .BOLL {
                 ///< BOLL坐标转换
-                var boll_mbY = maxY
-                var boll_upY = maxY
                 var boll_dnY = maxY
+                var boll_upY = maxY
+                var boll_mbY = maxY
                 
                 if unitValue > 0.0000001 {
-                    if let boll_mb = model.BOLL_MB {
-                        boll_mbY = maxY - CGFloat(boll_mb - minAssert) / unitValue
-                    }
-                    
                     if let boll_dn = model.BOLL_DN {
                         boll_dnY = maxY - CGFloat(boll_dn - minAssert) / unitValue
                     }
-                    
                     if let boll_up = model.BOLL_UP {
                         boll_upY = maxY - CGFloat(boll_up - minAssert) / unitValue
                     }
+                    if let boll_mb = model.BOLL_MB {
+                        boll_mbY = maxY - CGFloat(boll_mb - minAssert) / unitValue
+                    }
                 }
                 
-                let boll_mbPoint = CGPoint(x: xPosition, y: boll_mbY)
-                let boll_upPoint = CGPoint(x: xPosition, y: boll_upY)
                 let boll_dnPoint = CGPoint(x: xPosition, y: boll_dnY)
+                let boll_upPoint = CGPoint(x: xPosition, y: boll_upY)
+                let boll_mbPoint = CGPoint(x: xPosition, y: boll_mbY)
                 
                 if model.BOLL_MB != nil {
                     BOLL_MBPositions.append(boll_mbPoint)
+                }
+                if model.BOLL_DN != nil {
                     BOLL_DNPositions.append(boll_dnPoint)
+                }
+                if model.BOLL_UP != nil {
                     BOLL_UPPositions.append(boll_upPoint)
                 }
             }

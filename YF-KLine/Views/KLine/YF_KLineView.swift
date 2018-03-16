@@ -322,6 +322,42 @@ extension YF_KLineView {
             scrollView.isScrollEnabled = false
             ///< 把当前的长按的点赋值给oldPositionX变量
             oldPositionX = location.x
+            
+            ///< 初始化竖线
+            if verticalView == nil {
+                verticalView = UIView()
+                scrollView.addSubview(verticalView!)
+                verticalView?.clipsToBounds = true
+                verticalView?.backgroundColor = LONG_PRESS_LINE_COLOR
+                verticalView?.snp.makeConstraints({ (make) in
+                    make.top.height.equalTo(self).offset(15)
+                    make.width.equalTo(STOCK_CHART_LONG_PRESS_VERTICAL_VIEW_WIDTH)
+                    make.left.equalTo(-10)
+                })
+            }
+            
+            ///< 更新竖线位置
+            let rightXPosition = kLineMainView.getExactXPosition(withOriginalXPosition: location.x)
+            verticalView?.snp.updateConstraints({ (make) in
+                make.left.equalTo(rightXPosition)
+            })
+            verticalView?.layoutIfNeeded()
+            verticalView?.isHidden = false
+        }
+        ///< 手势结束时
+        if sender.state == .ended {
+            ///< 取消竖线
+            verticalView?.isHidden = true
+            oldPositionX = 0
+            ///< 恢复scrollView的滑动
+            scrollView.isScrollEnabled = true
+            
+            guard let lastModel = kLineModels?.last as? YF_KLineModel else {
+                return
+            }
+            kLineMAView.maProfile(withModel: lastModel)
+            volumeMAView.maProfile(withModel: lastModel)
+            accessoryMAView.maProfile(withModel: lastModel)
         }
     }
     
@@ -379,6 +415,12 @@ extension YF_KLineView: YF_KLineMainViewDelegate {
     func kLineMainViewCurrent(needDrawKLineModels kLineModels: [YF_KLineModel]) {
         kLineVolumeView.needDrawKLineModels = kLineModels
         kLineAccessoryView.needDrawKLineModels = kLineModels
+    }
+    
+    func kLineMainViewLongPress(kLinePositionModel positionModel: YF_KLinePositionModel, kLineModel: YF_KLineModel) {
+        kLineMAView.maProfile(withModel: kLineModel)
+        volumeMAView.maProfile(withModel: kLineModel)
+        accessoryMAView.maProfile(withModel: kLineModel)
     }
 }
 

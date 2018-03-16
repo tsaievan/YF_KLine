@@ -30,6 +30,8 @@ let ASSISTANT_TEXT_COLOR = UIColor.color(RGBHex: 0x565a64) ///< 辅助文字颜�
 
 let MAIN_TEXT_COLOR = UIColor.color(RGBHex: 0xe1e2e6) ///< 主文字颜色
 
+let LONG_PRESS_LINE_COLOR = UIColor.color(RGBHex: 0xe1e2e6) ///< 长安线颜色
+
 let MA_7_COLOR = UIColor.orange ///< MA7的颜色
 
 let MA_30_COLOR = UIColor.green ///< MA30颜色
@@ -43,13 +45,13 @@ let K_LINE_INCREASE_COLOR = UIColor.red
 let K_LINE_DECREASE_COLOR = UIColor.cyan
 
 ///< BOLL_UP颜色
-let BOLL_UP_COLOR = UIColor.purple
+let BOLL_UP_COLOR = UIColor.cyan
 
 ///< BOLL_MB颜色
 let BOLL_MB_COLOR = UIColor.white
 
 ///< BOLL_DN颜色
-let BOLL_DN_COLOR = UIColor.green
+let BOLL_DN_COLOR = UIColor.magenta
 
 
 
