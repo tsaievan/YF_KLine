@@ -252,13 +252,13 @@ extension YF_KLineAccessoryView {
                 let KDJ_JPoint = CGPoint(x: xPosition, y: KDJ_J_Y)
                 
                 if model.KDJ_K != nil {
-                    Accessory_DIFPositions.append(KDJ_KPoint)
+                    Accessory_KDJ_KPositions.append(KDJ_KPoint)
                 }
                 if model.KDJ_D != nil {
-                    Accessory_DIFPositions.append(KDJ_DPoint)
+                    Accessory_KDJ_DPositions.append(KDJ_DPoint)
                 }
                 if model.KDJ_J != nil {
-                    Accessory_DEAPositions.append(KDJ_JPoint)
+                    Accessory_KDJ_JPositions.append(KDJ_JPoint)
                 }
             }
         }
