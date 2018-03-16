@@ -16,8 +16,6 @@ class YF_KLineGroupModel: NSObject {
         let groupModel = YF_KLineGroupModel()
         var mtArray: [YF_KLineModel] = [YF_KLineModel]()
         var preModel = YF_KLineModel()
-        
-        let time1 = CFAbsoluteTimeGetCurrent()
         for arr in array {
             guard let a = arr as? [Any] else {
                 DispatchQueue.main.async {
@@ -43,8 +41,6 @@ class YF_KLineGroupModel: NSObject {
         ///< 初始化第一个model的数据
         let firstModel = mtArray[0]
         firstModel.initFirstModel()
-        let time2 = CFAbsoluteTimeGetCurrent()
-        print("时间===========\(time2 - time1)===========")
         ///< 初始其他model的数据
         DispatchQueue.global().async {
             for m in mtArray {

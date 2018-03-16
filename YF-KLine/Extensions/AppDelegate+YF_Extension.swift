@@ -17,7 +17,7 @@ extension AppDelegate {
         //        params["size"] = "300"
         ///< 获取前一天的日期
         let date = Date(timeIntervalSinceNow: -60 * 60 * 24)
-        ///< 获取五年前的日期
+        ///< 获取八年前的日期
         let twoYearsDate = Date(timeIntervalSinceNow: -60 * 60 * 24 * 365 * 8)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYYMMdd"
@@ -29,7 +29,7 @@ extension AppDelegate {
         ///< http://img1.money.126.net/data/hs/kline/day/history/2015/1399001.json
         ///< https://api.huobi.pro/market/history/kline
         ///< http://q.stock.sohu.com/hisHq?code=zs_000001&start=19990504&end=20171215&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp&r=0.8391495715053367&0.9677250558488026
-        let urlString = "http://q.stock.sohu.com/hisHq?code=zs_000001&start=\(twoYearsDateString)&end=\(dateString)&stat=1&order=D&period=d&rt=jsonp&r=0.8391495715053367&0.9677250558488026"
+        let urlString = "http://q.stock.sohu.com/hisHq?code=zs_000001&start=\(twoYearsDateString)&end=\(dateString)&stat=1&order=D&period=m&rt=jsonp&r=0.8391495715053367&0.9677250558488026"
         YF_NetworkTool.request(url: urlString, params: params, success: { (response) in
             guard let array = response["hq"] as? [Any] else {
                 return

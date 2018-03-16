@@ -66,13 +66,19 @@ class YF_KLineView: UIView {
                 }
                 ///< 因为高度比例变了, 所以取消之前高度的约束值, 重新更新约束
                 //FIXME:- 这里会崩, 原因还没有找到, 先不管
-                kLineMainViewHeightConstraint?.deactivate()
-                kLineMainView.snp.updateConstraints({ (update) in update.height.equalTo(scrollView).multipliedBy(YF_StockChartVariable.kLineMainViewRatio)
-                })
+//                if let _ = kLineMainViewHeightConstraint?.isActive {
+                    kLineMainViewHeightConstraint?.deactivate()
+                    kLineMainView.snp.makeConstraints({ (make) in
+                        kLineMainViewHeightConstraint =                    make.height.equalTo(scrollView).multipliedBy(YF_StockChartVariable.kLineMainViewRatio).constraint
+                    })
+//                }
                 
-                kLineVolumeViewHeightConstraint?.deactivate()
-                kLineVolumeView.snp.updateConstraints({ (update) in update.height.equalTo(scrollView).multipliedBy(YF_StockChartVariable.kLineVolumeViewRatio)
-                })
+//                if let _ = kLineVolumeViewHeightConstraint?.isActive {
+                    kLineVolumeViewHeightConstraint?.deactivate()
+                    kLineVolumeView.snp.makeConstraints({ (make) in
+                        kLineVolumeViewHeightConstraint =                    make.height.equalTo(scrollView).multipliedBy(YF_StockChartVariable.kLineVolumeViewRatio).constraint
+                    })
+//                }
                 ///< 更新约束之后重绘
                 reDraw()
             }

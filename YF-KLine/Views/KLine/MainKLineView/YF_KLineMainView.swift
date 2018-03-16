@@ -279,7 +279,6 @@ extension YF_KLineMainView {
             needDrawKLineStartIndex = needDrawStartIndex
         }
         
-        print("这是模型开始的index------------\(needDrawKLineStartIndex)")
         ///< 把之前的数组的元素全部删除, 再重新添加 (这一步不能忘, 否则点集合有问题, 线就会有问题)
         needDrawKLineModels.removeAll()
         guard let models = kLineModels else {
@@ -497,9 +496,6 @@ extension YF_KLineMainView {
             let difValue = abs(sv.contentOffset.x - oldContentOffsetX)
             if difValue >= YF_StockChartVariable.kLineGap + YF_StockChartVariable.kLineWidth {
                 oldContentOffsetX = sv.contentOffset.x
-                if oldContentOffsetX == 0 {
-                    print("=============拽到底了============")
-                }
                 drawMainView()
             }
         }
