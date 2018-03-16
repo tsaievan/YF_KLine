@@ -446,37 +446,37 @@ class YF_KLineModel: NSObject {
     }()
     
     ///< 9Clock内最低价
-    var NineClocksMinPrice: Double? = 0
+    var NineClocksMinPrice: Double?
     
-    func getNineClocksMinPrice() {
-        guard let models = parentGroupModel?.models as? [YF_KLineModel] else {
-            return
-        }
-        if models.count >= 8 {
-            rangeLastNinePrice(byArray: models, condition: .orderedDescending)
-        }else {
-            return
-        }
-    }
+//    func getNineClocksMinPrice() {
+//        guard let models = parentGroupModel?.models as? [YF_KLineModel] else {
+//            return
+//        }
+//        if models.count >= 8 {
+//            rangeLastNinePrice(byArray: parentGroupModel?.models as! [YF_KLineModel], condition: .orderedDescending)
+//        }else {
+//            return
+//        }
+//    }
     
     ///< 9Clock内最高价
-    var NineClocksMaxPrice: Double? = 0
+    var NineClocksMaxPrice: Double?
     
-    func getNineClocksMaxPrice() {
-        guard let models = parentGroupModel?.models as? [YF_KLineModel] else {
-            return
-        }
-        if models.count >= 8 {
-            rangeLastNinePrice(byArray: models, condition: .orderedAscending)
-        }else {
-            return
-        }
-    }
+//    func getNineClocksMaxPrice() {
+//        guard let models = parentGroupModel?.models as? [YF_KLineModel] else {
+//            return
+//        }
+//        if models.count >= 8 {
+//            rangeLastNinePrice(byArray: parentGroupModel?.models as! [YF_KLineModel], condition: .orderedAscending)
+//        }else {
+//            return
+//        }
+//    }
     
     lazy var RSV_9: Double? = {
         //FIXME: -不知道这么写对不对, 先把这俩函数调一遍吧
-        getNineClocksMinPrice()
-        getNineClocksMaxPrice()
+//        getNineClocksMinPrice()
+//        getNineClocksMaxPrice()
         var rsv_9 = 100.0
         guard let min = NineClocksMinPrice,
             let max = NineClocksMaxPrice,
@@ -543,8 +543,8 @@ class YF_KLineModel: NSObject {
     
     func initFirstModel() {
         //FIXME: -不知道这么写对不对, 先把这俩函数调一遍吧
-        getNineClocksMaxPrice()
-        getNineClocksMinPrice()
+//        getNineClocksMaxPrice()
+//        getNineClocksMinPrice()
         KDJ_K = 55.27
         KDJ_D = 55.27
         KDJ_J = 55.27
@@ -557,11 +557,11 @@ class YF_KLineModel: NSObject {
         DIF = DIF ?? 0
         DEA = DEA ?? 0
         MACD = MACD ?? 0
-        guard let models = parentGroupModel?.models as? [YF_KLineModel] else{
+        guard let _ = parentGroupModel?.models as? [YF_KLineModel] else{
             return
         }
-        rangeLastNinePrice(byArray: models, condition: .orderedAscending)
-        rangeLastNinePrice(byArray: models, condition: .orderedDescending)
+        rangeLastNinePrice(byArray: parentGroupModel?.models as! [YF_KLineModel], condition: .orderedAscending)
+        rangeLastNinePrice(byArray: parentGroupModel?.models as! [YF_KLineModel], condition: .orderedDescending)
         RSV_9 = RSV_9 ?? 0
         KDJ_K = KDJ_K ?? 0
         KDJ_D = KDJ_D ?? 0
@@ -577,8 +577,8 @@ class YF_KLineModel: NSObject {
     
     func initData() {
         //FIXME: -不知道这么写对不对, 先把这俩函数调一遍吧
-        getNineClocksMaxPrice()
-        getNineClocksMinPrice()
+//        getNineClocksMaxPrice()
+//        getNineClocksMinPrice()
         
         //FIXME:- 这里的算法还有点问题, 前7个点应该没有MA7数据的
         if MA7 != nil {
@@ -594,8 +594,8 @@ class YF_KLineModel: NSObject {
         DIF = DIF ?? 0
         DEA = DEA ?? 0
         MACD = MACD ?? 0
-        NineClocksMaxPrice = NineClocksMaxPrice ?? 0
-        NineClocksMinPrice = NineClocksMinPrice ?? 0
+//        NineClocksMaxPrice = NineClocksMaxPrice ?? 0
+//        NineClocksMinPrice = NineClocksMinPrice ?? 0
         RSV_9 = RSV_9 ?? 0
         KDJ_K = KDJ_K ?? 0
         KDJ_D = KDJ_D ?? 0
@@ -618,7 +618,7 @@ extension YF_KLineModel {
             for j in (1...7).reversed() {
                 var emMaxValue = 0.0
                 var em = j
-                while em > 0 {
+                while em >= 0 {
                     guard let high = array[em].High else {
                         break
                     }
@@ -629,8 +629,8 @@ extension YF_KLineModel {
                 }
                 array[j].NineClocksMaxPrice = emMaxValue
             }
-            for i in (0..<(count - 8)) {
-                var j = 8
+            for j in (8 ..< count) {
+                var i = 0
                 var emMaxValue = 0.0
                 var em = j
                 while em >= i {
@@ -643,7 +643,7 @@ extension YF_KLineModel {
                     em = em - 1
                 }
                 array[j].NineClocksMaxPrice = emMaxValue
-                j = j + 1
+                i = i + 1
             }
         case .orderedDescending:
             for j in (1...7).reversed() {
@@ -660,8 +660,8 @@ extension YF_KLineModel {
                 }
                 array[j].NineClocksMinPrice = emMinValue
             }
-            for i in (0..<(count - 8)) {
-                var j = 8
+            for j in (0 ..< count) {
+                var i = 0
                 var emMinValue = 10000000000.0
                 var em = j
                 while em >= i {
@@ -674,7 +674,7 @@ extension YF_KLineModel {
                     em = em - 1
                 }
                 array[j].NineClocksMinPrice = emMinValue
-                j = j + 1
+                i = i + 1
             }
         default:
             break
