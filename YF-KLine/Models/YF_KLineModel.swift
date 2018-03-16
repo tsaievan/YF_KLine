@@ -448,35 +448,10 @@ class YF_KLineModel: NSObject {
     ///< 9Clock内最低价
     var NineClocksMinPrice: Double?
     
-//    func getNineClocksMinPrice() {
-//        guard let models = parentGroupModel?.models as? [YF_KLineModel] else {
-//            return
-//        }
-//        if models.count >= 8 {
-//            rangeLastNinePrice(byArray: parentGroupModel?.models as! [YF_KLineModel], condition: .orderedDescending)
-//        }else {
-//            return
-//        }
-//    }
-    
     ///< 9Clock内最高价
     var NineClocksMaxPrice: Double?
     
-//    func getNineClocksMaxPrice() {
-//        guard let models = parentGroupModel?.models as? [YF_KLineModel] else {
-//            return
-//        }
-//        if models.count >= 8 {
-//            rangeLastNinePrice(byArray: parentGroupModel?.models as! [YF_KLineModel], condition: .orderedAscending)
-//        }else {
-//            return
-//        }
-//    }
-    
     lazy var RSV_9: Double? = {
-        //FIXME: -不知道这么写对不对, 先把这俩函数调一遍吧
-//        getNineClocksMinPrice()
-//        getNineClocksMaxPrice()
         var rsv_9 = 100.0
         guard let min = NineClocksMinPrice,
             let max = NineClocksMaxPrice,
@@ -576,14 +551,8 @@ class YF_KLineModel: NSObject {
     }
     
     func initData() {
-        //FIXME: -不知道这么写对不对, 先把这俩函数调一遍吧
-//        getNineClocksMaxPrice()
-//        getNineClocksMinPrice()
-        
         //FIXME:- 这里的算法还有点问题, 前7个点应该没有MA7数据的
-        if MA7 != nil {
-            
-        }
+        MA7 = MA7 ?? 0
         MA12 = MA12 ?? 0
         MA26 = MA26 ?? 0
         MA30 = MA30 ?? 0
@@ -594,8 +563,6 @@ class YF_KLineModel: NSObject {
         DIF = DIF ?? 0
         DEA = DEA ?? 0
         MACD = MACD ?? 0
-//        NineClocksMaxPrice = NineClocksMaxPrice ?? 0
-//        NineClocksMinPrice = NineClocksMinPrice ?? 0
         RSV_9 = RSV_9 ?? 0
         KDJ_K = KDJ_K ?? 0
         KDJ_D = KDJ_D ?? 0

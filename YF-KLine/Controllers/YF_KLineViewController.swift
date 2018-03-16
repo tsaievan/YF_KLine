@@ -28,12 +28,9 @@ class YF_KLineViewController: UIViewController {
         chartView.itemModels = [
             YF_StockChartViewItemModel.getItemModel(title: "指标", type: .other),
             YF_StockChartViewItemModel.getItemModel(title: "分时", type: .timeLine),
-            YF_StockChartViewItemModel.getItemModel(title: "1分", type: .kLine),
-            YF_StockChartViewItemModel.getItemModel(title: "5分", type: .kLine),
-            YF_StockChartViewItemModel.getItemModel(title: "30分", type: .kLine),
-            YF_StockChartViewItemModel.getItemModel(title: "60分", type: .kLine),
-            YF_StockChartViewItemModel.getItemModel(title: "日线", type: .kLine),
+            YF_StockChartViewItemModel.getItemModel(title: "月线", type: .kLine),
             YF_StockChartViewItemModel.getItemModel(title: "周线", type: .kLine),
+            YF_StockChartViewItemModel.getItemModel(title: "日线", type: .kLine),
         ]
         return chartView
     }()
@@ -95,21 +92,15 @@ extension YF_KLineViewController: YF_StockChartViewDataSource {
         var type: String?
         switch index {
         case 0:
-            type = "1min"
+            type = "d"
         case 1:
-            type = "1min"
+            type = "d"
         case 2:
-            type = "1min"
+            type = "m"
         case 3:
-            type = "5min"
+            type = "w"
         case 4:
-            type = "30min"
-        case 5:
-            type = "60min"
-        case 6:
-            type = "1day"
-        case 7:
-            type = "1week"
+            type = "d"
         default: break
         }
         currentIndex = index
@@ -144,12 +135,14 @@ extension YF_KLineViewController {
             return
         }
         ///< 如果文件存在, 读取文件中的前300条数据
-        if FileManager.default.fileExists(atPath: filePath) {
-            let url = URL(fileURLWithPath: filePath)
+        guard let type = currentType else {
+            return
+        }
+        if FileManager.default.fileExists(atPath: filePath + type) {
+            let url = URL(fileURLWithPath: filePath + type)
             guard let data = try? Data(contentsOf: url),
                 let rawData = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
-                let dataArray = rawData as? [Any],
-                let type = self.currentType else {
+                let dataArray = rawData as? [Any] else {
                     return
             }
             YF_KLineGroupModel.getObject(array: dataArray, successs: { (groupModel) in

@@ -57,7 +57,7 @@ class YF_KLineView: UIView {
                     ///< 改变K线图主view的高度比例
                     YF_StockChartVariable.setKLineMainViewRatio(ratio: 0.65)
                     ///< 改变K线图交易量View的高度比例
-                    YF_StockChartVariable.setKLineVolumeViewRatio(ratio: 0.28)
+                    YF_StockChartVariable.setKLineVolumeViewRatio(ratio: 0.3)
                 }else {
                     ///< 改变K线图主view的高度比例
                     YF_StockChartVariable.setKLineMainViewRatio(ratio: 0.5)
@@ -65,21 +65,17 @@ class YF_KLineView: UIView {
                     YF_StockChartVariable.setKLineVolumeViewRatio(ratio: 0.2)
                 }
                 ///< 因为高度比例变了, 所以取消之前高度的约束值, 重新更新约束
-                //FIXME:- 这里会崩, 原因还没有找到, 先不管
-//                if let _ = kLineMainViewHeightConstraint?.isActive {
-                    kLineMainViewHeightConstraint?.deactivate()
-                    kLineMainView.snp.makeConstraints({ (make) in
-                        kLineMainViewHeightConstraint =                    make.height.equalTo(scrollView).multipliedBy(YF_StockChartVariable.kLineMainViewRatio).constraint
-                    })
-//                }
+                kLineMainViewHeightConstraint?.deactivate()
+                ///< 这里不能用update更新高度
+                kLineMainView.snp.makeConstraints({ (make) in
+                    kLineMainViewHeightConstraint =                    make.height.equalTo(scrollView).multipliedBy(YF_StockChartVariable.kLineMainViewRatio).constraint
+                })
                 
-//                if let _ = kLineVolumeViewHeightConstraint?.isActive {
-                    kLineVolumeViewHeightConstraint?.deactivate()
-                    kLineVolumeView.snp.makeConstraints({ (make) in
-                        kLineVolumeViewHeightConstraint =                    make.height.equalTo(scrollView).multipliedBy(YF_StockChartVariable.kLineVolumeViewRatio).constraint
-                    })
-//                }
-                ///< 更新约束之后重绘
+                kLineVolumeViewHeightConstraint?.deactivate()
+                ///< 这里不能用update更新高度
+                kLineVolumeView.snp.makeConstraints({ (make) in
+                    kLineVolumeViewHeightConstraint =                    make.height.equalTo(scrollView).multipliedBy(YF_StockChartVariable.kLineVolumeViewRatio).constraint
+                })
                 reDraw()
             }
         }
@@ -93,7 +89,6 @@ class YF_KLineView: UIView {
         sv.showsVerticalScrollIndicator = false
         sv.showsHorizontalScrollIndicator = false
         sv.bounces = false
-        sv.delegate = self
         ///< 添加缩放手势
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(YF_KLineView.didPinchAction(sender:)))
         sv.addGestureRecognizer(pinch)
@@ -350,12 +345,6 @@ extension YF_KLineView {
         kLineAccessoryView.layoutIfNeeded()
         kLineAccessoryView.draw()
     }
-}
-
-
-// MARK: - UIScrollViewDelegate代理方法
-extension YF_KLineView: UIScrollViewDelegate {
-    
 }
 
 // MARK: - YF_KLineMainViewDelegate代理方法
