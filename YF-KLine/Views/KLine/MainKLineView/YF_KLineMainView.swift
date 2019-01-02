@@ -267,6 +267,9 @@ extension YF_KLineMainView {
             return 0
         }
         for i in start..<arrCount {
+            if i + 1 >= needDrawKLineModels.count {
+                return 0.0
+            }
             let kLinePositionModel = needDrawKLinePositionModels[i+1]
             guard let X = kLinePositionModel.HighPoint?.x else {
                 return 0
