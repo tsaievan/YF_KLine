@@ -49,6 +49,7 @@ extension ViewController {
         appDelegate.isLandScape = true
         let kLineVc = YF_KLineViewController()
         kLineVc.modalTransitionStyle = .crossDissolve
+        kLineVc.modalPresentationStyle = .fullScreen
         present(kLineVc, animated: true, completion: nil)
     }
 }
